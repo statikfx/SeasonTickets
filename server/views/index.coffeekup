@@ -6,4 +6,8 @@ html ->
     meta(name: 'description', content: @description) if @description?
     link rel: 'stylesheet', href: '/css/style.css'
   body ->
-    
+    div id: 'container', ->
+      header ->
+        h3 "Season Tickets"
+      section ->
+        span "Listing of 2011 tickets"

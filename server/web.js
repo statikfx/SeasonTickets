@@ -35,7 +35,7 @@ app.configure(function() {
 
 // homepage
 app.get("/", function(req, res) {
-  res.render("index");
+  res.render('index', {context: {title: 'Season Tickets 2011'}}); 
 });
 
 // request
