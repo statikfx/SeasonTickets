@@ -47,6 +47,10 @@ If you don't have the heroku gem, or haven't updated it in a while, you should:
     $ heroku version
       heroku-gem/2.3.6
 
+## Coffeescript
+
+For express views, [coffeekup](https://github.com/mauricemach/coffeekup) is used. To get syntax highlighting in TextMate, just use the [CoffeeScript TextMate Bundle](https://github.com/jashkenas/coffee-script-tmbundle).
+
 # More information
 
 * [Getting started with node.js on Heroku](http://devcenter.heroku.com/articles/node-js)
