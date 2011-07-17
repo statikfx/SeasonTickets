@@ -4,6 +4,7 @@
   "dependencies": {
     "express": "2.4.3",
     "coffeekup": "0.2.3",
-    "csv": "0.0.9"
+    "csv": "0.0.9",
+    "cron": "0.1.2"
   }
 }
