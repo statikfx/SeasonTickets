@@ -1,0 +1,24 @@
+doctype 5
+html ->
+  head ->
+    meta charset: 'utf-8'
+    title "#{@title or 'Untitled'}"
+    meta(name: 'description', content: @description) if @description?
+    link rel: 'stylesheet', href: '/css/style.css'
+  body ->
+    div id: 'container', ->
+      header ->
+        h3 "Season Tickets"
+      section ->
+        div ->
+          @body
+    
+    footer ->
+      div id: 'content', ->
+        span ->
+          "2011 Copyright Rob Shaw and Chandler Kent"
+        ul ->
+          (li -> a href: '/', -> 'Home') unless @path is '/'
+          (li -> 'Home') unless @path isnt '/'
+          li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
+        

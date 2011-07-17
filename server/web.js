@@ -22,7 +22,7 @@ app.configure(function() {
   app.register(".coffee", coffeekup);
   app.set("view engine", "coffeekup");
   app.set("view options", {
-    layout: false
+    layout: true
   });
   
   app.use(express.logger({
@@ -38,9 +38,14 @@ app.get("/", function(req, res) {
   res.render('index', {context: {title: 'Season Tickets 2011', path: '/'}}); 
 });
 
-// request
-app.get("/:gameId/requests", function(req, res) {
-  res.end(req.params.gameId);
+// game
+app.get("/g/:gameId/?", function(req, res) {
+  res.render('game', {context: {title: 'Game' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/'}}); 
+});
+
+// request for games
+app.get("/g/:gameId/reqs/?", function(req, res) {
+  res.renfer('request', {context: {title: 'Request ' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/req'}});
 });
 
 // start up server on given port
