@@ -22,8 +22,8 @@ var updateSchedule = function(fn) {
     csv.on("data", function(line, index) {
       if (index === 0) return;
       var date = new Date(line[0] + " " + line[1]);
-      if (date.getHours() < 17 && date.getDay() < 5) return;
-      var opponent = line[3].split(" ")[0];
+      //if (date.getHours() < 17 && date.getDay() < 5) return;
+      var opponent = line[3];
       var location = line[4];
       if (location.toLowerCase() !== "wrigley field") return;
     
