@@ -6,7 +6,7 @@ I am running the latest stable version (0.4.9), but Heroku currently supports 0.
 
 With Homebrew (recommended):
 
-`brew install node`
+    $ brew install node
 
 Otherwise, download the zip from [nodejs.org](http://nodejs.org/#download) and follow [installation instructions](https://github.com/joyent/node/wiki/Installation).
 
@@ -14,22 +14,22 @@ Otherwise, download the zip from [nodejs.org](http://nodejs.org/#download) and f
 
 npm is a simple install:
 
-`curl http://npmjs.org/install.sh | sh`
+    $ curl http://npmjs.org/install.sh | sh
 
 I am running 1.0.15, which I think is what you'll get with that:
 
-`npm -v`
-`1.0.15`
+    $ npm -v
+      1.0.15
 
 ## foreman
 
 foreman is required to run our app locally like it will be run on Heroku.
 
-`gem install foreman`
+    $ gem install foreman
 
 In a directory with a proper `Procfile`, you can run
 
-`foreman start`
+    $ foreman start
 
 to start the application.
 
@@ -37,9 +37,9 @@ to start the application.
 
 If you don't have the heroku gem, or haven't updated it in a while, you should:
 
-`gem install heroku`
-`heroku version`
-`heroku-gem/2.3.6`
+    $ gem install heroku
+    $ heroku version
+      heroku-gem/2.3.6
 
 # More information
 
