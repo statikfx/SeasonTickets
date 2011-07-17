@@ -11,3 +11,14 @@ html ->
         h3 "Season Tickets"
       section ->
         span "Listing of 2011 tickets"
+    
+    footer ->
+      div id: 'content', ->
+        span ->
+          "2011 Copyright Rob Shaw and Chandler Kent"
+        ul ->
+          (li -> a href: '/', -> 'Home') unless @path is '/'
+          (li -> 'Home') unless @path is not '/'
+          li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
+        
+      
