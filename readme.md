@@ -20,6 +20,12 @@ I am running 1.0.15, which I think is what you'll get with that:
 
     $ npm -v
       1.0.15
+      
+The app's node dependencies are declared in the package.json file. With the new version of npm, dependencies can be installed locally to the project, which is recommended (in /node_modules). However, this folder is added to .gitignore and will not be committed. To get any dependencies which may have been added to the package.json and are not installed locally, just do
+    
+    $ npm install
+    
+All dependencies declared in package.json and not available on your local system will be installed.
 
 ## foreman
 
