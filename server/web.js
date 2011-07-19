@@ -5,6 +5,8 @@ var SYS = require("sys");
 var express = require("express");
 var coffeekup = require("coffeekup");
 
+var globalTitle = "Season Tickets";
+
 
 // hold global configuration options
 var CONFIG = {
@@ -35,17 +37,21 @@ app.configure(function() {
 
 // homepage
 app.get("/", function(req, res) {
-  res.render('index', {context: {title: 'Season Tickets 2011', path: '/'}}); 
+  res.render('index', {context: {title: globalTitle + ' 2011', path: '/'}}); 
 });
 
 // game
 app.get("/g/:gameId/?", function(req, res) {
-  res.render('game', {context: {title: 'Game' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/'}}); 
+  res.render('game', {context: {title: globalTitle + ' - Game' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/'}}); 
 });
 
 // request for games
 app.get("/g/:gameId/reqs/?", function(req, res) {
-  res.renfer('request', {context: {title: 'Request ' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/req'}});
+  res.render('request', {context: {title: globalTitle + ' - Request ' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/req'}});
+});
+
+app.get ("/about/?", function(req, res) {
+  res.render('about', {context: {title: globalTitle + ' - About', path: '/about'}});
 });
 
 // start up server on given port

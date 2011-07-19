@@ -20,5 +20,6 @@ html ->
         ul ->
           (li -> a href: '/', -> 'Home') unless @path is '/'
           (li -> 'Home') unless @path isnt '/'
+          li -> a href: '/about/', -> 'About'
           li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
         
