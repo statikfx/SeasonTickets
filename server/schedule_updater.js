@@ -1,44 +1,13 @@
 var SYS = require("sys");
 var HTTP = require("http");
 var CSV = require("csv");
-var cron = require("cron");
 
-new cron.CronJob("0 * * * * *", function() {
+var main = exports.main = function(fn) {
   console.log("UPDATING SCHEDULE");
-  updateSchedule(function(err) {
-    if (err) {
-      return;
-    }
-    console.log("SCHEDULE UPDATED");
-  });
-});
-
-var updateSchedule = function(fn) {
-  var parseCSV = function(data, fn) {
-    var games = [];
   
-    var csv = CSV();
-    csv.from(data);
-    csv.on("data", function(line, index) {
-      if (index === 0) return;
-      var date = new Date(line[0] + " " + line[1]);
-      //if (date.getHours() < 17 && date.getDay() < 5) return;
-      var opponent = line[3];
-      var location = line[4];
-      if (location.toLowerCase() !== "wrigley field") return;
-    
-      games.push({
-        date: date,
-        opponent: opponent,
-        location: location
-      });
-    });
-    csv.on("end", function() {
-      for (var i = 0; i < games.length; i++) {
-        console.log(games[i].date + ": " + games[i].opponent + ", " + games[i].location);
-      }
-      fn();
-    })
+  var callback = function() {
+    console.log("SCHEDULE UPDATED");
+    if (fn) fn();
   };
   
   var options = {
@@ -53,7 +22,60 @@ var updateSchedule = function(fn) {
       data += chunk;
     });
     res.on("end", function() {
-      parseCSV(data, fn);
-    })
+      parseCSV(data, callback);
+    });
   });
 };
+
+var parseCSV = exports.parse = function(data, fn) {
+  var games = [];
+
+  var csv = CSV();
+  csv.from(data);
+  csv.on("data", function(line, index) {
+    if (index === 0) return;
+    var date = new Date(line[0] + " " + line[1]);
+    var opponent = line[3].split(" ")[0];
+    var location = line[4];
+    if (location.toLowerCase() !== "wrigley field") return;
+  
+    games.push({
+      date: date,
+      opponent: opponent,
+      location: location
+    });
+  });
+  csv.on("end", function() {
+    for (var i = 0; i < games.length; i++) {
+      console.log(games[i].date + ": " + games[i].opponent + ", " + games[i].location);
+    }
+    fn();
+  })
+};
+
+if (require.main === module) {
+  var optimist = require("optimist")
+    .usage("Requests a CSV file and inserts new/changed entries in DB.")
+    .options("s", {
+      alias: "schedule",
+      describe: "Schedule to run as a cron job. Expects a cron time format string."
+    })
+    .options("h", {
+      alias: "help",
+      describe: "Prints this help message."
+    });
+  var argv = optimist.argv;
+  
+  if (argv.h) {
+    optimist.showHelp();
+    return;
+  }
+  
+  if (!argv.s) {
+    main();
+  } else {
+    new require("cron").CronJob(argv.s, function() {
+      main();
+    });
+  }
+}
