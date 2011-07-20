@@ -5,16 +5,33 @@ var CSV = require("csv");
 var main = exports.main = function(fn) {
   console.log("UPDATING SCHEDULE");
   
-  var callback = function() {
+  var callback = function(err, data) {
+    if (fn) fn(err, data);
     console.log("SCHEDULE UPDATED");
-    if (fn) fn();
+  };
+  
+  var filter = function(line, index) {
+    if (index === 0) return false;
+    
+    var date = line[0];
+    var time = line[1];
+    var opponent = line[3].split(" ")[0];
+    var location = line[4];
+    if (location.toLowerCase() !== "wrigley field") return false;
+  
+    return {
+      date: date,
+      time: time,
+      opponent: opponent,
+      location: location
+    };
   };
   
   var options = {
     host: "mlb.mlb.com",
     path: "/soa/ical/schedule.csv?home_team_id=112&season=2011",
     port: 80
-  }
+  };
 
   HTTP.get(options, function(res) {
     var data = "";
@@ -22,37 +39,34 @@ var main = exports.main = function(fn) {
       data += chunk;
     });
     res.on("end", function() {
-      parseCSV(data, callback);
+      parseCSV(data, filter, callback);
     });
   });
 };
 
-var parseCSV = exports.parse = function(data, fn) {
+var parseCSV = exports.parse = function(data, filter, callback) {
   var games = [];
 
   var csv = CSV();
   csv.from(data);
   csv.on("data", function(line, index) {
-    if (index === 0) return;
-    var date = new Date(line[0] + " " + line[1]);
-    var opponent = line[3].split(" ")[0];
-    var location = line[4];
-    if (location.toLowerCase() !== "wrigley field") return;
-  
-    games.push({
-      date: date,
-      opponent: opponent,
-      location: location
-    });
+    var game = filter(line, index);
+    if (game) {
+      games.push(game);
+    }
   });
   csv.on("end", function() {
-    for (var i = 0; i < games.length; i++) {
-      console.log(games[i].date + ": " + games[i].opponent + ", " + games[i].location);
-    }
-    fn();
+    callback(null, games);
   })
 };
 
+var processGames = function(err, games) {
+  for (var i = 0; i < games.length; i++) {
+    console.log(games[i].date + ": " + games[i].opponent + ", " + games[i].location);
+  }
+};
+
+// if we are run from the command line
 if (require.main === module) {
   var optimist = require("optimist")
     .usage("Requests a CSV file and inserts new/changed entries in DB.")
@@ -66,16 +80,19 @@ if (require.main === module) {
     });
   var argv = optimist.argv;
   
+  // print help and return
   if (argv.h) {
     optimist.showHelp();
     return;
   }
   
   if (!argv.s) {
-    main();
+    // no schedule argument, run and exit
+    main(processGames);
   } else {
+    // schedule the job to run with given time string
     new require("cron").CronJob(argv.s, function() {
-      main();
+      main(processGames);
     });
   }
 }
