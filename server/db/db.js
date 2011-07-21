@@ -2,14 +2,9 @@ var PATH = require("path");
 var SYS = require("sys");
 var couch = require("couch-client");
 
-var CONFIG = {
-  URL: process.env.CUBS_DB || process.env.CLOUDANT_URL,
-  DB: "cubs"
-}
-
-var db = module.exports = function() {
-  var url = CONFIG.URL;
-  var database = CONFIG.DB
+var db = module.exports = function(config) {
+  var url = config.URL;
+  var database = config.NAME
   
   if (database.indexOf("/") !== 0) {
     database = "/" + database;

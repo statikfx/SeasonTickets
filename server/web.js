@@ -1,22 +1,26 @@
 // system reqs.
 var PATH = require("path");
 var SYS = require("sys");
-var URL = require("url");
 // user reqs.
 var express = require("express");
 var expressNamespace = require("express-namespace");
 var coffeekup = require("coffeekup");
-var db = require("./db/db")();
-
 
 // hold global configuration options
 var CONFIG = {
   WEBROOT: PATH.dirname(__filename),
   PORT: process.env.PORT || 9999,
+  DB: {
+    URL: process.env.CUBS_DB || process.env.CLOUDANT_URL,
+    NAME: "cubs"
+  },
   SITE: {
     title: "Season Tickets"
   }
 };
+
+var helpers = require("./helpers")(CONFIG);
+var db = require("./db/db")(CONFIG.DB);
 
 // create server
 var app = express.createServer();
@@ -39,19 +43,13 @@ app.configure(function() {
   app.use(express.static(PATH.join(CONFIG.WEBROOT, "public")));
 });
 
-var buildPageContext = function(req, options) {
-  var ctx = options || {};
-  ctx.site = CONFIG.SITE;
-  ctx.path = URL.parse(req.url).pathname;
-  ctx.page = ctx.page || {};
-  
-  return { context: ctx };
-};
-
 // homepage
 app.get("/", function(req, res) {
-  db.view("games", "approved", function(err, docs) {
-    var ctx = buildPageContext(req, {
+  var view_obj = {
+    startkey: helpers.dateToCouchString(new Date())
+  };
+  db.view("games", "approved", view_obj, function(err, docs) {
+    var ctx = helpers.buildPageContext(req, {
       games: docs.rows
     });
     res.render("index", ctx); 
@@ -61,7 +59,7 @@ app.get("/", function(req, res) {
 // game
 app.get("/game/:gameId/?", function(req, res) {
   db.get(req.params.gameId, function(err, doc) {
-    var ctx = buildPageContext(req, {
+    var ctx = helpers.buildPageContext(req, {
       game: doc
     });
     res.render("game", ctx);
@@ -70,12 +68,12 @@ app.get("/game/:gameId/?", function(req, res) {
 
 // request for games
 app.get("/game/:gameId/request/?", function(req, res) {
-  var ctx = buildPageContext(req);
+  var ctx = helpers.buildPageContext(req);
   res.render("request", ctx);
 });
 
 app.get("/about/?", function(req, res) {
-  var ctx = buildPageContext(req, {
+  var ctx = helpers.buildPageContext(req, {
     page: {
       title: "About"
     }
@@ -87,7 +85,7 @@ app.namespace("/admin", function() {
   
   app.get("/", function(req, res) {
     db.view("games", "pending", function(err, docs) {
-      var ctx = buildPageContext(req, {
+      var ctx = helpers.buildPageContext(req, {
         games: docs.rows,
         page: {
           title: "Admin"
