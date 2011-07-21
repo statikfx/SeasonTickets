@@ -69,7 +69,7 @@ app.get("/game/:gameId/?", function(req, res) {
 });
 
 // request for games
-app.get("/gamge/:gameId/request/?", function(req, res) {
+app.get("/game/:gameId/request/?", function(req, res) {
   var ctx = buildPageContext(req);
   res.render("request", ctx);
 });
