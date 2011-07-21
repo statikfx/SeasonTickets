@@ -1,0 +1,9 @@
+p ->
+  for game in @games
+    span ->
+      text game.value.date + '@' + game.value.time + ' vs ' + game.value.opponent
+      text ' '
+      a href: @path + '/approve/' + game.id, -> 'Approve'
+      text ' | '
+      a href: @path + '/reject/' + game.id, -> 'Reject'
+    br ->

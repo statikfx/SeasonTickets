@@ -1,8 +1,10 @@
 // system reqs.
 var PATH = require("path");
 var SYS = require("sys");
+var URL = require("url");
 // user reqs.
 var express = require("express");
+var expressNamespace = require("express-namespace");
 var coffeekup = require("coffeekup");
 var db = require("./db/db")();
 
@@ -37,27 +39,98 @@ app.configure(function() {
   app.use(express.static(PATH.join(CONFIG.WEBROOT, "public")));
 });
 
+var buildPageContext = function(req, options) {
+  var ctx = options || {};
+  ctx.site = CONFIG.SITE;
+  ctx.path = URL.parse(req.url).pathname;
+  ctx.page = ctx.page || {};
+  
+  return { context: ctx };
+};
+
 // homepage
 app.get("/", function(req, res) {
-  db.view("games", "pending", function(err, docs) {
-    res.render("index", {context: {site: CONFIG.SITE, games: docs.rows, path: '/'}}); 
+  db.view("games", "approved", function(err, docs) {
+    var ctx = buildPageContext(req, {
+      games: docs.rows
+    });
+    res.render("index", ctx); 
   });
 });
 
 // game
-app.get("/g/:gameId/?", function(req, res) {
+app.get("/game/:gameId/?", function(req, res) {
   db.get(req.params.gameId, function(err, doc) {
-    res.render("game", {context: {site: CONFIG.SITE, page: { title: "Game" + req.params.gameId }, game: doc, path: '/gameid/'}});
+    var ctx = buildPageContext(req, {
+      game: doc
+    });
+    res.render("game", ctx);
   });
 });
 
 // request for games
-app.get("/g/:gameId/reqs/?", function(req, res) {
-  res.render("request", {context: {site: CONFIG.SITE, page: { title: "Request" + req.params.gameId }, gameid: req.params.gameId, path: '/gameid/req'}});
+app.get("/gamge/:gameId/request/?", function(req, res) {
+  var ctx = buildPageContext(req);
+  res.render("request", ctx);
 });
 
 app.get("/about/?", function(req, res) {
-  res.render("about", {context: {site: CONFIG.SITE, page: { title: "About" }, path: '/about'}});
+  var ctx = buildPageContext(req, {
+    page: {
+      title: "About"
+    }
+  });
+  res.render("about", ctx);
+});
+
+app.namespace("/admin", function() {
+  
+  app.get("/", function(req, res) {
+    db.view("games", "pending", function(err, docs) {
+      var ctx = buildPageContext(req, {
+        games: docs.rows,
+        page: {
+          title: "Admin"
+        }
+      });
+      res.render("admin", ctx); 
+    });
+  });
+  
+  app.get("/reject/:gameId/?", function(req, res) {
+    var obj = {
+      "_id": req.params.gameId,
+      "status": "rejected"
+    };
+    
+    db.save(obj, function(err, doc) {
+      if (err || doc.error) {
+        console.log(err || doc.error);
+        return;
+      }
+      
+      console.log("REJECTED " + doc._id);
+      res.redirect("/admin");
+    });
+  });
+  
+  app.get("/approve/:gameId/?", function(req, res) {
+    var obj = {
+      "_id": req.params.gameId,
+      "status": "approved"
+    };
+    
+    db.save(obj, function(err, doc) {
+      if (err || doc.error) {
+        console.log(err || doc.error);
+        return;
+      }
+      
+      console.log("APPROVED " + doc._id);
+      res.redirect("/admin");
+    });
+  });
+  
 });
 
 // start up server on given port

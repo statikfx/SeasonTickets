@@ -45,6 +45,27 @@ var db = module.exports = function() {
     old_view(path, obj, callback);
   };
   
+  var old_save = that.save;
+  that.save = function(obj, callback) {
+    if (!obj._id) {
+      old_save(obj, callback);
+      return;
+    }
+    
+    this.get(obj._id, function(err, doc) {
+      if (err || doc.error) {
+        old_save(obj, callback);
+        return;
+      }
+      
+      for (var key in obj) {
+        doc[key] = obj[key];
+      }
+      
+      old_save(doc, callback);
+    });
+  }
+  
   return that;
 };
 
