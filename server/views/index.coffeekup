@@ -2,5 +2,5 @@ span "Listing of 2011 tickets"
       
 p ->
   for game in @games
-    a href: '/g/' + game.id, -> game.value.date + '@' + game.value.time + ' vs ' + game.value.opponent
+    a href: '/game/' + game.id, -> game.value.date + '@' + game.value.time + ' vs ' + game.value.opponent
     br ->
