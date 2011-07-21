@@ -4,7 +4,7 @@ var SYS = require("sys");
 // user reqs.
 var express = require("express");
 var coffeekup = require("coffeekup");
-var db = require("./db/db")("", "cubs");
+var db = require("./db/db")();
 
 
 // hold global configuration options

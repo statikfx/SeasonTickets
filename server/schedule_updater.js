@@ -2,7 +2,7 @@ var SYS = require("sys");
 var HTTP = require("http");
 var CSV = require("csv");
 
-var db = require("./db/db")("", "cubs");
+var db = require("./db/db")();
 
 var main = exports.main = function(fn) {
   console.log("UPDATING SCHEDULE");
