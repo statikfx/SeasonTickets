@@ -6,6 +6,7 @@
     "coffeekup": "0.2.3",
     "csv": "0.0.9",
     "cron": "0.1.2",
-    "optimist": "0.2.6"
+    "optimist": "0.2.6",
+    "couch-client": "0.0.4"
   }
 }

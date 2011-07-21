@@ -4,14 +4,16 @@ var SYS = require("sys");
 // user reqs.
 var express = require("express");
 var coffeekup = require("coffeekup");
-
-var globalTitle = "Season Tickets";
+var db = require("./db/db")("", "cubs");
 
 
 // hold global configuration options
 var CONFIG = {
   WEBROOT: PATH.dirname(__filename),
-  PORT: process.env.PORT || 9999
+  PORT: process.env.PORT || 9999,
+  SITE: {
+    title: "Season Tickets"
+  }
 };
 
 // create server
@@ -37,21 +39,25 @@ app.configure(function() {
 
 // homepage
 app.get("/", function(req, res) {
-  res.render('index', {context: {title: globalTitle + ' 2011', path: '/'}}); 
+  db.view("games", "pending", function(err, docs) {
+    res.render("index", {context: {site: CONFIG.SITE, games: docs.rows, path: '/'}}); 
+  });
 });
 
 // game
 app.get("/g/:gameId/?", function(req, res) {
-  res.render('game', {context: {title: globalTitle + ' - Game' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/'}}); 
+  db.get(req.params.gameId, function(err, doc) {
+    res.render("game", {context: {site: CONFIG.SITE, page: { title: "Game" + req.params.gameId }, game: doc, path: '/gameid/'}});
+  });
 });
 
 // request for games
 app.get("/g/:gameId/reqs/?", function(req, res) {
-  res.render('request', {context: {title: globalTitle + ' - Request ' + req.params.gameId, gameid: req.params.gameId, path: '/gameid/req'}});
+  res.render("request", {context: {site: CONFIG.SITE, page: { title: "Request" + req.params.gameId }, gameid: req.params.gameId, path: '/gameid/req'}});
 });
 
-app.get ("/about/?", function(req, res) {
-  res.render('about', {context: {title: globalTitle + ' - About', path: '/about'}});
+app.get("/about/?", function(req, res) {
+  res.render("about", {context: {site: CONFIG.SITE, page: { title: "About" }, path: '/about'}});
 });
 
 // start up server on given port

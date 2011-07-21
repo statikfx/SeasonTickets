@@ -2,6 +2,8 @@ var SYS = require("sys");
 var HTTP = require("http");
 var CSV = require("csv");
 
+var db = require("./db/db")("", "cubs");
+
 var main = exports.main = function(fn) {
   console.log("UPDATING SCHEDULE");
   
@@ -57,13 +59,17 @@ var parseCSV = exports.parse = function(data, filter, callback) {
   });
   csv.on("end", function() {
     callback(null, games);
-  })
+  });
 };
 
 var processGames = function(err, games) {
   for (var i = 0; i < games.length; i++) {
-    console.log(games[i].date + ": " + games[i].opponent + ", " + games[i].location);
+    games[i].status = "pending";
+    games[i].type = "game";
   }
+  db.load(games, function(err, result) {
+    console.log(result);
+  });
 };
 
 // if we are run from the command line

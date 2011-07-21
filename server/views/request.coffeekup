@@ -1,1 +1,1 @@
-p "Request View [Game ID: #{@gameid}]" 
+p "Request View [Game ID: #{@game.id}]" 
