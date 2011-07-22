@@ -1,79 +1,247 @@
-ul, li { margin: 0; padding: 0; }
 
+ 
+ /* reset - blueprint mod */
+ul, li {padding: 0; margin: 0;}
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;font-weight: inherit;font-style: inherit;font-size: 100%;font-family: inherit;vertical-align: baseline;}
 
-body
+ 
+html
 {
-  background-color: #fff;
-  font-family: "LucidaSans-Regular","Lucida Sans Regular",LucidaSans,"Lucida Sans",Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  color: #4F5155;
-  height: 100%;
+    height: 100%;
+}
+ 
+body {
+ background-color: #fff;
+ font-family: Verdana, Sans-serif;
+ font-size: 14px;
+ color: #4F5155;
+ height: 100%;
+}
+
+ 
+h1 {
+ color: #444;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 16px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
 }
 
 #container
 {
-  padding-top:20px;
-  border-left: 1px solid #cecece;
-  border-right: 1px solid #cecece;
+    border: 1px solid #cecece;
+    border-top: none;
+    margin: 0 auto;
+    width: 1000px;
+    background-color: #f9f9f9;
+}
+
+#mainbody
+{
+  padding: 20px;
+  padding-bottom: 0;
   margin: 0 auto;
-  width: 800px;
-  background-color: #f9f9f9;
-  height:100%;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #cecece;
+  width: 950px;
 }
 
-a:visited
+#months
 {
-  color: #000;
+    margin: 0 auto;
+    width: 950px;
+    padding:20px 0;
 }
 
-section
+#months ul
 {
-  margin: 10px;
+    list-style-type:none;
+    float:left;
 }
 
-header
+#months ul li
 {
-  margin:  0 10px 10px 10px;
+    
+    text-align:center;
+    width: 125px;
+    float:left;
+    display:block;
+
 }
 
-header h3
-{
-  font-weight: bold;
-  font-size: 18px;
+#months a {
+    color: #838383}
+#months a:focus, #months a:hover {
+    color: #525252;
+    background: #cecece;
+    
+    }
+
+#months ul li a {
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: 10px 10px;
+    background: #5D7B93;
+    color: white;
+    border: 1px solid #b5dff1;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    }
+    
+    #months ul li a.notselect {
+       border: 0px;
+       background:white;
+
+    }
+
+.game {
+ font-family: Verdana, Sans-serif;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ border-bottom: none;
+ display: block;
+ margin: 14px 0 14px 0;
+ /*height: 35px;
+ /*padding: 10px 10px 10px 10px;*/
 }
 
-footer
-{
-  margin: 0 auto;
-  width: 800px;
-}
+  .game .game-sub
+  {
+    margin:0;
+    width: 950px;
+    height: 50px;
+    border-bottom: 1px solid #D0D0D0;
+  }
+  
+  .game .game-sub li {
+  display: block; 
+  float: left; 
+  height: 30px;
+  border-right: 1px solid #D0D0D0; 
+  padding:10px;
+  }
 
-footer #content
-{
-  margin: 10px;
-  font-size: 10px;
-  font-family: Verdana, Sans-serif;
-}
+  .game .game-sub .date {
+    font-size: 15px;
+    font-weight: bold;
+    width: 120px;
+  }
+  
+  .game .game-sub .time {
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    width: 90px;
+  }
+  
+  .game .game-sub .opponent {
 
-footer #content span
-{
-  float: right;
-}
+    background-position: -10px -15px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    width: 150px;
+  }
+  
+  .game .game-sub .price {
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    width: 92px;
+    border-right: none;
+  }
+  
+  .game .game-sub .section {
+     padding: 0 10px 0 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    width: 50px;
+    height: 30px;
+    padding:10px;
+  
 
-footer #content ul
-{
-	list-style-type:none;
-	float:left;
-}
+  }
+  
+  .clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden; }
+.clearfix:after { clear: both; }
+  
+ .game .game-sub .row {
+    padding: 0 10px 0 10px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    width: 55px;
+    height: 30px;
+    padding:10px;
+  }
+  .game .game-sub .seat {
+    padding: 0 10px 0 10px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    width: 55px;
+    height: 30px;
+    padding:10px;
+     background-color: #668014;
+    color: #fff;
+  }
+  
+  .game .game-sub .spacer { width: 90px; }
+  
+ /* .game .game-sub .seat:hover {
+    font-size: 18px;
+    background-color: #4965B8;
+    color: #fff;
+  }*/
+  
+  .game .game-sub .sold {
+    background-color: #D0D0D0;
+    text-decoration: line-through;
+    color: black;
+  }
+  
+  .game .game-sub .inactive {
+    background-color: #D0D0D0;
+    color: white;
+  }
 
-footer #content ul li
-{
+  .game .game-sub .used {
+    background-color:#900000;
+     color: white;
+   }
+   
+   #footer
+   {
+     margin: 0 auto;
+     width: 1000px;
+   }
+
+   #footer #content
+   {
+     margin: 10px;
+     font-size: 10px;
+     font-family: Verdana, Sans-serif;
+   }
+
+   #footer #content span
+   {
+     float: right;
+   }
+
+   #footer #content ul
+   {
+   	list-style-type:none;
+   	float:left;
+   }
+
+   #footer #content ul li
+   {
     padding-left: 10px;
-	text-align:center;
-	float:left;
-	display:block;
-}
+   	text-align:center;
+   	float:left;
+   	display:block;
+   }

@@ -9,13 +9,10 @@ html ->
     link rel: 'stylesheet', href: '/css/style.css'
   body ->
     div id: 'container', ->
-      header ->
-        h3 "Season Tickets"
-      section ->
-        div ->
-          @body
-    
-    footer ->
+      div id: 'mainbody', ->
+        h1 -> "Season Tickets"
+        @body
+    div id: 'footer', ->
       div id: 'content', ->
         span ->
           "2011 Copyright Rob Shaw and Chandler Kent"

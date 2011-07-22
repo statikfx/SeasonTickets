@@ -46,7 +46,7 @@ app.configure(function() {
 // homepage
 app.get("/", function(req, res) {
   var view_obj = {
-    startkey: helpers.dateToCouchString(new Date())
+    startkey: helpers.dateToCouchString(helpers.yesterday())
   };
   db.view("games", "approved", view_obj, function(err, docs) {
     var ctx = helpers.buildPageContext(req, {
@@ -72,6 +72,7 @@ app.get("/game/:gameId/request/?", function(req, res) {
   res.render("request", ctx);
 });
 
+// about page
 app.get("/about/?", function(req, res) {
   var ctx = helpers.buildPageContext(req, {
     page: {
@@ -81,6 +82,7 @@ app.get("/about/?", function(req, res) {
   res.render("about", ctx);
 });
 
+// admin pages
 app.namespace("/admin", function() {
   
   app.get("/", function(req, res) {
