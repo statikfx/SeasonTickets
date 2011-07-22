@@ -143,6 +143,13 @@ h1 {
     text-align: center;
     font-size: 15px;
     width: 92px;
+  }
+  
+  .game .game-sub .last {
+    font-weight: bold;
+    text-align: center;
+    font-size: 15px;
+    width: 92px;
     border-right: none;
   }
   

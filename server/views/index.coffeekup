@@ -36,8 +36,8 @@ while game?
             text 'seat'
           li class: 'seat', ->
             text 'seat'
-          li class: 'price', ->
-            text 'price'
+          li class: 'last', ->
+            text 'last'
         game = @games[++i]
         date = new Date game?.value?.date
         next_month = date.getMonth()
