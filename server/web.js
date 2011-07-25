@@ -5,22 +5,9 @@ var SYS = require("sys");
 var express = require("express");
 var expressNamespace = require("express-namespace");
 var coffeekup = require("coffeekup");
-
-// hold global configuration options
-var CONFIG = {
-  WEBROOT: PATH.dirname(__filename),
-  PORT: process.env.PORT || 9999,
-  DB: {
-    URL: process.env.CUBS_DB || process.env.CLOUDANT_URL,
-    NAME: "cubs"
-  },
-  SITE: {
-    title: "Season Tickets"
-  }
-};
-
-var helpers = require("./helpers")(CONFIG);
-var db = require("./db/db")(CONFIG.DB);
+var CONFIG = require("./config");
+var helpers = require("./helpers");
+var db = require("./db/db")();
 
 // create server
 var app = express.createServer();
@@ -50,7 +37,7 @@ app.get("/", function(req, res) {
   };
   db.view("games", "approved", view_obj, function(err, docs) {
     var ctx = helpers.buildPageContext(req, {
-      games: docs.rows
+      games: helpers.cleanUpCouchResults(docs.rows)
     });
     res.render("index", ctx); 
   });

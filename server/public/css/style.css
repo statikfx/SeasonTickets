@@ -1,246 +1,111 @@
-
- 
- /* reset - blueprint mod */
+/* reset - blueprint mod */
 ul, li {padding: 0; margin: 0;}
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;font-weight: inherit;font-style: inherit;font-size: 100%;font-family: inherit;vertical-align: baseline;}
  
-body {
- background-color: #fff;
- font-family: Verdana, Sans-serif;
- font-size: 14px;
- color: #4F5155;
+body
+{
+  background-color: #fff;
+  font-family: Verdana, Sans-serif;
+  font-size: 14px;
+  color: #4F5155;
 }
 
- 
-h1 {
- color: #444;
- background-color: transparent;
- border-bottom: 1px solid #D0D0D0;
- font-size: 16px;
- font-weight: bold;
- margin: 0 0 2px 0;
- padding: 5px 0 6px 0;
+#wrapper
+{
+  border: 1px solid #cecece;
+  border-top: none;
+  margin: 0 auto;
+  width: 1000px;
+  background-color: #f9f9f9;
 }
 
 #container
-{
-    border: 1px solid #cecece;
-    border-top: none;
-    margin: 0 auto;
-    width: 1000px;
-    background-color: #f9f9f9;
-}
-
-#mainbody
 {
   padding: 0 20px;
   margin: 0 auto;
   width: 950px;
 }
 
-#months
+#header
 {
-    margin: 0 auto;
-    width: 950px;
-    padding:20px 0;
+  border-bottom: 1px solid #cecece;
 }
 
-#months ul
+#header h1
 {
-    list-style-type:none;
-    float:left;
+  font-size: 28px;
+  font-weight: bold;
 }
 
-#months ul li
+#header ul
 {
-    
-    text-align:center;
-    width: 125px;
-    float:left;
-    display:block;
-
+  list-style-type: none;
 }
 
-#months a {
-    color: #838383}
-#months a:focus, #months a:hover {
-    color: #525252;
-    background: #cecece;
-    
-    }
-
-#months ul li a {
-    font-weight: normal;
-    text-transform: uppercase;
-    padding: 10px 10px;
-    background: #5D7B93;
-    color: white;
-    border: 1px solid #b5dff1;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    }
-    
-    #months ul li a.notselect {
-       border: 0px;
-       background:white;
-
-    }
-
-.game {
- font-family: Verdana, Sans-serif;
- font-size: 12px;
- background-color: #f9f9f9;
- border: 1px solid #D0D0D0;
- border-bottom: none;
- display: block;
- margin: 14px 0 14px 0;
- /*height: 35px;
- /*padding: 10px 10px 10px 10px;*/
+#header ul li
+{
+  display: inline;
+  margin: 0 10px 0 0;
 }
 
-  .game .game-sub
-  {
-    margin:0;
-    width: 950px;
-    height: 50px;
-    border-bottom: 1px solid #D0D0D0;
-  }
-  
-  .game .game-sub li {
-  display: block; 
-  float: left; 
-  height: 30px;
-  border-right: 1px solid #D0D0D0; 
-  padding:10px;
-  }
+.hidden
+{
+  display: none;
+}
 
-  .game .game-sub .date {
-    font-size: 15px;
-    font-weight: bold;
-    width: 120px;
-  }
-  
-  .game .game-sub .time {
-    font-weight: bold;
-    text-align: center;
-    font-size: 15px;
-    width: 90px;
-  }
-  
-  .game .game-sub .opponent {
+.month
+{
+  border: 1px solid #cecece;
+  border-bottom: none;
+  margin: 20px 0;
+}
 
-    background-position: -10px -15px;
-    font-weight: bold;
-    text-align: center;
-    font-size: 15px;
-    width: 150px;
-  }
-  
-  .game .game-sub .price {
-    font-weight: bold;
-    text-align: center;
-    font-size: 15px;
-    width: 92px;
-  }
-  
-  .game .game-sub .last {
-    font-weight: bold;
-    text-align: center;
-    font-size: 15px;
-    width: 92px;
-    border-right: none;
-  }
-  
-  .game .game-sub .section {
-     padding: 0 10px 0 10px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-    width: 50px;
-    height: 30px;
-    padding:10px;
-  
+.month h1
+{
+  padding: 10px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d0d0d0;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  }
-  
-  .clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden; }
-.clearfix:after { clear: both; }
-  
- .game .game-sub .row {
-    padding: 0 10px 0 10px;
-    font-size: 15px;
-    text-align: center;
-    font-weight: bold;
-    width: 55px;
-    height: 30px;
-    padding:10px;
-  }
-  .game .game-sub .seat {
-    padding: 0 10px 0 10px;
-    font-size: 15px;
-    text-align: center;
-    font-weight: bold;
-    width: 55px;
-    height: 30px;
-    padding:10px;
-     background-color: #668014;
-    color: #fff;
-  }
-  
-  .game .game-sub .spacer { width: 90px; }
-  
- /* .game .game-sub .seat:hover {
-    font-size: 18px;
-    background-color: #4965B8;
-    color: #fff;
-  }*/
-  
-  .game .game-sub .sold {
-    background-color: #D0D0D0;
-    text-decoration: line-through;
-    color: black;
-  }
-  
-  .game .game-sub .inactive {
-    background-color: #D0D0D0;
-    color: white;
-  }
+.month h1.hiding, .series h1.hiding
+{
+  background: #cecece;
+  color: #f9f9f9;
+}
 
-  .game .game-sub .used {
-    background-color:#900000;
-     color: white;
-   }
-   
-   #footer
-   {
-     margin: 0 auto;
-     width: 1000px;
-   }
+.series
+{
+  border-bottom: 1px solid #d0d0d0;
+}
 
-   #footer #content
-   {
-     margin: 10px;
-     font-size: 10px;
-     font-family: Verdana, Sans-serif;
-   }
+.series h1
+{
+  padding: 6px 10px;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 14px;
+}
 
-   #footer #content span
-   {
-     float: right;
-   }
+.game
+{
+  padding: 6px 10px;
+  list-style-type: none;
+}
 
-   #footer #content ul
-   {
-   	list-style-type:none;
-   	float:left;
-   }
+.game li
+{
+  margin: 0 5px 0 0;
+  display: inline;
+}
 
-   #footer #content ul li
-   {
-    padding-left: 10px;
-   	text-align:center;
-   	float:left;
-   	display:block;
-   }
+.game .date
+{
+  padding: 4px;
+  font-weight: bold;
+  font-size: 24px;
+  border-right: 1px solid #d0d0d0;
+}

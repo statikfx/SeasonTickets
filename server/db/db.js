@@ -1,10 +1,11 @@
 var PATH = require("path");
 var SYS = require("sys");
 var couch = require("couch-client");
+var CONFIG = require("../config");
 
-var db = module.exports = function(config) {
-  var url = config.URL;
-  var database = config.NAME
+var db = module.exports = function() {
+  var url = CONFIG.DB.URL;
+  var database = CONFIG.DB.NAME
   
   if (database.indexOf("/") !== 0) {
     database = "/" + database;

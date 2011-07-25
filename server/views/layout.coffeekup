@@ -7,18 +7,18 @@ html ->
       (text ' | ' + @page.title) if @page.title
     meta(name: 'description', content: @description) if @description?
     link rel: 'stylesheet', href: '/css/style.css'
+    script src: '/js/jquery-1.6.2.min.js'
   body ->
-    div id: 'container', ->
-      div id: 'mainbody', ->
-        h1 -> "Season Tickets"
+    div id: 'wrapper', ->
+      div id: 'container', ->
+        div id: 'header', ->
+          h1 -> "2011 Season Tickets"
+          ul ->
+            li -> a href: '/about/', -> 'About'
+            li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
         @body
     div id: 'footer', ->
-      div id: 'content', ->
-        span ->
-          "2011 Copyright Rob Shaw and Chandler Kent"
-        ul ->
-          (li -> a href: '/', -> 'Home') unless @path is '/'
-          (li -> 'Home') unless @path isnt '/'
-          li -> a href: '/about/', -> 'About'
-          li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
+      span ->
+        "2011 Copyright Rob Shaw and Chandler Kent"
+    script src: '/js/app.js'
         

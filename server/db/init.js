@@ -1,7 +1,6 @@
 var FS = require("fs");
 var PATH = require("path");
 var SYS = require("sys");
-
 var db = require("./db")();
 
 var main = function() {

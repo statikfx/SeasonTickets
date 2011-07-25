@@ -1,44 +1,36 @@
-div ->
-  p ->
-    text "Please find the listings of tickets below. To purchase tickets, find the game you want on the right side and click 'Buy'. From there, you will be able to request the tickets for that game. The reason there is a request system is so that others can request as well (queueing system) and if you haven't paid, and potentially decide you don't want the tickets anymore, you can cancel them and it will go to the next person in line. Once you make a request, an email will be sent explaining the series you have requested and a further discussion about payment and receiving the tickets. Once you purchase the tickets, they are yours and all others waiting on them will have lost out. Please enjoy! They are great seats!"
-  p ->
-    text "You may also send an email to rjshaw.purdue@gmail.com to request any tickets"
-
 i = 0
 game = @games[i]
 
 while game?
-  date = new Date game.value.date
+  date = new Date game.date
   month = date.getMonth()
   next_month = month
   month_name = @helpers.getMonthOfDate(date)
-  h1 month_name
-  div id: month_name, ->
-    div class: 'game clearfix', ->
-      while month is next_month and game?
-        ul class: 'game-sub', ->
-          li class: 'date', ->
-            text month_name + ' ' + @helpers.getDayOfDate(date)
-            br ->
-            span style: 'font-weight:normal', ->
-              text @helpers.getDayOfWeekOfDate(date)
-          li class: 'time', ->
-            text game.value.time
-          li class: 'opponent', ->
-            text game.value.opponent
-          li class: 'price', ->
-            text 'price'
-          li class: 'section', ->
-            text 'section'
-          li class: 'row', ->
-            text 'row'
-          li class: 'seat', ->
-            text 'seat'
-          li class: 'seat', ->
-            text 'seat'
-          li class: 'last', ->
-            text 'last'
-        game = @games[++i]
-        date = new Date game?.value?.date
-        next_month = date.getMonth()
-      
+  div id: month_name, class: "month", ->
+    h1 month_name
+    while month is next_month and game?
+      opponent = game.opponent
+      div class: "series", ->
+        h1 opponent
+        while game? and opponent is game.opponent
+          ul class: 'game', ->
+            li class: 'date', ->
+              text @helpers.getDayOfDate(date)
+            li class: 'time', ->
+              text game.time
+            li class: 'price', ->
+              text 'price'
+            li class: 'section', ->
+              text 'section'
+            li class: 'row', ->
+              text 'row'
+            li class: 'seat', ->
+              text 'seat'
+            li class: 'seat', ->
+              text 'seat'
+            li class: 'last', ->
+              text 'last'
+          game = @games[++i]
+          date = new Date game?.date
+          next_month = date.getMonth()
+  
