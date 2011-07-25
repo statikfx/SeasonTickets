@@ -8,8 +8,9 @@ var main = exports.main = function(fn) {
   console.log("UPDATING SCHEDULE");
   
   var callback = function(err, data) {
-    if (fn) fn(err, data);
-    console.log("SCHEDULE UPDATED");
+    if (fn) fn(err, data, function() {
+      console.log("SCHEDULE UPDATED");
+    });
   };
   
   var filter = function(line, index) {
@@ -62,13 +63,17 @@ var parseCSV = exports.parse = function(data, filter, callback) {
   });
 };
 
-var processGames = function(err, games) {
+var processGames = function(err, games, callback) {
   for (var i = 0; i < games.length; i++) {
     games[i].status = "pending";
     games[i].type = "game";
   }
   db.load(games, function(err, result) {
+    if (err) {
+      throw err;
+    }
     console.log(result);
+    callback();
   });
 };
 
