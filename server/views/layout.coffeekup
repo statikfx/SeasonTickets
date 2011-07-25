@@ -12,13 +12,16 @@ html ->
     div id: 'wrapper', ->
       div id: 'container', ->
         div id: 'header', ->
-          h1 -> "2011 Season Tickets"
           ul ->
-            li -> a href: '/about/', -> 'About'
-            li -> a href: 'http://github.com/statikfx/SeasonTickets/', -> 'On GitHub'
+            li class: "title", -> 
+              (text "2011 Season Tickets") unless @path isnt "/"
+              (a href: '/', -> "2011 Season Tickets") unless @path is "/"
+            li ->
+              a href: '/about/', -> 'About'
+            li ->
+              a href: 'http://github.com/statikfx/SeasonTickets/', -> 'GitHub'
         @body
-    div id: 'footer', ->
-      span ->
-        "2011 Copyright Rob Shaw and Chandler Kent"
+      div id: 'footer', ->
+        text "2011 Copyright Rob Shaw and Chandler Kent"
     script src: '/js/app.js'
         
