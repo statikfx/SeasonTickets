@@ -73,14 +73,15 @@ app.get("/about/?", function(req, res) {
 app.namespace("/admin", function() {
   
   app.get("/", function(req, res) {
-    db.view("games", "pending", function(err, docs) {
+    db.view("games", "all_by_date", function(err, docs) {
       var ctx = helpers.buildPageContext(req, {
-        games: docs.rows,
+        games: helpers.cleanUpCouchResults(docs.rows),
         page: {
           title: "Admin"
-        }
+        },
+        admin: true
       });
-      res.render("admin", ctx); 
+      res.render("index", ctx); 
     });
   });
   

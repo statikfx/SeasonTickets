@@ -13,7 +13,7 @@ while game?
       div class: "series", ->
         h1 opponent
         while game? and opponent is game.opponent
-          ul class: 'game', ->
+          ul class: "game #{game.status unless not @admin}", id: game._id, ->
             li class: 'date', ->
               text @helpers.getDayOfDate(date)
             li class: 'time', ->
@@ -28,9 +28,15 @@ while game?
               text 'seat'
             li class: 'seat', ->
               text 'seat'
-            li class: 'last', ->
-              text 'last'
+            if @admin
+              li class: 'approve-reject', ->
+                (a href: "#{@path}/approve/#{game._id}", -> "approve") unless game.status is "approved"
+                (text " | ") unless game.status is "approved" or game.status is "rejected"
+                (a href: "#{@path}/reject/#{game._id}", -> "reject") unless game.status is "rejected"
           game = @games[++i]
           date = new Date game?.date
           next_month = date.getMonth()
+          
+script ->
+  text "ADMIN = #{@admin};"
   

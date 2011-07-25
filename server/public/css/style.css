@@ -115,6 +115,21 @@ a, a:visited
   list-style-type: none;
 }
 
+.game.pending
+{
+  background: #ff7f00;
+}
+
+.game.rejected
+{
+  background: #ffb7c6;
+}
+
+.game.approved
+{
+  background: #c0ff8f;
+}
+
 .game li
 {
   margin: 0 5px 0 0;
