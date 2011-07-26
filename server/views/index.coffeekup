@@ -20,7 +20,7 @@ while game?
               text game.time
             for seat in game.seats
               li class: 'seat', ->
-                seat
+                "S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}"
             if @admin
               li class: 'seat', ->
                 a href: '#add-seat', -> 'Add Seat'

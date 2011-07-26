@@ -3,23 +3,27 @@ var PATH = require("path");
 var SYS = require("sys");
 var db = require("./db")();
 
-var main = function() {
-  db.exists(function(exists) {
-    if (!exists) {
-      db.create(function(err, result) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        createViews();
-      });
-    } else {
+var main = exports.main = function() {
+  var createDB = function() {
+    console.log("CREATING DB...");
+    
+    db.create(function(err, result) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      
+      console.log("DB CREATED");
       createViews();
-    }
-  });
+    });
+  };
+  
+  db.exists(createDB, createViews);
 };
 
-var createViews = function() {
+var createViews = exports.createViews = function() {
+  console.log("CREATING VIEWS...");
+  
   var base = "views";
   var basePath = PATH.join(PATH.dirname(__filename), base);
   FS.readdir(basePath, function(err, dirs) {
@@ -49,13 +53,13 @@ var createViews = function() {
             };
           }
           
-          db.save(design, function(err, doc) {
+          db.save(design, function(err, doc) {            
             if (err) {
               console.log(err);
               return;
             }
-            
-            console.log("VIEWS CREATED SUCCESSFULLY");
+
+            console.log("VIEWS CREATED");
           });
         });
       }
@@ -63,4 +67,6 @@ var createViews = function() {
   });
 };
 
-main();
+if (require.main === module) {
+  main();
+}

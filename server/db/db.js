@@ -19,12 +19,12 @@ var db = module.exports = function() {
     this.request("POST", PATH.join(database, "_bulk_docs"), { docs: items }, callback);
   };
   
-  that.exists = function(callback) {
+  that.exists = function(does_not_exist_callback, exists_callback) {
     this.request("GET", database, null, function(err, doc) {
       if (err || doc.error) {
-        callback(false);
+        does_not_exist_callback();
       } else {
-        callback(true);
+        exists_callback();
       }
     });
   };
@@ -32,6 +32,12 @@ var db = module.exports = function() {
   that.create = function(callback) {
     this.request("PUT", database, null, function(err, doc) {
       callback(err, doc);
+    });
+  };
+  
+  that["delete"] = function(callback) {
+    this.request("DELETE", database, null, function(err, result) {
+      callback(err, result);
     });
   };
   
@@ -60,7 +66,7 @@ var db = module.exports = function() {
       
       old_save(doc, callback);
     });
-  }
+  };
   
   return that;
 };

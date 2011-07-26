@@ -122,41 +122,30 @@ app.namespace("/admin", function() {
   
   app.post("/seat/?", function(req, res) {    
     var seat = {
-      game: req.body.gameId,
       section: req.body.section,
       row: req.body.row,
       seat: req.body.seat,
       price: req.body.price,
       status: "open",
-      type: "seat",
-      request: []
+      requests: []
     };
     
-    
-    db.save(seat, function(err, doc) {
-      if (err || doc.error) {
+      
+    db.get(req.body.gameId, function(err, game) {
+      if (err || game.error) {
         console.log(err);
         return;
       }
       
-      seat = doc;
-      
-      db.get(req.body.gameId, function(err, game) {
-        if (err || game.error) {
+      game.seats.push(seat);
+      db.save(game, function(err, doc) {
+        if (err || doc.error) {
           console.log(err);
           return;
         }
         
-        game.seats.push(seat._id);
-        db.save(game, function(err, doc) {
-          if (err || doc.error) {
-            console.log(err);
-            return;
-          }
-          
-          console.log("SEAT ADDED " + doc._id);
-          res.redirect("/admin");
-        })
+        console.log("SEAT ADDED " + doc._id);
+        res.redirect("/admin");
       });
     });
   });
