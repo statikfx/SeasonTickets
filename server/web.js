@@ -25,6 +25,7 @@ app.configure(function() {
   app.use(express.logger({
     format: ":method :url"
   }));
+  app.use(express.bodyParser());
   app.use(app.router);
   // serve static files out of /public
   app.use(express.static(PATH.join(CONFIG.WEBROOT, "public")));
@@ -116,6 +117,49 @@ app.namespace("/admin", function() {
       
       console.log("APPROVED " + doc._id);
       res.redirect("/admin");
+    });
+  });
+  
+  app.post("/add-seat/?", function(req, res) {    
+    var seat = {
+      game: req.body.gameId,
+      section: req.body.section,
+      row: req.body.row,
+      seat: req.body.seat,
+      price: req.body.price,
+      status: "open",
+      type: "seat",
+      request: []
+    };
+    
+    console.log(seat);
+    
+    db.save(seat, function(err, doc) {
+      if (err || doc.error) {
+        console.log(err);
+        return;
+      }
+      
+      seat = doc;
+      console.log(doc);
+      
+      db.get(req.body.gameId, function(err, game) {
+        if (err || game.error) {
+          console.log(err);
+          return;
+        }
+        
+        game.seats.push(seat._id);
+        db.save(game, function(err, doc) {
+          if (err || doc.error) {
+            console.log(err);
+            return;
+          }
+          
+          console.log("SEAT ADDED " + doc._id);
+          res.redirect("/admin");
+        })
+      });
     });
   });
   

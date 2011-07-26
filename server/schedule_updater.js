@@ -67,6 +67,7 @@ var processGames = function(err, games, callback) {
   for (var i = 0; i < games.length; i++) {
     games[i].status = "pending";
     games[i].type = "game";
+    games[i].seats = [];
   }
   db.load(games, function(err, result) {
     if (err) {

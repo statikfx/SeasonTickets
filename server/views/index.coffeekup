@@ -18,17 +18,12 @@ while game?
               text @helpers.getDayOfDate(date)
             li class: 'time', ->
               text game.time
-            li class: 'price', ->
-              text 'price'
-            li class: 'section', ->
-              text 'section'
-            li class: 'row', ->
-              text 'row'
-            li class: 'seat', ->
-              text 'seat'
-            li class: 'seat', ->
-              text 'seat'
+            for seat in game.seats
+              li class: 'seat', ->
+                seat
             if @admin
+              li class: 'seat', ->
+                a href: '#add-seat', -> 'Add Seat'
               li class: 'approve-reject', ->
                 (a href: "#{@path}/approve/#{game._id}", -> "approve") unless game.status is "approved"
                 (text " | ") unless game.status is "approved" or game.status is "rejected"
@@ -36,6 +31,26 @@ while game?
           game = @games[++i]
           date = new Date game?.date
           next_month = date.getMonth()
+
+if @admin          
+  form id: 'add-seat', class: 'hidden', method: 'POST', action: "#{@path}/add-seat/",  ->
+    input type: 'hidden', id: 'add-seat-game-id', name: 'gameId'
+    div ->
+      label for: 'section', -> 'Section #'
+      input type: 'text', name: 'section'
+    div ->
+      label for: 'row', -> 'Row #'
+      input type: 'text', name: 'row'
+    div ->
+      label for: 'seat', -> 'Seat #'
+      input type: 'text', name: 'seat'
+    div ->
+      label for: 'price', -> 'Price'
+      input type: 'text', name: 'price'
+  
+    div ->
+      a id: 'add-seat-cancel', href: '#add-seat-cancel', -> 'Cancel'
+      input type: 'submit', value: 'Add Seat'
           
 script ->
   text "ADMIN = #{@admin};"
