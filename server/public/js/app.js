@@ -1,5 +1,9 @@
 $(function() {
   $(".month > h1").click(function() {
+    // unhide and series
+    $(this).parent().children(".series").children(".game").removeClass("hidden");
+    $(this).parent().children(".series").children("h1").removeClass("hiding");
+    
     $(this).toggleClass("hiding");
     $(this).parent().children(".series").toggleClass("hidden");
   });
@@ -10,6 +14,7 @@ $(function() {
   });
   
   if (ADMIN) {
+    // seat editor
     $("a[href=#add-seat]").each(function() {
       $(this).click(function(evt) {
         var seat_editor = $("#seat-editor");
@@ -30,5 +35,22 @@ $(function() {
         evt.preventDefault();
       });
     });
+    
+    // hide all months before today
+    var MONTHS = {
+      "January": 0, "February": 1, "March": 2,
+      "April": 3, "May": 4, "June": 5, "July": 6,
+      "August": 7, "September": 8, "October": 9,
+      "November": 10, "December": 11
+    };
+    var currentMonth = (new Date()).getMonth();
+    $(".month").each(function() {
+      var month = $(this).attr("id");
+      month = MONTHS[month];
+      if (month < currentMonth) {
+        $(this).children(".series").addClass("hidden");
+        $(this).children("h1").addClass("hiding");
+      }
+    })
   }
 });

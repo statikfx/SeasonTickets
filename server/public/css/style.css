@@ -51,6 +51,7 @@ a, a:visited
 
 #header ul li.title, #header ul li.title a
 {
+  color: #4f5155;
   font-size: 28px;
   font-weight: bold;
 }
