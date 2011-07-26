@@ -13,7 +13,7 @@ body
 
 a, a:visited
 {
-  color: #4f5155;
+  color: blue;
   text-decoration: none;
 }
 
@@ -21,7 +21,7 @@ a, a:visited
 {
   border: 1px solid #cecece;
   border-top: none;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 10px auto;
   width: 1000px;
   background-color: #f9f9f9;
 }
@@ -63,8 +63,14 @@ a, a:visited
 #footer
 {
   padding: 0 20px 1px 0;
-  font-size: 11px;
   text-align: right;
+  width: 1000px;
+  margin: 0 auto;
+}
+
+#footer span
+{
+  font-size: 11px;
 }
 
 #seat-editor label
