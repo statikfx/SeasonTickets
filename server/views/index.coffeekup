@@ -33,7 +33,7 @@ while game?
           next_month = date.getMonth()
 
 if @admin          
-  form id: 'add-seat', class: 'hidden', method: 'POST', action: "#{@path}/add-seat/",  ->
+  form id: 'add-seat', class: 'hidden', method: 'POST', action: @helpers.urlJoin(@path, 'seat/'),  ->
     input type: 'hidden', id: 'add-seat-game-id', name: 'gameId'
     div ->
       label for: 'section', -> 'Section #'

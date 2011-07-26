@@ -120,7 +120,7 @@ app.namespace("/admin", function() {
     });
   });
   
-  app.post("/add-seat/?", function(req, res) {    
+  app.post("/seat/?", function(req, res) {    
     var seat = {
       game: req.body.gameId,
       section: req.body.section,

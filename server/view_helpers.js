@@ -1,3 +1,5 @@
+var PATH = require("path");
+
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novembter", "December"];
 var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -16,5 +18,7 @@ module.exports = {
   
   getDayOfWeekOfDate: function(date) {
     return DAYS[date.getDay()];
-  }
+  },
+  
+  urlJoin: PATH.join
 };
