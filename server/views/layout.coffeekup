@@ -21,7 +21,11 @@ html ->
             li ->
               a href: 'http://github.com/statikfx/SeasonTickets/', -> 'GitHub'
         @body
-      div id: 'footer', ->
-        text "2011 Copyright Rob Shaw and Chandler Kent"
+    div id: 'footer', ->
+        span ->
+          text "© 2011 "
+          a href: 'http://twitter.com/statikfx/', -> 'Rob Shaw'
+          text ' and ' 
+          a href: 'http://twitter.com/chandlerkent/', -> 'Chandler Kent'
     script src: '/js/app.js'
         
