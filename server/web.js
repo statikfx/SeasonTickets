@@ -132,7 +132,6 @@ app.namespace("/admin", function() {
       request: []
     };
     
-    console.log(seat);
     
     db.save(seat, function(err, doc) {
       if (err || doc.error) {
@@ -141,7 +140,6 @@ app.namespace("/admin", function() {
       }
       
       seat = doc;
-      console.log(doc);
       
       db.get(req.body.gameId, function(err, game) {
         if (err || game.error) {

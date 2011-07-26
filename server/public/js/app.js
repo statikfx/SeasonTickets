@@ -12,18 +12,18 @@ $(function() {
   if (ADMIN) {
     $("a[href=#add-seat]").each(function() {
       $(this).click(function(evt) {
-        var add_seat = $("#add-seat");
-        add_seat.remove();
-        add_seat[0].reset();
+        var seat_editor = $("#seat-editor");
+        seat_editor.remove();
+        seat_editor[0].reset();
         
-        $(this).parent().parent().append(add_seat);
-        add_seat.removeClass("hidden");
+        $(this).parent().parent().after(seat_editor);
+        seat_editor.removeClass("hidden");
         
         var gameId = $(this).parent().parent().attr("id");
-        $("#add-seat-game-id").val(gameId);
+        $("#seat-editor-game-id").val(gameId);
         
-        $("#add-seat-cancel").click(function(evt) {
-          $("#add-seat").addClass("hidden");
+        $("#seat-editor-cancel").click(function(evt) {
+          seat_editor.addClass("hidden");
           evt.preventDefault();
         });
         

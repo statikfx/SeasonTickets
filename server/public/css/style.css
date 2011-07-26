@@ -67,6 +67,44 @@ a, a:visited
   text-align: right;
 }
 
+#seat-editor label
+{
+  display: block;
+  font-weight: bold;
+  text-align: right;
+  width: 100px;
+  float: left;
+  margin: 5px 0 0 0;
+}
+
+#seat-editor input[type="text"]
+{
+  margin: 5px 0 0 10px;
+  width: 100px;
+}
+
+#seat-editor a
+{
+  font-size: 10px;
+  color: blue;
+  text-decoration: underline;
+}
+
+#seat-editor .buttons
+{
+  text-align: right;
+  width: 218px;
+}
+/*#seat-editor input
+{
+  float: left;
+  font-size: 12px;
+  padding: 4px 2px;
+  border: solid 1px #aacfe4;
+  width: 200px;
+  margin: 2px 0 20px 10px;
+}*/
+
 .hidden
 {
   display: none;
