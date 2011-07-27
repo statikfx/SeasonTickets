@@ -1,3 +1,0 @@
-p ->
-  a href: "/", -> "Games List"
-  " -> Game View [#{@game._id}]" 
