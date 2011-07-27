@@ -25,11 +25,11 @@
                 a(href='#add-seat') Add Seat
               li.approve-reject
                 - if (game.status !== "approved")
-                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')") approve
+                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')}") approve
                 - if (game.status !== "approved" && game.status !== "rejected")
                   |  | 
                 - if (game.status !== "rejected")
-                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')") reject
+                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
           - game = games[++i];
           - date = new Date(game && game.date);
           - next_month = date.getMonth();
