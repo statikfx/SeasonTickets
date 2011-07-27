@@ -13,27 +13,62 @@ $(function() {
     $(this).parent().children(".game").toggleClass("hidden");
   });
   
-  if (ADMIN) {
+  // is admin
+  if ($("body").hasClass("admin")) {
     // seat editor
-    $("a[href=#add-seat]").each(function() {
-      $(this).click(function(evt) {
-        var seat_editor = $("#seat-editor");
-        seat_editor.remove();
-        seat_editor[0].reset();
-        
-        $(this).parent().parent().after(seat_editor);
-        seat_editor.removeClass("hidden");
-        
-        var gameId = $(this).parent().parent().attr("id");
-        $("#seat-editor-game-id").val(gameId);
-        
-        $("#seat-editor-cancel").click(function(evt) {
-          seat_editor.addClass("hidden");
-          evt.preventDefault();
-        });
-        
-        evt.preventDefault();
+    $("a[href=#add-seat]").live("click", function(evt) {
+      var seat_editor = $("#seat-editor");
+      seat_editor.remove();
+      seat_editor[0].reset();
+      
+      $(this).parent().parent().after(seat_editor);
+      seat_editor.removeClass("hidden");
+      
+      var gameId = $(this).parent().parent().attr("id");
+      seat_editor.attr("action", "/api/game/" + gameId + "/seat/");
+      
+      evt.preventDefault();
+    });
+    
+    // cancel form
+    $("#seat-editor-cancel").live("click", function(evt) {
+      $("#seat-editor").addClass("hidden");
+      evt.preventDefault();
+    });
+    
+    // make form submission asynchronous
+    $("#seat-editor").live("submit", function(evt) {
+      var that = $(this);
+
+      var url = $(this).attr("action");
+      var type = $(this).attr("method");
+      var data = $(this).serialize();
+      
+      var submit = $("#seat-editor input[type=submit]");
+      var previousTitle = submit.val();
+      submit.attr("disabled", true);
+      submit.val("Working...");
+      
+      var reset = function() {
+        submit.attr("disabled", false);
+        submit.val(previousTitle);
+      };
+      
+      $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        success: function() {
+          reset();
+          that.addClass("hidden");
+        },
+        error: function() {
+          reset();
+          alert("Whoops. There was a problem adding the seat.");
+        }
       });
+      
+      evt.preventDefault();
     });
     
     // hide all months before today
@@ -51,6 +86,46 @@ $(function() {
         $(this).children(".series").addClass("hidden");
         $(this).children("h1").addClass("hiding");
       }
-    })
+    });
+    
+    // ajaxyify approval/rejection links
+    $("a.approve").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+      console.log(gameId);
+      
+      var url = "/api/game/" + gameId + "/approve/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          alert("SUCCESS");
+        },
+        error: function() {
+          alert("Whoops. There was a problem approving the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    $("a.reject").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+      
+      var url = "/api/game/" + gameId + "/reject/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          alert("SUCCESS");
+        },
+        error: function() {
+          alert("Whoops. There was a problem rejecting the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
   }
 });

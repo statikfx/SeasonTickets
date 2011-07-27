@@ -2,13 +2,10 @@ doctype html
 html
   head
     meta(charset='utf-8')
-    - if (page.title) 
-      title= site.title + ' | ' + page.title
-    - else
-      title= site.title
+    title #{site.title + ((admin && " | Admin") || "") + ((page.title && " | " + page.title) || "")}
     link(rel='stylesheet', href='/css/style.css')
     script(src='/js/jquery-1.6.2.min.js')
-  body
+  body(class="#{(admin && 'admin') || ''}")
     #wrapper
       #container
         #header
@@ -30,4 +27,4 @@ html
         |  and  
         a(href='http://twitter.com/chandlerkent/') Chandler Kent
     script(src='/js/app.js')
-  
+

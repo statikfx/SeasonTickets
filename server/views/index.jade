@@ -25,18 +25,17 @@
                 a(href='#add-seat') Add Seat
               li.approve-reject
                 - if (game.status !== "approved")
-                  a(href="#{path}/approve/#{game._id}") approve
+                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')") approve
                 - if (game.status !== "approved" && game.status !== "rejected")
                   |  | 
                 - if (game.status !== "rejected")
-                  a(href="#{path}/reject/#{game._id}") reject
+                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')") reject
           - game = games[++i];
           - date = new Date(game && game.date);
           - next_month = date.getMonth();
         
 - if (admin)
-  form#seat-editor.hidden(method='POST', action='#{helpers.urlJoin(@path, "seat/")')
-    input#seat-editor-game-id(type='hidden', name='gameId')
+  form#seat-editor.hidden(method='POST', action='#')
     div
       label(for='section') Section #
       input(type='text', name='section')
@@ -53,6 +52,3 @@
     .buttons
       a#seat-editor-cancel(href='#cancel') Cancel
       input(type='submit', value='Add Seat')
-
-script
-  var ADMIN = #{admin};

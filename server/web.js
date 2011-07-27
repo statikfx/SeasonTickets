@@ -7,6 +7,7 @@ var expressNamespace = require("express-namespace");
 var CONFIG = require("./config");
 var helpers = require("./helpers");
 var db = require("./db/db")();
+var api = require("./api");
 
 // create server
 var app = express.createServer();
@@ -30,24 +31,56 @@ app.configure(function() {
 });
 
 // homepage
-app.get("/", function(req, res) {
-  var view_obj = {
-    startkey: helpers.dateToCouchString(helpers.yesterday())
-  };
-  db.view("games", "approved", view_obj, function(err, docs) {
-    var ctx = helpers.buildPageContext(req, {
-      games: helpers.cleanUpCouchResults(docs.rows)
+app.get("/?", function(req, res) {
+  api.game.list(function(result) {
+    result.games = result.games.filter(function(game) {
+      return (game.status === "approved");
     });
-    res.render("index", ctx); 
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
+// admin
+app.get("/admin/?", function(req, res) {
+  api.game.list(function(result) {
+    var ctx = helpers.buildPageContext(req, result, {
+      admin: true
+    });
+    res.render("index", ctx);
+  });
+});
+
+app.get("/admin/game/:gameId/approve/?", function(req, res) {    
+  api.game.get(req.params.gameId, function(result) {
+    if (result.error) {
+      res.end(JSON.stringify(result));
+    } else {
+      result.game.status = "approved";
+      api.game.update(result.game, function(result) {
+        res.redirect(req.headers.referer || "/admin");
+      });
+    }
+  });
+});
+
+app.get("/admin/game/:gameId/reject/?", function(req, res) {
+  api.game.get(req.params.gameId, function(result) {
+    if (result.error) {
+      res.end(JSON.stringify(result));
+    } else {
+      result.game.status = "rejected";
+      api.game.update(result.game, function(result) {
+        res.redirect(req.headers.referer || "/admin");
+      });
+    }
   });
 });
 
 // game
 app.get("/game/:gameId/?", function(req, res) {
-  db.get(req.params.gameId, function(err, doc) {
-    var ctx = helpers.buildPageContext(req, {
-      game: doc
-    });
+  api.game.get(req.params.gameId, function(result) {
+    var ctx = helpers.buildPageContext(req, result);
     res.render("game", ctx);
   });
 });
@@ -68,86 +101,67 @@ app.get("/about/?", function(req, res) {
   res.render("about", ctx);
 });
 
-// admin pages
-app.namespace("/admin", function() {
+app.namespace("/api", function() {
   
-  app.get("/", function(req, res) {
-    db.view("games", "all_by_date", function(err, docs) {
-      var ctx = helpers.buildPageContext(req, {
-        games: helpers.cleanUpCouchResults(docs.rows),
-        page: {
-          title: "Admin"
-        },
-        admin: true
-      });
-      res.render("index", ctx); 
+  app.get("/game/?", function(req, res) {
+    api.game.list(function(result) {
+      res.end(JSON.stringify(result));
     });
   });
   
-  app.get("/reject/:gameId/?", function(req, res) {
-    var obj = {
-      "_id": req.params.gameId,
-      "status": "rejected"
-    };
-    
-    db.save(obj, function(err, doc) {
-      if (err || doc.error) {
-        console.log(err || doc.error);
-        return;
-      }
-      
-      console.log("REJECTED " + doc._id);
-      res.redirect("/admin");
+  app.get("/game/:gameId/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      res.end(JSON.stringify(result));
     });
   });
   
-  app.get("/approve/:gameId/?", function(req, res) {
-    var obj = {
-      "_id": req.params.gameId,
-      "status": "approved"
-    };
-    
-    db.save(obj, function(err, doc) {
-      if (err || doc.error) {
-        console.log(err || doc.error);
-        return;
+  app.post("/game/:gameId/approve/?", function(req, res) {    
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.status = "approved";
+        api.game.update(result.game, function(result) {
+          res.end(JSON.stringify(result));
+        });
       }
-      
-      console.log("APPROVED " + doc._id);
-      res.redirect("/admin");
+    });
+  });
+
+  app.post("/game/:gameId/reject/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.status = "rejected";
+        api.game.update(result.game, function(result) {
+          res.end(JSON.stringify(result));
+        });
+      }
     });
   });
   
-  app.post("/seat/?", function(req, res) {    
-    var seat = {
-      section: req.body.section,
-      row: req.body.row,
-      seat: req.body.seat,
-      price: req.body.price,
-      status: "open",
-      requests: []
-    };
-    
-      
-    db.get(req.body.gameId, function(err, game) {
-      if (err || game.error) {
-        console.log(err);
-        return;
-      }
-      
-      game.seats.push(seat);
-      db.save(game, function(err, doc) {
-        if (err || doc.error) {
-          console.log(err);
-          return;
-        }
+  app.post("/game/:gameId/seat/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        var seat = {};
+        seat.section = req.body.section;
+        seat.row = req.body.row;
+        seat.seat = req.body.seat;
+        seat.price = req.body.price;
+        seat.requests = [];
+        console.log(seat);
+        result.game.seats.push(seat);
         
-        console.log("SEAT ADDED " + doc._id);
-        res.redirect("/admin");
-      });
+        api.game.update(result.game, function(result) {
+          res.end(JSON.stringify(result));
+        });
+      }
     });
   });
-  
+
 });
 
 // start up server on given port
