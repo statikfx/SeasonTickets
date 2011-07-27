@@ -102,15 +102,6 @@ a, a:visited
   text-align: right;
   width: 218px;
 }
-/*#seat-editor input
-{
-  float: left;
-  font-size: 12px;
-  padding: 4px 2px;
-  border: solid 1px #aacfe4;
-  width: 200px;
-  margin: 2px 0 20px 10px;
-}*/
 
 .hidden
 {
@@ -160,17 +151,17 @@ a, a:visited
   list-style-type: none;
 }
 
-.game.pending
+.admin .game.pending
 {
   background: #ff7f00;
 }
 
-.game.rejected
+.admin .game.rejected
 {
   background: #ffb7c6;
 }
 
-.game.approved
+.admin .game.approved
 {
   background: #c0ff8f;
 }

@@ -12,7 +12,7 @@
       .series
         h1= opponent
         - while (game && opponent === game.opponent)
-          ul.game(id="#{game._id}")
+          ul.game(id="#{game._id}", class="#{game.status}")
             li.date
               = helpers.getDayOfDate(date);
             li.time
