@@ -1,4 +1,4 @@
-// hold global configuration options
+// reads global configuration options
 var PATH = require("path");
 
 var CONFIG = module.exports = {
