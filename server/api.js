@@ -6,8 +6,8 @@ var create
 var api = module.exports = {
   createResponse: function(err, data) {
     var response = {};
-    if (err || data.error) {
-      response.error = (err && err.mesage) || data.error;
+    if (err || (data && data.error)) {
+      response.error = (err && err.mesage) || (data && data.error) || "UNKNOWN ERROR";
     }
     
     return response;

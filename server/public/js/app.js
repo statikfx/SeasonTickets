@@ -15,6 +15,15 @@ $(function() {
   
   // is admin
   if ($("body").hasClass("admin")) {
+    var reloadGameById = function(gameId) {
+      $.ajax({
+        url: "/admin/game/" + gameId,
+        success: function(result) {
+          $("#" + gameId).replaceWith(result);
+        }
+      });
+    };
+    
     // seat editor
     $("a[href=#add-seat]").live("click", function(evt) {
       var seat_editor = $("#seat-editor");
@@ -25,7 +34,7 @@ $(function() {
       seat_editor.removeClass("hidden");
       
       var gameId = $(this).parent().parent().attr("id");
-      seat_editor.attr("action", "/api/game/" + gameId + "/seat/");
+      seat_editor.data("gameId", gameId);
       
       evt.preventDefault();
     });
@@ -39,8 +48,9 @@ $(function() {
     // make form submission asynchronous
     $("#seat-editor").live("submit", function(evt) {
       var that = $(this);
-
-      var url = $(this).attr("action");
+      
+      var gameId = $(this).data("gameId");
+      var url = "/api/game/" + gameId + "/seat/";
       var type = $(this).attr("method");
       var data = $(this).serialize();
       
@@ -61,6 +71,7 @@ $(function() {
         success: function() {
           reset();
           that.addClass("hidden");
+          reloadGameById(gameId);
         },
         error: function() {
           reset();
@@ -92,14 +103,13 @@ $(function() {
     $("a.approve").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
       var gameId = gameEl.attr("id");
-      console.log(gameId);
       
       var url = "/api/game/" + gameId + "/approve/";
       $.ajax({
         url: url,
         type: "POST",
         success: function() {
-          alert("SUCCESS");
+          reloadGameById(gameId);
         },
         error: function() {
           alert("Whoops. There was a problem approving the game.");
@@ -118,7 +128,7 @@ $(function() {
         url: url,
         type: "POST",
         success: function() {
-          alert("SUCCESS");
+          reloadGameById(gameId);
         },
         error: function() {
           alert("Whoops. There was a problem rejecting the game.");

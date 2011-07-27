@@ -51,6 +51,16 @@ app.get("/admin/?", function(req, res) {
   });
 });
 
+app.get("/admin/game/:gameId/?", function(req, res) {
+  api.game.get(req.params.gameId, function(result) {
+    var ctx = helpers.buildPageContext(req, result, {
+      admin: true,
+      layout: false
+    });
+    res.render("partials/game", ctx);
+  });
+});
+
 app.get("/admin/game/:gameId/approve/?", function(req, res) {    
   api.game.get(req.params.gameId, function(result) {
     if (result.error) {

@@ -1,6 +1,5 @@
 - var i = 0;
 - var game = games[i];
-
 - while (game)
   - var date = new Date(game.date);
   - var month = next_month = date.getMonth();
@@ -12,24 +11,7 @@
       .series
         h1= opponent
         - while (game && opponent === game.opponent)
-          ul.game(id="#{game._id}", class="#{game.status}")
-            li.date
-              = helpers.getDayOfDate(date);
-            li.time
-              = game.time;
-            - each seat in game.seats
-              li.seat
-                | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
-            - if (admin)
-              li.seat
-                a(href='#add-seat') Add Seat
-              li.approve-reject
-                - if (game.status !== "approved")
-                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')}") approve
-                - if (game.status !== "approved" && game.status !== "rejected")
-                  |  | 
-                - if (game.status !== "rejected")
-                  a(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
+          != partial('partials/game', { game: game })
           - game = games[++i];
           - date = new Date(game && game.date);
           - next_month = date.getMonth();
@@ -52,3 +34,4 @@
     .buttons
       a#seat-editor-cancel(href='#cancel') Cancel
       input(type='submit', value='Add Seat')
+    
