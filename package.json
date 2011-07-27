@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "2.4.3",
-    "coffeekup": "0.2.3",
+    "jade": "0.13.0",
     "csv": "0.0.9",
     "cron": "0.1.2",
     "optimist": "0.2.6",
