@@ -11,6 +11,7 @@ module.exports = {
     ctx.site = CONFIG.SITE;
     ctx.path = URL.parse(req.url).pathname;
     ctx.helpers = view_helpers;
+    ctx.admin = false;
     
     for (var i = 1; i < args.length; i++) {
       var arg = args[i];
@@ -23,7 +24,7 @@ module.exports = {
     
     ctx.page = ctx.page || {};
     
-    return { context: ctx };
+    return { locals: ctx };
   },
   
   dateToCouchString: function(date) {

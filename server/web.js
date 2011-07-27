@@ -4,7 +4,6 @@ var SYS = require("sys");
 // user reqs.
 var express = require("express");
 var expressNamespace = require("express-namespace");
-var coffeekup = require("coffeekup");
 var CONFIG = require("./config");
 var helpers = require("./helpers");
 var db = require("./db/db")();
@@ -16,8 +15,7 @@ var app = express.createServer();
 app.configure(function() {
   // view rendering config
   app.set("views", PATH.join(CONFIG.WEBROOT, "views"));
-  app.register(".coffee", coffeekup);
-  app.set("view engine", "coffeekup");
+  app.set("view engine", "jade");
   app.set("view options", {
     layout: true
   });

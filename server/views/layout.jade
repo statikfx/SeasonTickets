@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    - if (page.title) 
+      title= site.title + ' | ' + page.title
+    - else
+      title= site.title
+    link(rel='stylesheet', href='/css/style.css')
+    script(src='/js/jquery-1.6.2.min.js')
+  body
+    #wrapper
+      #container
+        #header
+          ul
+            li.title
+              - if (path === "/")
+                | 2011 Season Tickets
+              - else  
+                a(href='/') 2011 Season Tickets
+            li
+              a(href='/about/') About
+            li
+              a(href='http://github.com/statikfx/SeasonTickets') GitHub
+        != body
+    #footer
+      span
+        | © 2011 
+        a(href='http://twitter.com/statikfx/') Rob Shaw
+        |  and  
+        a(href='http://twitter.com/chandlerkent/') Chandler Kent
+    script(src='/js/app.js')
+  

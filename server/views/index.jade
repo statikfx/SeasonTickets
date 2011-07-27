@@ -1,0 +1,58 @@
+- var i = 0;
+- var game = games[i];
+
+- while (game)
+  - var date = new Date(game.date);
+  - var month = next_month = date.getMonth();
+  - var month_name = helpers.getMonthOfDate(date);
+  div.month(id='#{month_name}')
+    h1 #{month_name}
+    - while (game && month === next_month)
+      - var opponent = game.opponent;
+      .series
+        h1= opponent
+        - while (game && opponent === game.opponent)
+          ul.game(id="#{game._id}")
+            li.date
+              = helpers.getDayOfDate(date);
+            li.time
+              = game.time;
+            - each seat in game.seats
+              li.seat
+                | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+            - if (admin)
+              li.seat
+                a(href='#add-seat') Add Seat
+              li.approve-reject
+                - if (game.status !== "approved")
+                  a(href="#{path}/approve/#{game._id}") approve
+                - if (game.status !== "approved" && game.status !== "rejected")
+                  |  | 
+                - if (game.status !== "rejected")
+                  a(href="#{path}/reject/#{game._id}") reject
+          - game = games[++i];
+          - date = new Date(game && game.date);
+          - next_month = date.getMonth();
+        
+- if (admin)
+  form#seat-editor.hidden(method='POST', action='#{helpers.urlJoin(@path, "seat/")')
+    input#seat-editor-game-id(type='hidden', name='gameId')
+    div
+      label(for='section') Section #
+      input(type='text', name='section')
+    div
+      label(for='row') Row #
+      input(type='text', name='row')
+    div
+      label(for='seat') Seat #
+      input(type='text', name='seat')
+    div
+      label(for='price') Price
+      input(type='text', name='price')
+
+    .buttons
+      a#seat-editor-cancel(href='#cancel') Cancel
+      input(type='submit', value='Add Seat')
+
+script
+  var ADMIN = #{admin};
