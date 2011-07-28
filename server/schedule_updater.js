@@ -13,24 +13,6 @@ var main = exports.main = function(fn) {
     });
   };
   
-  var process = function(line) {
-    var game = {
-      date: line["START_DATE"],
-      time: line["START_TIME"],
-      opponent: line["SUBJECT"].split(" at ")[0],
-      location: line["LOCATION"],
-      type: "game",
-      status: "pending",
-      seats: []
-    };
-    
-    return game;
-  };
-  
-  var filter = function(game) {
-    return (game.location.toLowerCase() === "wrigley field");
-  };
-  
   var options = {
     host: "mlb.mlb.com",
     path: "/soa/ical/schedule.csv?home_team_id=112&season=2011",
@@ -43,7 +25,7 @@ var main = exports.main = function(fn) {
       data += chunk;
     });
     res.on("end", function() {
-      parseCSV(data, process, filter, callback);
+      parseCSV(data, callback);
     });
     res.on("error", function(err) {
       callback(err);
@@ -51,20 +33,33 @@ var main = exports.main = function(fn) {
   });
 };
 
-var parseCSV = exports.parse = function(data, process, filter, callback) {
+var parseCSV = exports.parse = function(data, callback) {
   var games = [];
 
   var csv = CSV();
   csv.from(data, { columns: true });
   csv.transform(function(line) {
-    var game = process(line);
-    return (filter(game) ? game : null);
+    var game = {
+      date: line["START_DATE"],
+      time: line["START_TIME"],
+      opponent: line["SUBJECT"].split(" at ")[0],
+      location: line["LOCATION"],
+      type: "game",
+      status: "pending",
+      seats: []
+    };
+    
+    if (game.location.toLowerCase() !== "wrigley field") {
+      return null;
+    }
+    
+    return game;
   });
   csv.on("data", function(game) {
     games.push(game);
   });
   csv.on("end", function() {
-    callback(null, games.filter(filter));
+    callback(null, games);
   });
   csv.on("error", function(err) {
     callback(err);
