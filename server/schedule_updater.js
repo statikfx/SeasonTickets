@@ -13,21 +13,22 @@ var main = exports.main = function(fn) {
     });
   };
   
-  var filter = function(line, index) {
-    if (index === 0) return false;
-    
-    var date = line[0];
-    var time = line[1];
-    var opponent = line[3].split(" ")[0];
-    var location = line[4];
-    if (location.toLowerCase() !== "wrigley field") return false;
-  
-    return {
-      date: date,
-      time: time,
-      opponent: opponent,
-      location: location
+  var process = function(line) {
+    var game = {
+      date: line["START_DATE"],
+      time: line["START_TIME"],
+      opponent: line["SUBJECT"].split(" at ")[0],
+      location: line["LOCATION"],
+      type: "game",
+      status: "pending",
+      seats: []
     };
+    
+    return game;
+  };
+  
+  var filter = function(game) {
+    return (game.location.toLowerCase() === "wrigley field");
   };
   
   var options = {
@@ -42,38 +43,43 @@ var main = exports.main = function(fn) {
       data += chunk;
     });
     res.on("end", function() {
-      parseCSV(data, filter, callback);
+      parseCSV(data, process, filter, callback);
+    });
+    res.on("error", function(err) {
+      callback(err);
     });
   });
 };
 
-var parseCSV = exports.parse = function(data, filter, callback) {
+var parseCSV = exports.parse = function(data, process, filter, callback) {
   var games = [];
 
   var csv = CSV();
-  csv.from(data);
-  csv.on("data", function(line, index) {
-    var game = filter(line, index);
-    if (game) {
-      games.push(game);
-    }
+  csv.from(data, { columns: true });
+  csv.transform(function(line) {
+    var game = process(line);
+    return (filter(game) ? game : null);
+  });
+  csv.on("data", function(game) {
+    games.push(game);
   });
   csv.on("end", function() {
-    callback(null, games);
+    callback(null, games.filter(filter));
+  });
+  csv.on("error", function(err) {
+    callback(err);
   });
 };
 
-var processGames = function(err, games, callback) {
-  for (var i = 0; i < games.length; i++) {
-    games[i].status = "pending";
-    games[i].type = "game";
-    games[i].seats = [];
+var loadGames = function(err, games, callback) {
+  if (err) {
+    throw err;
   }
+  
   db.load(games, function(err, result) {
     if (err) {
       throw err;
     }
-    console.log(result);
     callback();
   });
 };
@@ -100,11 +106,11 @@ if (require.main === module) {
   
   if (!argv.s) {
     // no schedule argument, run and exit
-    main(processGames);
+    main(loadGames);
   } else {
     // schedule the job to run with given time string
     new require("cron").CronJob(argv.s, function() {
-      main(processGames);
+      main(loadGames);
     });
   }
 }
