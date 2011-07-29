@@ -74,19 +74,20 @@ a, a:visited
   font-size: 11px;
 }
 
+#seat-editor
+{
+  padding: 2px 50px;
+}
+
 #seat-editor label
 {
+  font-size: 12px;
   display: block;
-  font-weight: bold;
-  text-align: right;
-  width: 100px;
-  float: left;
-  margin: 5px 0 0 0;
+  margin: 2px 0 0 0;
 }
 
 #seat-editor input[type="text"]
 {
-  margin: 5px 0 0 10px;
   width: 100px;
 }
 
@@ -95,12 +96,6 @@ a, a:visited
   font-size: 10px;
   color: blue;
   text-decoration: underline;
-}
-
-#seat-editor .buttons
-{
-  text-align: right;
-  width: 218px;
 }
 
 .hidden
