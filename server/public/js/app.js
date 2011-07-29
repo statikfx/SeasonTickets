@@ -27,7 +27,7 @@ $(function() {
     // seat editor
     $("a[href=#add-seat]").live("click", function(evt) {
       var seat_editor = $("#seat-editor");
-      seat_editor.remove();
+      seat_editor.detach();
       seat_editor[0].reset();
       
       $(this).parent().parent().after(seat_editor);
@@ -82,20 +82,33 @@ $(function() {
       evt.preventDefault();
     });
     
-    // hide all months before today
-    var MONTHS = {
-      "January": 0, "February": 1, "March": 2,
-      "April": 3, "May": 4, "June": 5, "July": 6,
-      "August": 7, "September": 8, "October": 9,
-      "November": 10, "December": 11
-    };
+    // hide all months/series before today
     var currentMonth = (new Date()).getMonth();
-    $(".month").each(function() {
-      var month = $(this).attr("id");
-      month = MONTHS[month];
-      if (month < currentMonth) {
-        $(this).children(".series").addClass("hidden");
-        $(this).children("h1").addClass("hiding");
+    var currentDate = (new Date()).getDate();
+    $(".month > h1.hiding:last").each(function() {
+      var month = $(this).parent().next();
+      var shouldCollapseMonth = false;
+      var allSeriesAreCollapsed = true;
+      month.children(".series").each(function() {
+        var allGamesBeforeToday = true;
+        $(this).children(".game").each(function() {
+          var date = parseInt($(this).children("li.date").text(), 10);
+          if (date >= currentDate) {
+            allGamesBeforeToday = false;
+          }
+        });
+        if (allGamesBeforeToday) {
+          $(this).children(".game").addClass("hidden");
+          $(this).children("h1").addClass("hiding");
+        } else {
+          allSeriesAreCollapsed = false;
+        }
+      });
+      shouldCollapseMonth = allSeriesAreCollapsed;
+      
+      if (shouldCollapseMonth) {
+        month.children(".series").addClass("hidden");
+        month.children("h1").addClass("hiding");
       }
     });
     

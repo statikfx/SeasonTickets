@@ -33,8 +33,9 @@ app.configure(function() {
 // homepage
 app.get("/?", function(req, res) {
   api.game.list(function(result) {
+    var month = (new Date()).getMonth();
     result.games = result.games.filter(function(game) {
-      return (game.status === "approved");
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
     });
     var ctx = helpers.buildPageContext(req, result);
     res.render("index", ctx);
