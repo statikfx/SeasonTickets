@@ -9,6 +9,7 @@ ul.game(id="#{game._id}", class="#{game.status}")
   - if (admin)
     li.seat
       a(href='#add-seat') Add Seat
+      |  |
     li.approve-reject
       - if (game.status !== "approved")
         a.approve(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')}") approve
