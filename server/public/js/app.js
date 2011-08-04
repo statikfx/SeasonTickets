@@ -13,6 +13,10 @@ $(function() {
     $(this).parent().children(".game").toggleClass("hidden");
   });
   
+  $("#filterselect").click(function() {
+    alert(this.value);
+  });
+  
   // is admin
   if ($("body").hasClass("admin")) {
     var reloadGameById = function(gameId) {

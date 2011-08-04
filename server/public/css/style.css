@@ -17,6 +17,10 @@ a, a:visited
   text-decoration: none;
 }
 
+.dropdown
+{
+}
+
 #wrapper
 {
   border: 1px solid #cecece;
@@ -48,8 +52,10 @@ a, a:visited
 
 #nav
 {
-  width: 950px;
-  margin: 0 auto;
+  width: 500px;
+  margin-left: 25px;
+  float: left;
+  /*margin: 0 auto;*/
 }
 
 #nav ul
@@ -73,6 +79,19 @@ a, a:visited
 #nav ul li a
 {
   font-size: 12px;
+}
+
+#filter
+{
+  float: right;
+  text-align: right;
+  width:450px;
+  margin-right: 25px;
+}
+
+.clear
+{
+  clear:both;
 }
 
 #footer
