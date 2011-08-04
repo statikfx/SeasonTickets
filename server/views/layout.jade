@@ -19,14 +19,6 @@ html
               a(href='/about/') About
             li
               a(href='http://github.com/statikfx/SeasonTickets') GitHub
-        - if (path !== "/")
-          #trail
-            ul
-              li
-                a(href='/') Home 
-                |  >
-              li
-                | #{page.title}
         != body
     #footer
       span
