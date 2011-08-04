@@ -7,7 +7,7 @@ var db = module.exports = function() {
   var url = CONFIG.DB.URL;
   var database = CONFIG.DB.NAME;
   
-  if (!url || url === "") {
+  if (!url) {
     throw "No DB URL. Check your environment variables.";
   }
   
