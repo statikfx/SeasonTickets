@@ -5,7 +5,11 @@ var CONFIG = require("../config");
 
 var db = module.exports = function() {
   var url = CONFIG.DB.URL;
-  var database = CONFIG.DB.NAME
+  var database = CONFIG.DB.NAME;
+  
+  if (!url || url === "") {
+    throw "No DB URL. Check your environment variables.";
+  }
   
   if (database.indexOf("/") !== 0) {
     database = "/" + database;
