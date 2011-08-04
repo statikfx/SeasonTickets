@@ -7,8 +7,8 @@ html
     script(src='/js/jquery-1.6.2.min.js')
   body(class="#{(admin && 'admin') || ''}")
     #wrapper
-      #container
-        #header
+      #header
+        #nav
           ul
             li.title
               - if (path === "/")
@@ -19,6 +19,7 @@ html
               a(href='/about/') About
             li
               a(href='http://github.com/statikfx/SeasonTickets') GitHub
+      #container
         - if (path !== "/")
           #trail
             ul
