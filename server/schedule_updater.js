@@ -39,8 +39,11 @@ var parseCSV = exports.parse = function(data, callback) {
   var csv = CSV();
   csv.from(data, { columns: true });
   csv.transform(function(line) {
+    var date = line["START_DATE"].split("/");
+    date[date.length - 1] = "20" + date[date.length - 1];
+    date = date.join("/");
     var game = {
-      date: line["START_DATE"],
+      date: date,
       time: line["START_TIME"],
       opponent: line["SUBJECT"].split(" at ")[0],
       location: line["LOCATION"],
