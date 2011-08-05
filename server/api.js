@@ -47,6 +47,28 @@ var api = module.exports = {
       });
     },
     
+    listUnder30: function(callback) {
+      db.view("games", "under30", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
+    listUnder50: function(callback) {
+      db.view("games", "under50", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
     get: function(id, callback) {
       db.get(id, function(err, game) {
         var response = api.createResponse(err, game);

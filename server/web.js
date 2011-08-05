@@ -66,6 +66,30 @@ app.get("/views/weekends/?", function(req, res) {
   });
 });
 
+//weekend view
+app.get("/views/u30/?", function(req, res) {
+  api.game.listUnder30(function(result) {
+    var month = (new Date()).getMonth();
+    result.games = result.games.filter(function(game) {
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+    });
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
+//weekend view
+app.get("/views/u50/?", function(req, res) {
+  api.game.listUnder50(function(result) {
+    var month = (new Date()).getMonth();
+    result.games = result.games.filter(function(game) {
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+    });
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
 // admin
 app.get("/admin/?", function(req, res) {
   api.game.list(function(result) {
