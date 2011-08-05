@@ -42,6 +42,30 @@ app.get("/?", function(req, res) {
   });
 });
 
+// nights view
+app.get("/views/nights/?", function(req, res) {
+  api.game.listByNights(function(result) {
+    var month = (new Date()).getMonth();
+    result.games = result.games.filter(function(game) {
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+    });
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
+//weekend view
+app.get("/views/weekends/?", function(req, res) {
+  api.game.listByWeekends(function(result) {
+    var month = (new Date()).getMonth();
+    result.games = result.games.filter(function(game) {
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+    });
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
 // admin
 app.get("/admin/?", function(req, res) {
   api.game.list(function(result) {

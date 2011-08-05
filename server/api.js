@@ -25,6 +25,28 @@ var api = module.exports = {
       });
     },
     
+    listByNights: function(callback) {
+      db.view("games", "nights", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
+    listByWeekends: function(callback) {
+      db.view("games", "weekends", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
     get: function(id, callback) {
       db.get(id, function(err, game) {
         var response = api.createResponse(err, game);
