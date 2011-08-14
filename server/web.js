@@ -49,8 +49,10 @@ app.get("/views/nights/?", function(req, res) {
     result.games = result.games.filter(function(game) {
       return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
     });
-    var ctx = helpers.buildPageContext(req, result);
-    res.render("index", ctx);
+    var ctx = helpers.buildPageContext(req, result, {
+      layout: false
+    });
+    res.render("partials/gamelist", ctx);
   });
 });
 
@@ -61,8 +63,10 @@ app.get("/views/weekends/?", function(req, res) {
     result.games = result.games.filter(function(game) {
       return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
     });
-    var ctx = helpers.buildPageContext(req, result);
-    res.render("index", ctx);
+    var ctx = helpers.buildPageContext(req, result, {
+      layout: false
+    });
+    res.render("partials/gamelist", ctx);
   });
 });
 
@@ -73,8 +77,10 @@ app.get("/views/u30/?", function(req, res) {
     result.games = result.games.filter(function(game) {
       return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
     });
-    var ctx = helpers.buildPageContext(req, result);
-    res.render("index", ctx);
+    var ctx = helpers.buildPageContext(req, result, {
+      layout: false
+    });
+    res.render("partials/gamelist", ctx);
   });
 });
 
@@ -85,8 +91,10 @@ app.get("/views/u50/?", function(req, res) {
     result.games = result.games.filter(function(game) {
       return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
     });
-    var ctx = helpers.buildPageContext(req, result);
-    res.render("index", ctx);
+    var ctx = helpers.buildPageContext(req, result, {
+      layout: false
+    });
+    res.render("partials/gamelist", ctx);
   });
 });
 

@@ -1,0 +1,20 @@
+// globals
+- var CURRENT_MONTH = (new Date()).getMonth();
+- var CURRENT_DATE = (new Date()).getDate();
+
+- var i = 0;
+- var game = games[i];
+- while (game)
+  - var date = new Date(game.date);
+  - var month = date.getMonth();
+  - var month_name = helpers.getMonthOfDate(date);
+  - var shouldHideMonth = (month < CURRENT_MONTH);
+  div.month(id='#{month_name}')
+    h1(class="#{(shouldHideMonth && 'hiding') || ''}") #{month_name}
+    - while (game && month === (new Date(game.date)).getMonth())
+      - var opponent = game.opponent;
+      .series(class="#{(shouldHideMonth && 'hidden') || ''}")
+        h1= opponent
+        - while (game && opponent === game.opponent)
+          != partial('partials/game', { game: game })
+          - game = games[++i];

@@ -14,7 +14,15 @@ $(function() {
   });
   
   $("#filterselect").click(function() {
-    alert(this.value);
+    $.ajax({
+        url: "/views/" + this.value + "/",
+        success: function(result) {
+          $("#container").html(result);
+        },
+        error: function(result) {
+          alert(result);
+        }
+      });
   });
   
   // is admin
