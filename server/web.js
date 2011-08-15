@@ -84,7 +84,7 @@ app.get("/views/weekends/?", function(req, res) {
   });
 });
 
-//weekend view
+//under30 view
 app.get("/views/u30/?", function(req, res) {
   api.game.listUnder30(function(result) {
     var month = (new Date()).getMonth();
@@ -98,7 +98,7 @@ app.get("/views/u30/?", function(req, res) {
   });
 });
 
-//weekend view
+//under50 view
 app.get("/views/u50/?", function(req, res) {
   api.game.listUnder50(function(result) {
     var month = (new Date()).getMonth();

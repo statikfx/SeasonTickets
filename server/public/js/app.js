@@ -1,5 +1,5 @@
 $(function() {
-  $(".month > h1").click(function() {
+  $(".month > h1").live("click", function() {
     // unhide and series
     $(this).parent().children(".series").children(".game").removeClass("hidden");
     $(this).parent().children(".series").children("h1").removeClass("hiding");
@@ -8,12 +8,12 @@ $(function() {
     $(this).parent().children(".series").toggleClass("hidden");
   });
   
-  $(".series > h1").click(function() {
+  $(".series > h1").live("click", function() {
     $(this).toggleClass("hiding");
     $(this).parent().children(".game").toggleClass("hidden");
   });
   
-  $("#filterselect").click(function() {
+  $("#filterselect").live("click", function() {
     $.ajax({
         url: "/views/" + this.value + "/",
         success: function(result) {
