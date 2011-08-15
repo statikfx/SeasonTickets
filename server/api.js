@@ -25,6 +25,17 @@ var api = module.exports = {
       });
     },
     
+    listByAvailability: function(callback) {
+      db.view("games", "available", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
     listByNights: function(callback) {
       db.view("games", "nights", function(err, result) {
         var response = api.createResponse(err, result);

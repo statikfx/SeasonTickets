@@ -56,6 +56,20 @@ app.get("/views/all/?", function(req, res) {
   });
 });
 
+// available view
+app.get("/views/available/?", function(req, res) {
+  api.game.listByAvailability(function(result) {
+    var month = (new Date()).getMonth();
+    result.games = result.games.filter(function(game) {
+      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+    });
+    var ctx = helpers.buildPageContext(req, result, {
+      layout: false
+    });
+    res.render("partials/gamelist", ctx);
+  });
+});
+
 // nights view
 app.get("/views/nights/?", function(req, res) {
   api.game.listByNights(function(result) {
