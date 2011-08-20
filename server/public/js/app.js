@@ -14,8 +14,13 @@ $(function() {
   });
   
   $("#filterselect").live("click", function() {
+    var addAdmin = "";
+    if (window.location.pathname.indexOf("admin") != -1)
+    {
+      addAdmin = "admin/";
+    }
     $.ajax({
-        url: "/views/" + this.value + "/",
+        url: "/views/" + this.value + "/" + addAdmin,
         success: function(result) {
           $("#container").html(result);
         },
