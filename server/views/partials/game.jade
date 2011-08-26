@@ -3,6 +3,9 @@ ul.game(id="#{game._id}", class="#{game.status}")
     = helpers.getDayOfDate(new Date(game.date));
   li.time
     = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time)) + " @ " + game.time;
+  - if (game.seats.length < 1)
+    li.seat
+      | No Seats Available
   - each seat in game.seats
     li.seat
       | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}

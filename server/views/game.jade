@@ -18,6 +18,10 @@ div.individual
     tr
       td
         | Seats:
-      td
-        - each seat in game.seats
-          | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+      - if (game.seats.length < 1)
+        td
+          | No Seats Available
+      - if (game.seats.length > 0)
+        td
+          - each seat in game.seats
+            | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
