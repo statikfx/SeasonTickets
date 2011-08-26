@@ -47,9 +47,27 @@ If you don't have the heroku gem, or haven't updated it in a while, you should:
     $ heroku version
       heroku-gem/2.3.6
 
-## Coffeescript
+## Environment Setup
 
-For express views, [coffeekup](https://github.com/mauricemach/coffeekup) is used. To get syntax highlighting in TextMate, just use the [CoffeeScript TextMate Bundle](https://github.com/jashkenas/coffee-script-tmbundle).
+Application expects an environment variable is setup pointing to the location of where CouchDB can be accessed. This is set by the following command:
+
+    $ export CUBS_DB='http://localhost:5984'
+    
+The application will throw an error on startup if this variable is not present.
+
+## Database Setup
+
+Once the database is up and running, you can utilize helper files to setup the database and the corresponding views that are needed.
+
+From command line, run the following inside your project directory:
+    
+    $ node servers/db/init.js
+
+That should create the database and setup the views that are under 'servers/db/views/'.
+
+## Jade
+
+For express views, [jade](https://github.com/visionmedia/jade) is used.
 
 # More information
 
