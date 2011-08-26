@@ -1,0 +1,23 @@
+div.individual
+  table
+    tr  
+      td
+        | Opponent:
+      td
+        = game.opponent;
+    tr
+      td
+        | Day Of Week:
+      td
+        = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time));
+    tr
+      td
+        | Time:
+      td
+        = game.time;
+    tr
+      td
+        | Seats:
+      td
+        - each seat in game.seats
+          | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}

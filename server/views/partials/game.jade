@@ -1,10 +1,8 @@
 ul.game(id="#{game._id}", class="#{game.status}")
   li.date
     = helpers.getDayOfDate(new Date(game.date));
-  li
-    = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time)) + " @";
   li.time
-    = game.time;
+    = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time)) + " @ " + game.time;
   - each seat in game.seats
     li.seat
       | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}

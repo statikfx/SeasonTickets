@@ -13,6 +13,11 @@ $(function() {
     $(this).parent().children(".game").toggleClass("hidden");
   });
   
+  $(".series > ul").live("click", function() {
+    var id = $(this).attr("id");
+    window.location.href = "/game/" + id + "/";
+  });
+  
   $("#filterselect").live("click", function() {
     var addAdmin = "";
     if (window.location.pathname.indexOf("admin") != -1)
