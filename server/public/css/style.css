@@ -30,6 +30,13 @@ a, a:visited
   background-color: #f9f9f9;
 }
 
+#header #wrap
+{
+  border-top: none;
+  margin: 0 auto;
+  width: 1000px;
+}
+
 #container
 {
   padding: 40px 20px 10px 20px;
@@ -41,7 +48,7 @@ a, a:visited
 {
   position: fixed;
   top: 0;
-  width: 1000px;
+  width: 100%;
   padding: 10px 0 5px 0;
   display: block;
   background: #e9e9e9;
