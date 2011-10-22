@@ -1,10 +1,13 @@
 ul.game(id="#{game._id}", class="#{game.status}")
   li.date
     = helpers.getDayOfDate(new Date(game.date));
-  li.time
+  li.day
     = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), true)
-    | <br />
+    | .
+  li.time
     = game.time
+  li.price
+    | $0.00
   - if (game.seats.length < 1)
     li.seat
       | No Seats Available

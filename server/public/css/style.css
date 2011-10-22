@@ -185,7 +185,7 @@ a, a:visited
 
 .game
 {
-  padding: 6px 10px;
+  /*padding: 6px 10px;*/
   list-style-type: none;
 }
 
@@ -208,6 +208,7 @@ a, a:visited
 {
   margin: 0 5px 0 0;
   float:left;
+  padding:4px;
 }
 
 .clear
@@ -215,15 +216,37 @@ a, a:visited
 
 .game .date
 {
-  padding: 4px;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
+}
+
+.game .day
+{
+  width:60px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
   border-right: 1px solid #d0d0d0;
 }
 
 .game .time
 {
-  width: 200px;
+  text-align: center;
+  padding-top: 8px;
+  width: 100px;
+  border-right: 1px solid #d0d0d0;
+}
+
+.game .price
+{
+  padding-top:8px;
+  width:50px;
+  border-right: 1px solid #d0d0d0;
+}
+
+.game .seat
+{
+  padding-top: 8px;
 }
 
 .individual
