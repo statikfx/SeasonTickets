@@ -22,3 +22,4 @@ ul.game(id="#{game._id}", class="#{game.status}")
         |  | 
       - if (game.status !== "rejected")
         a.reject(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
+  .clear
