@@ -11,9 +11,19 @@ ul.game(id="#{game._id}", class="#{game.status}")
   - if (game.seats.length < 1)
     li.seat
       | No Seats Available
+  - var section = 0;
+  - var row = 0;
   - each seat in game.seats
     li.seat
-      | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+      - if (section != seat.section)
+        | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+      - if (section == seat.section)
+        - if (row == seat.row)
+          | S.#{seat.seat} - $#{seat.price}
+        - if (row != seat.row)
+          | R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+    - section = seat.section;
+    - row = seat.row;
   - if (admin)
     li.seat
       a(href='#add-seat') Add Seat

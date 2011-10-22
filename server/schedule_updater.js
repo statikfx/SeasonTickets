@@ -49,6 +49,7 @@ var parseCSV = exports.parse = function(data, callback) {
       location: line["LOCATION"],
       type: "game",
       status: "pending",
+      price: "0.00",
       seats: []
     };
     
