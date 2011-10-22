@@ -34,8 +34,11 @@ app.configure(function() {
 app.get("/?", function(req, res) {
   api.game.list(function(result) {
     var month = (new Date()).getMonth();
+    var year = (new Date()).getYear();
+    
     result.games = result.games.filter(function(game) {
-      return ((game.status === "approved") && ((new Date(game.date).getMonth()) >= month));
+      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
+      return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
     var ctx = helpers.buildPageContext(req, result);
     res.render("index", ctx);
@@ -130,49 +133,52 @@ app.get("/views/weekends/:viewarea?", function(req, res) {
   });
 });
 
-// admin
-app.get("/admin/?", function(req, res) {
-  api.game.list(function(result) {
-    var ctx = helpers.buildPageContext(req, result, {
-      admin: true
-    });
-    res.render("index", ctx);
-  });
-});
+app.namespace("/admin", function() {
 
-app.get("/admin/game/:gameId/?", function(req, res) {
-  api.game.get(req.params.gameId, function(result) {
-    var ctx = helpers.buildPageContext(req, result, {
-      admin: true,
-      layout: false
-    });
-    res.render("partials/game", ctx);
-  });
-});
-
-app.get("/admin/game/:gameId/approve/?", function(req, res) {    
-  api.game.get(req.params.gameId, function(result) {
-    if (result.error) {
-      res.end(JSON.stringify(result));
-    } else {
-      result.game.status = "approved";
-      api.game.update(result.game, function(result) {
-        res.redirect(req.headers.referer || "/admin");
+  // admin
+  app.get("/?", function(req, res) {
+    api.game.list(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true
       });
-    }
+      res.render("index", ctx);
+    });
   });
-});
 
-app.get("/admin/game/:gameId/reject/?", function(req, res) {
-  api.game.get(req.params.gameId, function(result) {
-    if (result.error) {
-      res.end(JSON.stringify(result));
-    } else {
-      result.game.status = "rejected";
-      api.game.update(result.game, function(result) {
-        res.redirect(req.headers.referer || "/admin");
+  app.get("/game/:gameId/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true,
+        layout: false
       });
-    }
+      res.render("partials/game", ctx);
+    });
+  });
+
+  app.get("/game/:gameId/approve/?", function(req, res) {    
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.status = "approved";
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
+  });
+
+  app.get("/game/:gameId/reject/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.status = "rejected";
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
   });
 });
 

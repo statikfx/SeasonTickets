@@ -15,7 +15,7 @@ var main = exports.main = function(fn) {
   
   var options = {
     host: "mlb.mlb.com",
-    path: "/soa/ical/schedule.csv?home_team_id=112&season=2011",
+    path: "/soa/ical/schedule.csv?home_team_id=112&season=2012",
     port: 80
   };
 

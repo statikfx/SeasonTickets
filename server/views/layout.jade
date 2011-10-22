@@ -12,24 +12,9 @@ html
           ul
             li.title
               - if (path === "/")
-                | 2011 Season Tickets
+                | 2012 Season Tickets
               - else  
-                a(href='/') 2011 Season Tickets
-            li
-              a(href='/about/') About
-            li
-              a(href='http://github.com/statikfx/SeasonTickets') GitHub
-        - if (path === "/" || admin)
-          #filter
-            select#filterselect.dropdown
-              option(value="all")
-                | All
-              option(value="nights")
-                | Nights
-              option(value="weekends")
-                | Weekends
-              option(value="available")
-                | Available
+                a(href='/') 2012 Season Tickets
         .clear
     #wrapper
       #container

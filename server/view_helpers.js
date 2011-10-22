@@ -2,6 +2,7 @@ var PATH = require("path");
 
 var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novembter", "December"];
 var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var SHORTDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 module.exports = {
   getMonthOfDate: function(date) {
@@ -16,7 +17,9 @@ module.exports = {
     return day;
   },
   
-  getDayOfWeekOfDate: function(date) {
+  getDayOfWeekOfDate: function(date, shortName) {
+    if (shortName) return SHORTDAYS[date.getDay()];
+
     return DAYS[date.getDay()];
   },
   
