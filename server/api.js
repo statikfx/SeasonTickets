@@ -25,6 +25,17 @@ var api = module.exports = {
       });
     },
     
+    getByDate: function(date, callback) {
+      db.view("games", "all_by_date", { key: date }, function(err, game) {
+        var response = api.createResponse(err, game);
+        if (game && game.rows && game.rows.length > 0) {
+          response.game = game.rows[0].value;
+        }
+        
+        callback(response);
+      }); 
+    },
+    
     listByAvailability: function(callback) {
       db.view("games", "available", function(err, result) {
         var response = api.createResponse(err, result);

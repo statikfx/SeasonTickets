@@ -183,6 +183,14 @@ app.namespace("/admin", function() {
 });
 
 // game
+app.get("/game/:year/:month/:day/?", function(req, res) {
+  api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("game", ctx);
+  });
+});
+
+// game
 app.get("/game/:gameId/?", function(req, res) {
   api.game.get(req.params.gameId, function(result) {
     var ctx = helpers.buildPageContext(req, result);
@@ -219,7 +227,7 @@ app.namespace("/api", function() {
       res.end(JSON.stringify(result));
     });
   });
-  
+
   app.post("/game/:gameId/approve/?", function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
       if (result.error) {

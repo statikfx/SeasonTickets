@@ -1,7 +1,7 @@
 // globals
 - var CURRENT_MONTH = (new Date()).getMonth();
 - var CURRENT_DATE = (new Date()).getDate();
-- var CURRENT_YEAR = (new Date()).getYear();
+- var CURRENT_YEAR = (new Date()).getFullYear();
 
 - if (games.length < 1)
   div#content
@@ -12,7 +12,7 @@
 - while (game)
   - var date = new Date(game.date);
   - var month = date.getMonth();
-  - var year = date.getYear();
+  - var year = date.getFullYear();
   - var month_name = helpers.getMonthOfDate(date);
   - var shouldHideMonth = (year == CURRENT_YEAR) && (month < CURRENT_MONTH);
   div.month(id='#{month_name}')

@@ -23,5 +23,17 @@ module.exports = {
     return DAYS[date.getDay()];
   },
   
+  getDateForURL: function(date) {
+	var month = (new Date(date)).getMonth() + 1;
+    var day = (new Date(date)).getDate();
+    var year = (new Date(date)).getFullYear();
+    if (month < 10)
+      month = "0" + month;
+    if (day < 10)
+      day = "0" + day;
+      
+    return year + '/' + month + '/' + day;
+  },
+  
   urlJoin: PATH.join
 };
