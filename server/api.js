@@ -36,6 +36,17 @@ var api = module.exports = {
       }); 
     },
     
+    listByOpponent: function(opponent, callback) {
+      db.view("games", "all_by_opponent", { key: opponent }, function(err, game) {
+        var response = api.createResponse(err, game);
+        if (game && game.rows && game.rows.length > 0) {
+          response.games =  helpers.cleanUpCouchResults(game.rows);
+        }
+        
+        callback(response);
+      }); 
+    },
+    
     listByAvailability: function(callback) {
       db.view("games", "available", function(err, result) {
         var response = api.createResponse(err, result);

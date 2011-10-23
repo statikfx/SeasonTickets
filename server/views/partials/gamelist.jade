@@ -21,7 +21,7 @@
       - var opponent = game.opponent;
       .series(class="#{(shouldHideMonth && 'hidden') || ''}")
         h1= opponent
-        - while (game && opponent === game.opponent)
+        - while (game && opponent === game.opponent && month === (new Date(game.date)).getMonth())
           != partial('partials/game', { game: game })
           - game = games[++i];
           div.clear

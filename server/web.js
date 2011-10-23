@@ -182,7 +182,7 @@ app.namespace("/admin", function() {
   });
 });
 
-// game
+// game by date
 app.get("/game/:year/:month/:day/?", function(req, res) {
   api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
     var ctx = helpers.buildPageContext(req, result);
@@ -190,7 +190,22 @@ app.get("/game/:year/:month/:day/?", function(req, res) {
   });
 });
 
-// game
+// game by opponent
+app.get("/games/:opponent/?", function(req, res) {
+  api.game.listByOpponent(req.params.opponent, function(result) {
+    var month = (new Date()).getMonth();
+    var year = (new Date()).getYear();
+    
+    result.games = result.games.filter(function(game) {
+      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
+      return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
+    });
+    var ctx = helpers.buildPageContext(req, result);
+    res.render("index", ctx);
+  });
+});
+
+// game by ids
 app.get("/game/:gameId/?", function(req, res) {
   api.game.get(req.params.gameId, function(result) {
     var ctx = helpers.buildPageContext(req, result);
