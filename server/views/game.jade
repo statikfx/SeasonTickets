@@ -18,10 +18,22 @@ div.individual
     tr
       td
         | Seats:
-      - if (game.seats.length < 1)
+      - if (game && game.seats && game.seats.length < 1)
         td
           | No Seats Available
-      - if (game.seats.length > 0)
+      - if (game && game.seats && game.seats.length > 0)
         td
           - each seat in game.seats
             | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+  br
+  hr
+  br
+  span
+    | Related Games versus #{game.opponent}
+  table
+    - each rel in related.games
+      tr
+        td
+          - var gameURL = helpers.getDateForURL(rel.date);
+          - var dayOfWeek = helpers.getDayOfWeekOfDate(new Date(rel.date + " " + rel.time));
+          a.view(href="/game/" + gameURL + "/") #{dayOfWeek} #{rel.date}
