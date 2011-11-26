@@ -38,14 +38,42 @@ $(function() {
   
   // is admin
   if ($("body").hasClass("admin")) {
-    var reloadGameById = function(gameId) {
-      $.ajax({
-        url: "/admin/game/" + gameId,
-        success: function(result) {
-          $("#" + gameId).replaceWith(result);
-        }
-      });
+    var reloadGameById = function(gameId)
+    {
+      if (gameId === "all" || gameId === "removeall")
+      {
+        $(".game").each(function() {
+          var gameId = $(this).attr("id");
+          $.ajax({
+            url: "/admin/game/" + gameId,
+            success: function(result) {
+              $("#" + gameId).replaceWith(result);
+            }
+          });
+        });
+      } else {
+        $.ajax({
+          url: "/admin/game/" + gameId,
+          success: function(result) {
+            $("#" + gameId).replaceWith(result);
+          }
+        });
+      }
     };
+    
+    $("a[href=#add-seat2]").live("click", function(evt) {
+      var seat_editor = $("#seat-editor");
+      //seat_editor.detach();
+      //seat_editor[0].reset();
+      
+      $("#content").after(seat_editor);
+      seat_editor.removeClass("hidden");
+      
+      var gameId = "all";
+      seat_editor.data("gameId", gameId);
+      
+      evt.preventDefault();
+    });
     
     // seat editor
     $("a[href=#add-seat]").live("click", function(evt) {
@@ -58,6 +86,29 @@ $(function() {
       
       var gameId = $(this).parent().parent().attr("id");
       seat_editor.data("gameId", gameId);
+      
+      evt.preventDefault();
+    });
+    
+    $("a[href=#removeallseats]").live("click", function(evt) {
+      var that = $(this);
+      
+      var gameId = "removeall";
+      var url = "/api/game/" + gameId + "/seat/";
+      var type = "POST";
+      var data = $(this).serialize();
+
+      $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        success: function() {
+          reloadGameById(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem adding the seat.");
+        }
+      });
       
       evt.preventDefault();
     });

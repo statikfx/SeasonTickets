@@ -260,6 +260,55 @@ app.namespace("/api", function() {
       res.end(JSON.stringify(result));
     });
   });
+  
+    app.post("/game/all/seat/?", function(req, res) {
+    api.game.list(function(result) {
+      console.log(result.games);
+      for (var key in result.games)
+      {
+        var game = result.games[key];
+        if (result.error) {
+          res.end(JSON.stringify(result));
+        } else {
+          var seat = {};
+          seat.section = req.body.section;
+          seat.row = req.body.row;
+          seat.seat = req.body.seat;
+          seat.price = req.body.price;
+          seat.requests = [];
+          console.log(seat);
+          game.seats.push(seat);
+        
+          console.log(game);
+        
+          api.game.update(game, function(result) {
+            result.game = game;
+            res.end(JSON.stringify(result));
+          });
+        }
+      }
+    });
+  });
+  
+  app.post("/game/removeall/seat/?", function(req, res) {
+    api.game.list(function(result) {
+      for (var key in result.games)
+      {
+        var game = result.games[key];
+        if (result.error) {
+          res.end(JSON.stringify(result));
+        } else {
+          game.seats = [];
+        
+          api.game.update(game, function(result) {
+            result.game = game;
+            res.end(JSON.stringify(result));
+          });
+        }
+      }
+    });
+  });
+  
 
   app.post("/game/:gameId/approve/?", function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
@@ -307,6 +356,8 @@ app.namespace("/api", function() {
       }
     });
   });
+  
+
 
 });
 
