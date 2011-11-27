@@ -259,3 +259,14 @@ a, a:visited
   margin-top: 20px;
 }
 
+#pricinglist
+{
+  float: left;
+  width: 500px;
+}
+
+#pricingform
+{
+  float: right;
+  width: 410px;
+}

@@ -145,6 +145,27 @@ app.namespace("/admin", function() {
     });
   });
 
+  // pricing
+  app.get("/pricing/?", function(req, res) {
+    api.pricing.list(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true
+      });
+      res.render("pricing", ctx);
+    });
+  });
+  
+  // pricing
+  app.get("/pricing/plist/?", function(req, res) {
+    api.pricing.list(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true,
+        layout: false
+      });
+      res.render("partials/pricing", ctx);
+    });
+  });
+
   app.get("/game/:gameId/?", function(req, res) {
     api.game.get(req.params.gameId, function(result) {
       var ctx = helpers.buildPageContext(req, result, {
@@ -358,7 +379,19 @@ app.namespace("/api", function() {
   });
   
 
-
+  ////pricing
+  app.post("/pricing/add/?", function(req, res) {
+    var tier = {};
+    tier.levelid = req.body.levelid;
+    tier.price = req.body.price;
+    tier.name = req.body.name;
+    tier.shortname = req.body.shortname;
+    tier.type = "pricing";
+    
+    api.pricing.update(tier, function(result) {
+      res.end(JSON.stringify(result));
+    });
+  });
 });
 
 // start up server on given port

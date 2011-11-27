@@ -50,6 +50,7 @@ var parseCSV = exports.parse = function(data, callback) {
       type: "game",
       status: "pending",
       price: "0.00",
+      pricing: "",
       seats: []
     };
     
