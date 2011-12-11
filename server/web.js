@@ -183,9 +183,7 @@ app.namespace("/admin", function() {
         layout: false
       });
       
-       api.pricing.list(function(re) {
-        
-        
+       api.pricing.list(function(re) { 
         re.game = result.game;
         var ctx = helpers.buildPageContext(req, re, {
           admin: true,
@@ -194,6 +192,23 @@ app.namespace("/admin", function() {
         res.render("partials/game", ctx);
       });
     
+    });
+  });
+
+  app.get("/set/:gameId/price/:priceId/?", function(req, res) {    
+    api.game.get(req.params.gameId, function(result) {
+      api.pricing.get(req.params.priceId, function(r) {
+      
+        if (result.error) {
+          res.end(JSON.stringify(result));
+        } else {
+          result.game.priceid = r.tier._id;
+          result.game.price = r.tier.price;
+          api.game.update(result.game, function(result) {
+            res.redirect(req.headers.referer || "/admin");
+          });
+        }
+      });
     });
   });
 
@@ -398,6 +413,30 @@ app.namespace("/api", function() {
       }
     });
   });
+  
+  app.post("/set/:gameId/price/:priceId/?", function(req, res) {
+    console.log("gt here");
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        api.pricing.get(req.params.priceId, function(r) {
+          if (r.error) {
+            res.end(JSON.stringify(r));
+          } else {
+            result.game.priceid = r.tier._id;
+            result.game.price = r.tier.price;
+            
+            api.game.update(result.game, function(result) {
+              res.end(JSON.stringify(result));
+            });
+          }
+        });
+      }
+    });
+  });
+  
+  
   
 
   ////pricing

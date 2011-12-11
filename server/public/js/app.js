@@ -232,6 +232,26 @@ $(function() {
     });
     
     // ajaxyify approval/rejection links
+    $("a.setprice").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+      
+      var url = $(this).attr("href");
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadGameById(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem setting the price for this game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    // ajaxyify approval/rejection links
     $("a.approve").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
       var gameId = gameEl.attr("id");

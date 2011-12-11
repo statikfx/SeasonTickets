@@ -7,7 +7,7 @@ ul.game(id="#{game._id}", class="#{game.status}")
   li.time
     = game.time
   li.price
-    | $0.00
+    = game.price
   - if (game.seats.length < 1)
     li.seat
       | No Seats Available
@@ -37,7 +37,10 @@ ul.game(id="#{game._id}", class="#{game.status}")
         a.reject(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
     li
       - each tier in pricing
-        = tier.shortname
+        - if (tier._id == game.priceid)
+          | #{tier.shortname} |
+        - if (tier._id != game.priceid)
+          a.setprice(href="#{helpers.urlJoin('/api/', 'set/' + game._id + '/price/'+ tier._id +'/')}") #{tier.shortname} |
   li
     - var gameURL = helpers.getDateForURL(game.date);
     a.view(href="#{helpers.urlJoin(path, 'game/' + gameURL + '/')}") View
