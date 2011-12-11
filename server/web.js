@@ -195,6 +195,35 @@ app.namespace("/admin", function() {
     });
   });
 
+  app.get("/game/:year/:month/:day/?", function(req, res) {
+    api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
+      var opponent = "";
+      if (result && result.game && result.game.opponent)
+        opponent = result.game.opponent;
+    
+      if (opponent && opponent.length > 0)
+      {
+        api.game.listByOpponent(opponent, function(re) {
+  	      result.related = re;
+
+	      result.related.games = result.related.games.filter(function(game) {
+            return ((game.status === "approved"));
+          });
+	   
+	      var ctx = helpers.buildPageContext(req, result, {
+            admin: true
+          });
+          res.render("game", ctx);
+	    });
+	  } else {
+	    var ctx = helpers.buildPageContext(req, result,  {
+          admin: true
+        });
+        res.render("game", ctx);
+      }
+    });
+  });
+
   app.get("/set/:gameId/price/:priceId/?", function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
       api.pricing.get(req.params.priceId, function(r) {

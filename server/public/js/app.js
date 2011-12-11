@@ -253,7 +253,7 @@ $(function() {
     
     // ajaxyify approval/rejection links
     $("a.approve").live("click", function(evt) {
-      var gameEl = $(this).parent().parent();
+      var gameEl = $(this).parent().parent();  
       var gameId = gameEl.attr("id");
       
       var url = "/api/game/" + gameId + "/approve/";
@@ -265,6 +265,42 @@ $(function() {
         },
         error: function() {
           alert("Whoops. There was a problem approving the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+     $("a.viewapprove").live("click", function(evt) {
+      var gameId = $(".gameid").text();
+      
+      var url = "/api/game/" + gameId + "/approve/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          $(".status").text("approved");
+        },
+        error: function() {
+          alert("Whoops. There was a problem approving the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    $("a.viewreject").live("click", function(evt) {
+      var gameId = $(".gameid").text();
+      
+      var url = "/api/game/" + gameId + "/reject/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          $(".status").text("rejected");
+        },
+        error: function() {
+          alert("Whoops. There was a problem rejecting the game.");
         }
       });
       

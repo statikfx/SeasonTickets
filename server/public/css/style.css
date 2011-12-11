@@ -259,6 +259,11 @@ a, a:visited
   margin-top: 20px;
 }
 
+.individual .gameid
+{
+display: none;
+}
+
 #pricinglist
 {
   float: left;
