@@ -1,3 +1,32 @@
-div#pricinglist
-  - each price in pricing
-    = price.name
+div#pricing
+  != partial('partials/pricinglist', { pricing: pricing});
+      
+  div#pricingform
+    form#priceform(method='POST', action='#')
+      table
+        tr
+          td
+            label(for='name') Name
+          td
+            input(type='text', name='name')
+        tr
+          td
+            label(for='price') Price
+          td
+            input(type='text', name='price')
+        tr
+          td
+            label(for='shortname') Short name
+          td 
+            input(type='text', name='shortname')
+        tr
+          td
+            label(for='levelid') Level ID
+          td  
+            input(type='text', name='levelid')
+        tr
+          td 
+            input(type='submit', value='Add Seat')
+          td
+            a(href='#reset') Reset
+  .clear

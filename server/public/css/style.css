@@ -270,3 +270,10 @@ a, a:visited
   float: right;
   width: 410px;
 }
+
+#pricing
+{
+  padding:10px;
+  background: #f3f3f3;
+  border: 1px solid #d0d0d0;
+}

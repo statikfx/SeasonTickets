@@ -1,0 +1,15 @@
+div#pricinglist
+  table
+    - each price in pricing
+      tr
+        td
+          = price.name
+          |  |
+        td
+          = price.price
+          |  |
+        td
+          = price.shortname
+          |  |
+        td
+          = price.levelid

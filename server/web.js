@@ -141,7 +141,17 @@ app.namespace("/admin", function() {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true
       });
-      res.render("index", ctx);
+      
+      api.pricing.list(function(re) {
+        
+        
+        re.games = result.games;
+        var ctx = helpers.buildPageContext(req, re, {
+          admin: true
+        });
+        res.render("index", ctx);
+      });
+     
     });
   });
 
@@ -162,7 +172,7 @@ app.namespace("/admin", function() {
         admin: true,
         layout: false
       });
-      res.render("partials/pricing", ctx);
+      res.render("partials/pricinglist", ctx);
     });
   });
 
@@ -172,7 +182,18 @@ app.namespace("/admin", function() {
         admin: true,
         layout: false
       });
-      res.render("partials/game", ctx);
+      
+       api.pricing.list(function(re) {
+        
+        
+        re.game = result.game;
+        var ctx = helpers.buildPageContext(req, re, {
+          admin: true,
+          layout: false
+        });
+        res.render("partials/game", ctx);
+      });
+    
     });
   });
 

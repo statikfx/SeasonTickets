@@ -35,6 +35,9 @@ ul.game(id="#{game._id}", class="#{game.status}")
         |  | 
       - if (game.status !== "rejected")
         a.reject(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
+    li
+      - each tier in pricing
+        = tier.shortname
   li
     - var gameURL = helpers.getDateForURL(game.date);
     a.view(href="#{helpers.urlJoin(path, 'game/' + gameURL + '/')}") View
