@@ -77,6 +77,7 @@ $(function() {
       var url = "/api/pricing/add/";
       var type = $(this).attr("method");
       var data = $(this).serialize();
+
       
       var submit = $("#priceform input[type=submit]");
       var previousTitle = submit.val();
@@ -231,7 +232,7 @@ $(function() {
       }
     });
     
-    // ajaxyify approval/rejection links
+
     $("a.setprice").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
       var gameId = gameEl.attr("id");
@@ -251,7 +252,7 @@ $(function() {
       evt.preventDefault();
     });
     
-    // ajaxyify approval/rejection links
+
     $("a.approve").live("click", function(evt) {
       var gameEl = $(this).parent().parent();  
       var gameId = gameEl.attr("id");
@@ -320,6 +321,23 @@ $(function() {
         },
         error: function() {
           alert("Whoops. There was a problem rejecting the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    $("a#deltier").live("click", function(evt) {
+      var tierURL = $(this).attr("href");
+      var url = tierURL;
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadPricingTiers();
+        },
+        error: function() {
+          alert("Whoops. There was a problem deleting the price tier.");
         }
       });
       

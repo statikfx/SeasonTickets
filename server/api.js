@@ -46,6 +46,13 @@ var api = module.exports = {
 
         callback(response);
       });
+    }, 
+    
+    remove: function(obj, callback) {
+      db.remove(obj, function(err, tier) {
+        var response = api.createResponse(err, tier);
+        callback(response);
+      });
     }
   },
   

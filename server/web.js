@@ -176,6 +176,16 @@ app.namespace("/admin", function() {
     });
   });
 
+  app.post("/pricing/delete/:tierId/?", function(req, res) {
+    api.pricing.remove(req.params.tierId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        res.redirect(req.headers.referer || "/admin");
+      }
+    });
+  });
+
   app.get("/game/:gameId/?", function(req, res) {
     api.game.get(req.params.gameId, function(result) {
       var ctx = helpers.buildPageContext(req, result, {
