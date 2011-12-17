@@ -5,28 +5,20 @@ div#pricing
     form#priceform(method='POST', action='#')
       table
         tr
-          td
-            label(for='name') Name
-          td
-            input(type='text', name='name')
+          td(colspan='2')
+            input(type='text', name='name', placeholder='Tier Name')
         tr
-          td
-            label(for='price') Price
-          td
-            input(type='text', name='price')
+          td(colspan='2')
+            input(type='text', name='price', placeholder='Tier Price')
         tr
-          td
-            label(for='shortname') Short name
-          td 
-            input(type='text', name='shortname')
+          td(colspan='2') 
+            input(type='text', name='shortname', placeholder='Short Name')
         tr
-          td
-            label(for='levelid') Level ID
-          td  
-            input(type='text', name='levelid')
+          td(colspan='2')
+            input(type='text', name='levelid', placeholder='Level ID')
         tr
           td 
-            input(type='submit', value='Add Seat')
+            input(type='submit', value='Add Price Tier')
           td
-            a(href='#reset') Reset
+            input(type='button', value='Reset', id='reset')
   .clear
