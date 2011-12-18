@@ -97,6 +97,7 @@ $(function() {
         success: function() {
           resetPriceForm();
           reloadPricingTiers();
+          reloadGameById("all");
         },
         error: function() {
           resetPriceForm();
@@ -335,6 +336,7 @@ $(function() {
         type: "POST",
         success: function() {
           reloadPricingTiers();
+          reloadGameById("all");
         },
         error: function() {
           alert("Whoops. There was a problem deleting the price tier.");
