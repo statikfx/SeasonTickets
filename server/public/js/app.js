@@ -291,6 +291,14 @@ $(function() {
       evt.preventDefault();
     });
     
+    $("#showhide").live("click", function(evt) {
+      $("#pbody").toggle();
+      
+      $("#showhide").val($("#pbody").is(":visible") ? "-" : "+");
+    
+      evt.preventDefault();
+    });
+    
     $("a.viewreject").live("click", function(evt) {
       var gameId = $(".gameid").text();
       

@@ -1,24 +1,30 @@
 div#pricing
-  != partial('partials/pricinglist', { pricing: pricing});
+  div#priceheader
+    input(type="button", value="-", id="showhide")
+    | Pricing Tiers
+
+  div#pbody
+
+    != partial('partials/pricinglist', { pricing: pricing});
       
-  div#pricingform
-    form#priceform(method='POST', action='#')
-      table
-        tr
-          td(colspan='2')
-            input(type='text', name='name', placeholder='Tier Name')
-        tr
-          td(colspan='2')
-            input(type='text', name='price', placeholder='Tier Price')
-        tr
-          td(colspan='2') 
-            input(type='text', name='shortname', placeholder='Short Name')
-        tr
-          td(colspan='2')
-            input(type='text', name='levelid', placeholder='Level ID')
-        tr
-          td 
-            input(type='submit', class="submit", value='Add Price Tier')
-          td
-            input(type='reset', class="reset", value='Reset', id='reset')
-  .clear
+    div#pricingform
+      form#priceform(method='POST', action='#')
+        table
+          tr
+            td(colspan='2')
+              input(type='text', name='name', placeholder='Tier Name')
+          tr
+            td(colspan='2')
+              input(type='text', name='price', placeholder='Tier Price')
+          tr
+            td(colspan='2') 
+              input(type='text', name='shortname', placeholder='Short Name')
+          tr
+            td(colspan='2')
+              input(type='text', name='levelid', placeholder='Level ID')
+          tr
+            td 
+              input(type='submit', class="submit", value='Add Price Tier')
+            td
+              input(type='reset', class="reset", value='Reset', id='reset')
+    .clear

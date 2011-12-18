@@ -278,7 +278,6 @@ display: none;
 
 #pricing
 {
-  padding:10px;
   background: #f3f3f3;
   border: 1px solid #d0d0d0;
 }
@@ -295,7 +294,20 @@ display: none;
   width:70px;
 }
 
+#pricing #priceheader {
+  background-color: #cecece;
+  padding: 10px;
+}
+
+#pricing #pbody {
+  padding:10px;
+}
+
 /** input styling **/
+
+#showhide {
+  width: 30px;
+}
 
 button, input {
   font-size: 100%;
