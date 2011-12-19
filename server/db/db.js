@@ -98,3 +98,10 @@ var db = module.exports = function() {
   // status (open, taken)
   // requests[]
   // type = seat
+  
+// pricing
+  // id
+  // type = pricing
+  // name
+  // price
+  // levelid

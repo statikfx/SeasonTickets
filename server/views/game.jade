@@ -1,4 +1,7 @@
 div.individual
+  div.gameid
+    = game._id;
+
   table
     tr  
       td
@@ -15,6 +18,12 @@ div.individual
         | Time:
       td
         = game.time;
+        
+    tr
+      td
+        | Status:
+      td.status
+        = game.status
     tr
       td
         | Seats:
@@ -25,6 +34,12 @@ div.individual
         td
           - each seat in game.seats
             | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
+    - if (admin)
+      tr
+        td
+          a.viewapprove(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')}") approve
+        td
+          a.viewreject(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
   br
   hr
   br
@@ -32,8 +47,9 @@ div.individual
     | Related Games versus #{game.opponent}
   table
     - each rel in related.games
-      tr
-        td
-          - var gameURL = helpers.getDateForURL(rel.date);
-          - var dayOfWeek = helpers.getDayOfWeekOfDate(new Date(rel.date + " " + rel.time));
-          a.view(href="/game/" + gameURL + "/") #{dayOfWeek} #{rel.date}
+      - if (rel._id != game._id)
+        tr
+          td
+            - var gameURL = helpers.getDateForURL(rel.date);
+            - var dayOfWeek = helpers.getDayOfWeekOfDate(new Date(rel.date + " " + rel.time));
+            a.view(href="/game/" + gameURL + "/") #{dayOfWeek} #{rel.date}

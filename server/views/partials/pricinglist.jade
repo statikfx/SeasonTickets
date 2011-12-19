@@ -1,0 +1,17 @@
+div#pricinglist
+  table
+    - each price in pricing
+      tr
+        td
+          = price.name
+          |  |
+        td
+          = price.price
+          |  |
+        td
+          = price.shortname
+          |  |
+        td
+          = price.levelid
+        td
+          a(href="/admin/pricing/delete/" + price._id+ "/", id="deltier") delete

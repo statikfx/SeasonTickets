@@ -61,6 +61,53 @@ $(function() {
       }
     };
     
+    var reloadPricingTiers = function()
+    {
+      $.ajax({
+        url: "/admin/pricing/plist/",
+        success: function(result) {
+          $("#pricinglist").replaceWith(result);
+        }
+      });
+    }
+    
+    $("#priceform").live("submit", function(evt) {
+      var that = $(this);
+      
+      var url = "/api/pricing/add/";
+      var type = $(this).attr("method");
+      var data = $(this).serialize();
+
+      
+      var submit = $("#priceform input[type=submit]");
+      var previousTitle = submit.val();
+      submit.attr("disabled", true);
+      submit.val("Working...");
+      
+      var resetPriceForm = function() {
+        submit.attr("disabled", false);
+        submit.val(previousTitle);
+        $(':input','#priceform').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked').removeAttr('selected');
+      };
+      
+      $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        success: function() {
+          resetPriceForm();
+          reloadPricingTiers();
+          reloadGameById("all");
+        },
+        error: function() {
+          resetPriceForm();
+          alert("Whoops. There was a problem adding the tier.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
     $("a[href=#add-seat2]").live("click", function(evt) {
       var seat_editor = $("#seat-editor");
       //seat_editor.detach();
@@ -89,7 +136,7 @@ $(function() {
       
       evt.preventDefault();
     });
-    
+   
     $("a[href=#removeallseats]").live("click", function(evt) {
       var that = $(this);
       
@@ -186,9 +233,29 @@ $(function() {
       }
     });
     
-    // ajaxyify approval/rejection links
-    $("a.approve").live("click", function(evt) {
+
+    $("a.setprice").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+      
+      var url = $(this).attr("href");
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadGameById(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem setting the price for this game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+
+    $("a.approve").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();  
       var gameId = gameEl.attr("id");
       
       var url = "/api/game/" + gameId + "/approve/";
@@ -200,6 +267,50 @@ $(function() {
         },
         error: function() {
           alert("Whoops. There was a problem approving the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+     $("a.viewapprove").live("click", function(evt) {
+      var gameId = $(".gameid").text();
+      
+      var url = "/api/game/" + gameId + "/approve/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          $(".status").text("approved");
+        },
+        error: function() {
+          alert("Whoops. There was a problem approving the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    $("#showhide").live("click", function(evt) {
+      $("#pbody").toggle();
+      
+      $("#showhide").val($("#pbody").is(":visible") ? "-" : "+");
+    
+      evt.preventDefault();
+    });
+    
+    $("a.viewreject").live("click", function(evt) {
+      var gameId = $(".gameid").text();
+      
+      var url = "/api/game/" + gameId + "/reject/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          $(".status").text("rejected");
+        },
+        error: function() {
+          alert("Whoops. There was a problem rejecting the game.");
         }
       });
       
@@ -219,6 +330,24 @@ $(function() {
         },
         error: function() {
           alert("Whoops. There was a problem rejecting the game.");
+        }
+      });
+      
+      evt.preventDefault();
+    });
+    
+    $("a#deltier").live("click", function(evt) {
+      var tierURL = $(this).attr("href");
+      var url = tierURL;
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadPricingTiers();
+          reloadGameById("all");
+        },
+        error: function() {
+          alert("Whoops. There was a problem deleting the price tier.");
         }
       });
       

@@ -259,3 +259,95 @@ a, a:visited
   margin-top: 20px;
 }
 
+.individual .gameid
+{
+display: none;
+}
+
+#pricinglist
+{
+  float: left;
+  width: 700px;
+}
+
+#pricingform
+{
+  float: right;
+  width: 210px;
+}
+
+#pricing
+{
+  background: #f3f3f3;
+  border: 1px solid #d0d0d0;
+}
+
+#pricingform input, #pricingform button {
+  margin-top: 10px;
+}
+
+#pricingform input[type="submit"] {
+  width:120px;
+}
+
+#pricingform input[type="reset"] {
+  width:70px;
+}
+
+#pricing #priceheader {
+  background-color: #cecece;
+  padding: 10px;
+}
+
+#pricing #pbody {
+  padding:10px;
+}
+
+/** input styling **/
+
+#showhide {
+  width: 30px;
+}
+
+button, input {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+}
+
+button, input[type="button"], input[type="reset"], input[type="submit"] {
+  cursor: pointer;
+  font: 13px Arial, Helvetica, sans-serif;
+  line-height: 20px;
+  -webkit-appearance: button;
+  -webkit-font-smoothing: antialiased;
+}
+
+input[type="submit"].submit, input[type="reset"].reset, input[type="button"].button {
+  outline: 0;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+}
+
+input[type="submit"].submit, input[type="button"].button {
+  background-color: #0066ff;
+}
+
+input[type="reset"].reset {
+  background-color: #b00000;
+}
+
+input[type="text"] {
+  border: 1px solid #cecece;
+  color: #525252;
+  font: 15px Arial, Helvetica, sans-serif;
+  height: 20px;
+  outline: none;
+  padding: 5px 10px;
+}
+
+.input:hover, .input:active, input[type="text"]:hover, input[type="text"]:focus, input[type="text"]:active {
+    border-color: #0066FF;
+}
+

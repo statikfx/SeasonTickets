@@ -13,6 +13,49 @@ var api = module.exports = {
     return response;
   },
   
+  pricing: {
+    list: function(callback) {
+      db.view("games", "pricing", function(err, result) {
+        var response = api.createResponse(err, result);
+        
+        if (result) {
+          response.pricing = helpers.cleanUpCouchResults(result.rows);
+        }
+        
+        callback(response);
+      });
+    },
+    
+    get: function(id, callback) {
+      db.get(id, function(err, tier) {
+        var response = api.createResponse(err, tier);
+        if (tier) {
+          response.tier = tier;
+        }
+
+        callback(response);
+      });
+    },
+    
+    update: function(obj, callback) {
+      db.save(obj, function(err, tier) {
+        var response = api.createResponse(err, tier);
+        if (tier) {
+          response.tier = tier;
+        }
+
+        callback(response);
+      });
+    }, 
+    
+    remove: function(obj, callback) {
+      db.remove(obj, function(err, tier) {
+        var response = api.createResponse(err, tier);
+        callback(response);
+      });
+    }
+  },
+  
   game: {
     list: function(callback) {
       db.view("games", "all_by_date", function(err, result) {

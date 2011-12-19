@@ -141,7 +141,48 @@ app.namespace("/admin", function() {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true
       });
-      res.render("index", ctx);
+      
+      api.pricing.list(function(re) {
+        
+        
+        re.games = result.games;
+        var ctx = helpers.buildPageContext(req, re, {
+          admin: true
+        });
+        res.render("index", ctx);
+      });
+     
+    });
+  });
+
+  // pricing
+  app.get("/pricing/?", function(req, res) {
+    api.pricing.list(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true
+      });
+      res.render("pricing", ctx);
+    });
+  });
+  
+  // pricing
+  app.get("/pricing/plist/?", function(req, res) {
+    api.pricing.list(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true,
+        layout: false
+      });
+      res.render("partials/pricinglist", ctx);
+    });
+  });
+
+  app.post("/pricing/delete/:tierId/?", function(req, res) {
+    api.pricing.remove(req.params.tierId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        res.redirect(req.headers.referer || "/admin");
+      }
     });
   });
 
@@ -151,7 +192,62 @@ app.namespace("/admin", function() {
         admin: true,
         layout: false
       });
-      res.render("partials/game", ctx);
+      
+       api.pricing.list(function(re) { 
+        re.game = result.game;
+        var ctx = helpers.buildPageContext(req, re, {
+          admin: true,
+          layout: false
+        });
+        res.render("partials/game", ctx);
+      });
+    
+    });
+  });
+
+  app.get("/game/:year/:month/:day/?", function(req, res) {
+    api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
+      var opponent = "";
+      if (result && result.game && result.game.opponent)
+        opponent = result.game.opponent;
+    
+      if (opponent && opponent.length > 0)
+      {
+        api.game.listByOpponent(opponent, function(re) {
+  	      result.related = re;
+
+	      result.related.games = result.related.games.filter(function(game) {
+            return ((game.status === "approved"));
+          });
+	   
+	      var ctx = helpers.buildPageContext(req, result, {
+            admin: true
+          });
+          res.render("game", ctx);
+	    });
+	  } else {
+	    var ctx = helpers.buildPageContext(req, result,  {
+          admin: true
+        });
+        res.render("game", ctx);
+      }
+    });
+  });
+
+  app.get("/set/:gameId/price/:priceId/?", function(req, res) {    
+    api.game.get(req.params.gameId, function(result) {
+      api.pricing.get(req.params.priceId, function(r) {
+      
+        if (result.error) {
+          res.end(JSON.stringify(result));
+        } else {
+          result.game.priceid = r.tier._id;
+          result.game.price = r.tier.price;
+          api.game.update(result.game, function(result) {
+            res.redirect(req.headers.referer || "/admin");
+          });
+        }
+      });
     });
   });
 
@@ -357,8 +453,44 @@ app.namespace("/api", function() {
     });
   });
   
+  app.post("/set/:gameId/price/:priceId/?", function(req, res) {
+    console.log("gt here");
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        api.pricing.get(req.params.priceId, function(r) {
+          if (r.error) {
+            res.end(JSON.stringify(r));
+          } else {
+            result.game.priceid = r.tier._id;
+            result.game.price = r.tier.price;
+            
+            api.game.update(result.game, function(result) {
+              res.end(JSON.stringify(result));
+            });
+          }
+        });
+      }
+    });
+  });
+  
+  
+  
 
-
+  ////pricing
+  app.post("/pricing/add/?", function(req, res) {
+    var tier = {};
+    tier.levelid = req.body.levelid;
+    tier.price = req.body.price;
+    tier.name = req.body.name;
+    tier.shortname = req.body.shortname;
+    tier.type = "pricing";
+    
+    api.pricing.update(tier, function(result) {
+      res.end(JSON.stringify(result));
+    });
+  });
 });
 
 // start up server on given port
