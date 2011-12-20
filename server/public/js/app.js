@@ -13,6 +13,16 @@ $(function() {
     $(this).parent().children(".game").toggleClass("hidden");
   });
 
+  $(':input[type="text"]', '#priceform').live("click", function() {
+    $(this).removeClass("fieldError");
+  });
+
+  $(':input[type="reset"]', '#priceform').live("click", function() {
+    $(':input[type="text"]', '#priceform').each(function() {
+      $(this).removeClass("fieldError");
+    });
+  });
+
 /*  
   $(".series > ul").live("click", function() {
     var id = $(this).attr("id");
@@ -78,6 +88,28 @@ $(function() {
       var type = $(this).attr("method");
       var data = $(this).serialize();
 
+      var validateFormFields = function () {
+        var fieldsValidated = true;
+        $(':input[type="text"]', '#priceform').each(function() {
+          var fieldName = this.name;
+          var fieldValue = this.value;
+            
+          if (fieldValue.length == 0)
+          {
+        	$(':input[name="' + fieldName + '"]', "#priceform").addClass("fieldError");
+            fieldsValidated = false;
+          }
+        });
+        return fieldsValidated;
+      }
+
+	  
+      if (!validateFormFields())
+      {
+      	evt.preventDefault();
+        return;
+      }
+      
       
       var submit = $("#priceform input[type=submit]");
       var previousTitle = submit.val();

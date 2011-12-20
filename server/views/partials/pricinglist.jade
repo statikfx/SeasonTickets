@@ -1,17 +1,22 @@
 div#pricinglist
-  table
-    - each price in pricing
-      tr
-        td
-          = price.name
-          |  |
-        td
-          = price.price
-          |  |
-        td
-          = price.shortname
-          |  |
-        td
-          = price.levelid
-        td
-          a(href="/admin/pricing/delete/" + price._id+ "/", id="deltier") delete
+
+  - if (pricing.length == 0)
+    | No pricing tiers.
+
+  - if (pricing.length > 0)
+    table
+      - each price in pricing
+        tr
+          td
+            = price.name
+            |  |
+          td
+            = price.price
+            |  |
+          td
+            = price.shortname
+            |  |
+          td
+            = price.levelid
+          td
+            a(href="/admin/pricing/delete/" + price._id+ "/", id="deltier") delete

@@ -323,6 +323,11 @@ button, input[type="button"], input[type="reset"], input[type="submit"] {
   -webkit-font-smoothing: antialiased;
 }
 
+input[type="text"].fieldError {
+  border: 1px solid red;
+  background-color: #FFC1C1;
+}
+
 input[type="submit"].submit, input[type="reset"].reset, input[type="button"].button {
   outline: 0;
   border: 0;
