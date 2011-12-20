@@ -301,6 +301,7 @@ display: none;
 
 #pricing #pbody {
   padding:10px;
+  display: none;
 }
 
 /** input styling **/
