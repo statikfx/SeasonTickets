@@ -39,14 +39,14 @@ a, a:visited
 
 #container
 {
-  padding: 40px 20px 10px 20px;
+  padding: 20px 20px 10px 20px;
   margin: 0 auto;
   width: 950px;
 }
 
 #header
 {
-  position: fixed;
+  /*position: fixed;*/
   top: 0;
   width: 100%;
   padding: 10px 0 5px 0;
@@ -62,7 +62,7 @@ a, a:visited
 
 #content
 {
-  margin: 20px 0;
+  margin: 0px 0;
 }
 
 #nav

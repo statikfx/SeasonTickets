@@ -143,8 +143,6 @@ app.namespace("/admin", function() {
       });
       
       api.pricing.list(function(re) {
-        
-        
         re.games = result.games;
         var ctx = helpers.buildPageContext(req, re, {
           admin: true

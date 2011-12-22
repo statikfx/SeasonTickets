@@ -1,10 +1,14 @@
+- if (admin && games.length > 0)
+  div#content
+    a(href='#add-seat2') Add Seat to All Games
+    |   |  
+    a(href='#removeallseats') Remove All Seats
 
-- if (!admin)
+  != partial('partials/pricing', { pricing: pricing })
+
+div#games
   != partial('partials/gamelist', { games: games })
 
-- if (admin)
-  != partial('partials/gamelist', { games: games, pricing: pricing })
-        
 - if (admin)
   form#seat-editor.hidden(method='POST', action='#')
     div
