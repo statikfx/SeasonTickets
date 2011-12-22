@@ -5,6 +5,7 @@ var SYS = require("sys");
 var express = require("express");
 var expressNamespace = require("express-namespace");
 var CONFIG = require("./config");
+var SETTINGS = require("./settings");
 var helpers = require("./helpers");
 var db = require("./db/db")();
 var api = require("./api");
@@ -21,14 +22,28 @@ app.configure(function() {
     layout: true
   });
   
+  
   app.use(express.logger({
     format: ":method :url"
   }));
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "ddd"}));
   app.use(app.router);
   // serve static files out of /public
   app.use(express.static(PATH.join(CONFIG.WEBROOT, "public")));
 });
+
+
+function checkAuth(req, result, next) {
+  if (req && (!req.session.userid || req.session.userid != SETTINGS.AUTH.username)) {
+    var ctx = helpers.buildPageContext(req, result);
+    result.render("login", ctx);
+  } else {
+    next();
+  }
+}
+
 
 // homepage
 app.get("/?", function(req, res) {
@@ -133,10 +148,25 @@ app.get("/views/weekends/:viewarea?", function(req, res) {
   });
 });
 
+
+app.post('/login/?', function (req, res) {
+  if (req.body.userid == SETTINGS.AUTH.username && req.body.password == SETTINGS.AUTH.password) {
+    req.session.userid = SETTINGS.AUTH.username;
+    res.redirect('/admin/');
+  } else {
+    res.send('invalid username/password');
+  }
+});
+
+app.get('/logout/?', function (req, res) {
+  delete req.session.userid;
+  res.redirect('/');
+});
+
 app.namespace("/admin", function() {
 
   // admin
-  app.get("/?", function(req, res) {
+  app.get("/?", checkAuth, function(req, res) {
     api.game.list(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true
@@ -154,7 +184,7 @@ app.namespace("/admin", function() {
   });
 
   // pricing
-  app.get("/pricing/?", function(req, res) {
+  app.get("/pricing/?", checkAuth, function(req, res) {
     api.pricing.list(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true
@@ -164,7 +194,7 @@ app.namespace("/admin", function() {
   });
   
   // pricing
-  app.get("/pricing/plist/?", function(req, res) {
+  app.get("/pricing/plist/?", checkAuth, function(req, res) {
     api.pricing.list(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true,
@@ -174,7 +204,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.post("/pricing/delete/:tierId/?", function(req, res) {
+  app.post("/pricing/delete/:tierId/?", checkAuth, function(req, res) {
     api.pricing.remove(req.params.tierId, function(result) {
       if (result.error) {
         res.end(JSON.stringify(result));
@@ -184,7 +214,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.get("/game/:gameId/?", function(req, res) {
+  app.get("/game/:gameId/?", checkAuth, function(req, res) {
     api.game.get(req.params.gameId, function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true,
@@ -203,7 +233,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.get("/game/:year/:month/:day/?", function(req, res) {
+  app.get("/game/:year/:month/:day/?", checkAuth, function(req, res) {
     api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
       var opponent = "";
       if (result && result.game && result.game.opponent)
@@ -232,7 +262,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.get("/set/:gameId/price/:priceId/?", function(req, res) {    
+  app.get("/set/:gameId/price/:priceId/?", checkAuth, function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
       api.pricing.get(req.params.priceId, function(r) {
       
@@ -249,7 +279,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.get("/game/:gameId/approve/?", function(req, res) {    
+  app.get("/game/:gameId/approve/?", checkAuth, function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
       if (result.error) {
         res.end(JSON.stringify(result));
@@ -262,7 +292,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.get("/game/:gameId/reject/?", function(req, res) {
+  app.get("/game/:gameId/reject/?", checkAuth, function(req, res) {
     api.game.get(req.params.gameId, function(result) {
       if (result.error) {
         res.end(JSON.stringify(result));

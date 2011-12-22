@@ -1,0 +1,12 @@
+div#login
+form#loginform(method='POST', action='/login/')
+  table
+    tr
+      td
+        input(type="text", name="userid", placeholder="Username")
+    tr
+      td
+        input(type="password", name="password", placeholder="******")
+    tr
+      td 
+        input(type='submit', class="login", value='Login')
