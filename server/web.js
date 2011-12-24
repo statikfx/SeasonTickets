@@ -28,7 +28,7 @@ app.configure(function() {
   }));
   app.use(express.bodyParser());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: "ddd"}));
+  app.use(express.session({ secret: SETTINGS.AUTH.secret}));
   app.use(app.router);
   // serve static files out of /public
   app.use(express.static(PATH.join(CONFIG.WEBROOT, "public")));
