@@ -491,6 +491,11 @@ app.namespace("/api", function() {
   });
 });
 
+app.use(function(req, res, next){
+  var ctx = helpers.buildPageContext(req, res);
+  res.render('404', ctx);
+});
+
 // start up server on given port
 app.listen(CONFIG.PORT, function() {
   console.log("Express listening on port " + CONFIG.PORT);
