@@ -267,9 +267,8 @@ app.namespace("/api", function() {
     });
   });
   
-    app.post("/game/all/seat/?", function(req, res) {
+  app.post("/game/all/seat/?", function(req, res) {
     api.game.list(function(result) {
-      console.log(result.games);
       for (var key in result.games)
       {
         var game = result.games[key];
@@ -284,8 +283,6 @@ app.namespace("/api", function() {
           seat.requests = [];
           console.log(seat);
           game.seats.push(seat);
-        
-          console.log(game);
         
           api.game.update(game, function(result) {
             result.game = game;

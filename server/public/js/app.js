@@ -23,29 +23,6 @@ $(function() {
     });
   });
 
-/*  
-  $(".series > ul").live("click", function() {
-    var id = $(this).attr("id");
-    window.location.href = "/game/" + id + "/";
-  });
-*/  
-  $("#filterselect").live("click", function() {
-    var addAdmin = "";
-    if (window.location.pathname.indexOf("admin") != -1)
-    {
-      addAdmin = "admin/";
-    }
-    $.ajax({
-        url: "/views/" + this.value + "/" + addAdmin,
-        success: function(result) {
-          $("#container").html(result);
-        },
-        error: function(result) {
-          alert(result);
-        }
-      });
-  });
-  
   // is admin
   if ($("body").hasClass("admin")) {
     var reloadGameById = function(gameId)
