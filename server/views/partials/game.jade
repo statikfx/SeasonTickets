@@ -30,11 +30,11 @@ ul.game(id="#{game._id}", class="#{game.status}")
       |  |
     li.approve-reject
       - if (game.status !== "approved")
-        a.approve(href="#{helpers.urlJoin(path, 'game/' + game._id + '/approve/')}") approve
+        a.approve(href="#{helpers.urlJoin(/admin/, 'game/' + game._id + '/approve/')}") approve
       - if (game.status !== "approved" && game.status !== "rejected")
         |  | 
       - if (game.status !== "rejected")
-        a.reject(href="#{helpers.urlJoin(path, 'game/' + game._id + '/reject/')}") reject
+        a.reject(href="#{helpers.urlJoin(/admin/, 'game/' + game._id + '/reject/')}") reject
     li
       - each tier in pricing
         - if (tier._id == game.priceid)
@@ -43,5 +43,5 @@ ul.game(id="#{game._id}", class="#{game.status}")
           a.setprice(href="#{helpers.urlJoin('/api/', 'set/' + game._id + '/price/'+ tier._id +'/')}") #{tier.shortname} |
   li
     - var gameURL = helpers.getDateForURL(game.date);
-    a.view(href="#{helpers.urlJoin(path, 'game/' + gameURL + '/')}") View
+    a.view(href="#{helpers.urlJoin('/admin/', 'game/' + gameURL + '/')}") View
   .clear
