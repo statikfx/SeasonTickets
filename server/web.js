@@ -64,6 +64,19 @@ app.namespace("/admin", function() {
      
     });
   });
+  
+  app.get("/refresh/games/all/?", function(req, res) {
+    api.game.list(function(result) {
+      api.pricing.list(function(re) {
+        re.games = result.games;
+        var ctx = helpers.buildPageContext(req, re, {
+          admin: true,
+          layout: false
+        });
+        res.render("partials/gamelist", ctx);
+      });
+    });
+  });
 
   // pricing
   app.get("/pricing/?", function(req, res) {
@@ -86,7 +99,7 @@ app.namespace("/admin", function() {
     });
   });
 
-  app.post("/pricing/delete/:tierId/?", function(req, res) {
+  app.get("/pricing/delete/:tierId/?", function(req, res) {
     api.pricing.remove(req.params.tierId, function(result) {
       if (result.error) {
         res.end(JSON.stringify(result));
