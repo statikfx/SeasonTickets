@@ -281,7 +281,6 @@ app.namespace("/api", function() {
           seat.seat = req.body.seat;
           seat.price = req.body.price;
           seat.requests = [];
-          console.log(seat);
           game.seats.push(seat);
         
           api.game.update(game, function(result) {
@@ -350,7 +349,7 @@ app.namespace("/api", function() {
         seat.seat = req.body.seat;
         seat.price = req.body.price;
         seat.requests = [];
-        console.log(seat);
+
         result.game.seats.push(seat);
         
         api.game.update(result.game, function(result) {
@@ -361,7 +360,6 @@ app.namespace("/api", function() {
   });
   
   app.post("/set/:gameId/price/:priceId/?", function(req, res) {
-    console.log("gt here");
     api.game.get(req.params.gameId, function(result) {
       if (result.error) {
         res.end(JSON.stringify(result));

@@ -79,14 +79,12 @@ $(function() {
         });
         return fieldsValidated;
       }
-
 	  
       if (!validateFormFields())
       {
       	evt.preventDefault();
         return;
       }
-      
       
       var submit = $("#priceform input[type=submit]");
       var previousTitle = submit.val();
@@ -241,7 +239,6 @@ $(function() {
         month.children("h1").addClass("hiding");
       }
     });
-    
 
     $("a.setprice").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
@@ -261,7 +258,6 @@ $(function() {
       
       evt.preventDefault();
     });
-    
 
     $("a.approve").live("click", function(evt) {
       var gameEl = $(this).parent().parent();  
@@ -299,7 +295,7 @@ $(function() {
       
       evt.preventDefault();
     });
-    
+
     $("#showhide").live("click", function(evt) {
       $("#pbody").toggle();
       
@@ -307,7 +303,7 @@ $(function() {
     
       evt.preventDefault();
     });
-    
+
     $("a.viewreject").live("click", function(evt) {
       var gameId = $(".gameid").text();
       
@@ -325,7 +321,7 @@ $(function() {
       
       evt.preventDefault();
     });
-    
+
     $("a.reject").live("click", function(evt) {
       var gameEl = $(this).parent().parent();
       var gameId = gameEl.attr("id");
@@ -344,7 +340,7 @@ $(function() {
       
       evt.preventDefault();
     });
-    
+
     $("a#deltier").live("click", function(evt) {
       var tierURL = $(this).attr("href");
       var url = tierURL;
