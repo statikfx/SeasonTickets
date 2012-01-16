@@ -360,3 +360,39 @@ input[type="text"] {
 td.bold {
   font-weight: bold;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  -moz-opacity: 0.81;
+  opacity: 0.81;
+  filter: alpha(opacity=81);
+  z-index: 1500;
+}
+ 
+.modal {
+  border: 3px solid #cecece;
+  position: fixed;
+  background-color: #fff;
+  overflow: hidden;
+  z-index: 1501;
+}
+
+.modal .close {
+  top: 0;
+  right: 0;
+  position: absolute;
+  height: 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #cecece;
+  width: 75px;
+}
+
+.modal .close:hover {
+  background-color: #dedede;
+}
