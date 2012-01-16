@@ -1,4 +1,4 @@
-var SYS = require("sys");
+var SYS = require("util");
 var HTTP = require("http");
 var CSV = require("csv");
 

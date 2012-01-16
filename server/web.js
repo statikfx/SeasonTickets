@@ -1,6 +1,6 @@
 // system reqs.
 var PATH = require("path");
-var SYS = require("sys");
+var SYS = require("util");
 // user reqs.
 var express = require("express");
 var expressNamespace = require("express-namespace");

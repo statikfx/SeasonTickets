@@ -1,5 +1,5 @@
 var PATH = require("path");
-var SYS = require("sys");
+var SYS = require("util");
 var couch = require("couch-client");
 var CONFIG = require("../config");
 

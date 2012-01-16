@@ -1,6 +1,6 @@
 var FS = require("fs");
 var PATH = require("path");
-var SYS = require("sys");
+var SYS = require("util");
 var db = require("./db")();
 
 var main = exports.main = function() {
