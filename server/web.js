@@ -45,6 +45,29 @@ app.get("/?", function(req, res) {
   });
 });
 
+  // requests
+app.namespace("/requests", function() {
+  app.post("/add/:id/?", function(req, res) {
+    api.game.get(req.params.id, function(result) {  
+  	  if (result.error) {
+	    res.end(JSON.stringify(result));
+	  } else {
+	    var request = {};
+	    request.name = req.body.name;
+	    request.email = req.body.email;
+	    request.price = req.body.price;
+	    request.date = new Date();
+
+  	    result.game.requests.push(request);
+	
+        api.game.update(result.game, function(result) {
+		  res.end(JSON.stringify(result));
+	    });
+      }
+    });
+  });
+});
+
 app.namespace("/admin", function() {
 
   // admin
@@ -324,7 +347,6 @@ app.namespace("/api", function() {
     });
   });
   
-
   app.post("/game/:gameId/approve/?", function(req, res) {    
     api.game.get(req.params.gameId, function(result) {
       if (result.error) {
@@ -392,9 +414,6 @@ app.namespace("/api", function() {
       }
     });
   });
-  
-  
-  
 
   ////pricing
   app.post("/pricing/add/?", function(req, res) {

@@ -22,6 +22,33 @@ $(function() {
       $(this).removeClass("fieldError");
     });
   });
+  
+  $("#requestform").live("submit", function(evt) {
+    var that = $(this);
+  
+    var url = "/requests/add/" + $('#gameid').val();
+    var type = $(this).attr("method");
+    var data = $(this).serialize();
+  
+    var submit = $("#requestform input[type=submit]");
+    var previousTitle = submit.val();
+    submit.attr("disabled", true);
+    submit.val("Working...");
+  
+    $.ajax({
+  	  url: url,
+	  type: type,
+	  data: data,
+	  success: function() {
+	    alert('done!');
+	  },
+	  error: function() {
+	    alert("Whoops. There was a problem adding the request.");
+	 }
+    });
+  
+    evt.preventDefault();
+  });
 
   // is admin
   if ($("body").hasClass("admin")) {
