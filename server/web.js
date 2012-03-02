@@ -11,6 +11,9 @@ var api = require("./api");
 
 // create server
 var app = express.createServer();
+var cubs_app = express.createServer();
+
+cubs_app.use(CONFIG.BASEPATH, app);
 
 // configure express options -- order matters
 app.configure(function() {
@@ -417,7 +420,7 @@ app.use(function(req, res, next){
 });
 
 // start up server on given port
-app.listen(CONFIG.PORT, function() {
+cubs_app.listen(CONFIG.PORT, function() {
   console.log("Express listening on port " + CONFIG.PORT);
   console.log("Configuration: ");
   console.log(SYS.inspect(CONFIG));

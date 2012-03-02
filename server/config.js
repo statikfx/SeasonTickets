@@ -2,6 +2,7 @@
 var PATH = require("path");
 
 var CONFIG = module.exports = {
+  BASEPATH: "/cubs",
   WEBROOT: PATH.dirname(__filename),
   PORT: process.env.PORT || 9999,
   DB: {

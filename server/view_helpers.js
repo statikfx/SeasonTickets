@@ -35,5 +35,9 @@ module.exports = {
     return year + '/' + month + '/' + day;
   },
   
+  appendBaseURL: function(append1, append2) {
+    return "cubs/" + append1 + append2;
+  },
+  
   urlJoin: PATH.join
 };
