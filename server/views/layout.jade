@@ -3,18 +3,18 @@ html
   head
     meta(charset='utf-8')
     title #{site.title + ((admin && " | Admin") || "") + ((page.title && " | " + page.title) || "")}
-    link(rel='stylesheet', href='/css/style.css')
-    script(src='/js/jquery-1.6.2.min.js')
+    link(rel='stylesheet', href="/cubs/css/style.css")
+    script(src='/cubs/js/jquery-1.6.2.min.js')
   body(class="#{(admin && 'admin') || ''}")
     #header
       #wrap
         #nav
           ul
             li.title
-              - if (path === "/")
+              - if (path === "/cubs/")
                 | 2012 Season Tickets
               - else  
-                a(href='/') 2012 Season Tickets
+                a(href='/cubs/') 2012 Season Tickets
         .clear
     #wrapper
       #container
@@ -25,5 +25,5 @@ html
         a(href='http://twitter.com/statikfx/') Rob Shaw
         |  and  
         a(href='http://twitter.com/chandlerkent/') Chandler Kent
-    script(src='/js/app.js')
+    script(src='/cubs/js/app.js')
 

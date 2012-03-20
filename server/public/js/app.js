@@ -28,7 +28,7 @@ $(function() {
     var reloadGameById = function(gameId)
     {
       $.ajax({
-        url: "/admin/game/" + gameId,
+        url: "/cubs/admin/game/" + gameId,
         success: function(result) {
           $("#" + gameId).replaceWith(result);
         }
@@ -38,7 +38,7 @@ $(function() {
     var reloadGameList = function()
     {
       $.ajax({
-        url: "/admin/refresh/games/all/",
+        url: "/cubs/admin/refresh/games/all/",
         success: function(result) {
           $("#games").html(result);
         }
@@ -48,7 +48,7 @@ $(function() {
     var reloadPricingTiers = function()
     {
       $.ajax({
-        url: "/admin/pricing/plist/",
+        url: "/cubs/admin/pricing/plist/",
         success: function(result) {
           $("#pricinglist").replaceWith(result);
         }
@@ -58,7 +58,7 @@ $(function() {
     $("#priceform").live("submit", function(evt) {
       var that = $(this);
       
-      var url = "/api/pricing/add/";
+      var url = "/cubs/api/pricing/add/";
       var type = $(this).attr("method");
       var data = $(this).serialize();
 
@@ -145,7 +145,7 @@ $(function() {
       var that = $(this);
       
       var gameId = "removeall";
-      var url = "/api/game/" + gameId + "/seat/";
+      var url = "/cubs/api/game/" + gameId + "/seat/";
       var type = "POST";
       var data = $(this).serialize();
 
@@ -175,7 +175,7 @@ $(function() {
       var that = $(this);
       
       var gameId = $(this).data("gameId");
-      var url = "/api/game/" + gameId + "/seat/";
+      var url = "/cubs/api/game/" + gameId + "/seat/";
       var type = $(this).attr("method");
       var data = $(this).serialize();
       
@@ -263,7 +263,7 @@ $(function() {
       var gameEl = $(this).parent().parent();  
       var gameId = gameEl.attr("id");
       
-      var url = "/api/game/" + gameId + "/approve/";
+      var url = "/cubs/api/game/" + gameId + "/approve/";
       $.ajax({
         url: url,
         type: "POST",
@@ -281,7 +281,7 @@ $(function() {
     $("a.viewapprove").live("click", function(evt) {
       var gameId = $(".gameid").text();
       
-      var url = "/api/game/" + gameId + "/approve/";
+      var url = "/cubs/api/game/" + gameId + "/approve/";
       $.ajax({
         url: url,
         type: "POST",
@@ -307,7 +307,7 @@ $(function() {
     $("a.viewreject").live("click", function(evt) {
       var gameId = $(".gameid").text();
       
-      var url = "/api/game/" + gameId + "/reject/";
+      var url = "/cubs/api/game/" + gameId + "/reject/";
       $.ajax({
         url: url,
         type: "POST",
@@ -326,7 +326,7 @@ $(function() {
       var gameEl = $(this).parent().parent();
       var gameId = gameEl.attr("id");
       
-      var url = "/api/game/" + gameId + "/reject/";
+      var url = "/cubs/api/game/" + gameId + "/reject/";
       $.ajax({
         url: url,
         type: "POST",

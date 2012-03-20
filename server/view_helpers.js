@@ -36,7 +36,7 @@ module.exports = {
   },
   
   appendBaseURL: function(append1, append2) {
-    return "cubs/" + append1 + append2;
+    return PATH.join("/cubs", append1, append2);
   },
   
   urlJoin: PATH.join

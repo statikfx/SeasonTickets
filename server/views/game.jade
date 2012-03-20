@@ -37,9 +37,9 @@ div.individual
     - if (admin)
       tr
         td
-          a.viewapprove(href="#{helpers.urlJoin('/admin/', 'game/' + game._id + '/approve/')}") approve
+          a.viewapprove(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/approve/')}") approve
         td
-          a.viewreject(href="#{helpers.urlJoin('/admin/', 'game/' + game._id + '/reject/')}") reject
+          a.viewreject(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/reject/')}") reject
   br
   hr
   br
@@ -53,8 +53,8 @@ div.individual
             td
               - var gameURL = helpers.getDateForURL(rel.date);
               - var dayOfWeek = helpers.getDayOfWeekOfDate(new Date(rel.date + " " + rel.time));
-              - var adminPath = ( admin ? '/admin' : '');
-              a.view(href=adminPath + "/game/" + gameURL + "/") #{dayOfWeek} #{rel.date}
+              - var adminPath = ( admin ? 'admin/' : '');
+              a.view(href="#{helpers.appendBaseURL(adminPath, 'game/'+ gameURL + '/')}") #{dayOfWeek} #{rel.date}
   - else
     span
       | No related games.
