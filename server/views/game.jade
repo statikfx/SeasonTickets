@@ -42,6 +42,39 @@ div.individual
           a.viewreject(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/reject/')}") reject
   br
   hr
+  table
+    - each req in game.requests
+      tr
+        td
+          = req.price
+        td
+          = req.name
+        td
+          = req.email
+    
+  hr
+  h1
+    | Request Seats:
+  br
+  div
+    form#requestform(method='POST', action='/requests/add/#{game._id}/')
+      table
+        tr
+          td(colspan='2')
+            input(type='text', name='name', placeholder='Your Name')
+        tr
+          td(colspan='2')
+            input(type='text', name='email', placeholder='Your Email')
+        tr
+          td 
+            input(type='submit', class="submit", value='Request Game')
+          td
+            input(type='reset', class="reset", value='Reset', id='reset')
+        input(type='hidden', name='price', value='#{game.price}')
+        input(type='hidden', name='gameid', value='#{game._id}', id='#{game._id}')
+  br
+  hr
+  br
   br
   - if (related.games.length > 0)
     span

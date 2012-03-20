@@ -51,7 +51,8 @@ var parseCSV = exports.parse = function(data, callback) {
       status: "pending",
       price: "0.00",
       pricing: "",
-      seats: []
+      seats: [],
+      requests: []
     };
     
     if (game.location.toLowerCase() !== "wrigley field") {
