@@ -6,6 +6,9 @@
 
   != partial('partials/pricing', { pricing: pricing })
 
+- if (mobile)
+  | Mobile!
+
 div#games
   != partial('partials/gamelist', { games: games })
 

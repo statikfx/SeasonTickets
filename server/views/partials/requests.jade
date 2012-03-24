@@ -1,0 +1,15 @@
+div#requests
+  hr
+  h1
+    b
+      |  Requests:
+  table
+    - each req in requests
+      tr
+        td
+          b
+            | Name:
+        td
+          = req.name
+        td
+           = req.date

@@ -22,25 +22,46 @@ $(function() {
       $(this).removeClass("fieldError");
     });
   });
+
+    $("a.clearrequests").live("click", function(evt) {
+      var gameId = $("#gameid").val();
+
+      var url = "/cubs/requests/clear/" + gameId;
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: function() {
+          reloadRequestList(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem approving the game.");
+        }
+      });
+
+      evt.preventDefault();
+    });
   
   $("#requestform").live("submit", function(evt) {
     var that = $(this);
   
-    var url = "/requests/add/" + $('#gameid').val();
+    var url = "/cubs/requests/add/" + $('#gameid').val();
     var type = $(this).attr("method");
     var data = $(this).serialize();
   
     var submit = $("#requestform input[type=submit]");
     var previousTitle = submit.val();
-    submit.attr("disabled", true);
-    submit.val("Working...");
+    //submit.attr("disabled", true);
+    //submit.val("Working...");
   
     $.ajax({
   	  url: url,
 	  type: type,
 	  data: data,
 	  success: function() {
-	    alert('done!');
+            reloadRequestList($('#gameid').val());
+            $(':input[type="text"]', '#requestform').each(function() {
+              $(this).val('');
+            });	   
 	  },
 	  error: function() {
 	    alert("Whoops. There was a problem adding the request.");
@@ -49,6 +70,16 @@ $(function() {
   
     evt.preventDefault();
   });
+
+    var reloadRequestList = function(id)
+    {
+      $.ajax({
+        url: "/cubs/requests/get/" + id + "/",
+        success: function(result) {
+          $("#requests").html(result);
+        }
+      });
+    }
 
   // is admin
   if ($("body").hasClass("admin")) {
@@ -71,6 +102,8 @@ $(function() {
         }
       });
     }
+
+    
     
     var reloadPricingTiers = function()
     {
@@ -304,6 +337,47 @@ $(function() {
       
       evt.preventDefault();
     });
+
+    $("a.close").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+
+      var url = "/cubs/api/game/" + gameId + "/close/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadGameById(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem opening the game.");
+        }
+      });
+
+      evt.preventDefault();
+    });
+
+
+
+    $("a.open").live("click", function(evt) {
+      var gameEl = $(this).parent().parent();
+      var gameId = gameEl.attr("id");
+
+      var url = "/cubs/api/game/" + gameId + "/open/";
+      $.ajax({
+        url: url,
+        type: "POST",
+        success: function() {
+          reloadGameById(gameId);
+        },
+        error: function() {
+          alert("Whoops. There was a problem opening the game.");
+        }
+      });
+
+      evt.preventDefault();
+    });
+
 
     $("a.viewapprove").live("click", function(evt) {
       var gameId = $(".gameid").text();

@@ -15,6 +15,13 @@ var cubs_app = express.createServer();
 
 cubs_app.use(CONFIG.BASEPATH, app);
 
+function is_mobile(req) {
+    var ua = req.header('user-agent');
+    if (/mobile/i.test(ua)) return true;
+    else return false;
+};
+
+
 // configure express options -- order matters
 app.configure(function() {
   // view rendering config
@@ -43,7 +50,13 @@ app.get("/?", function(req, res) {
       var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
       return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
-    var ctx = helpers.buildPageContext(req, result);
+  
+    var isMobile = is_mobile(req);
+   
+    var ctx = helpers.buildPageContext(req, result,
+    {
+      mobile: isMobile
+    });
     res.render("index", ctx);
   });
 });
@@ -54,7 +67,8 @@ app.namespace("/requests", function() {
     api.game.get(req.params.id, function(result) {  
   	  if (result.error) {
 	    res.end(JSON.stringify(result));
-	  } else {
+	    console.log("error");
+          } else {
 	    var request = {};
 	    request.name = req.body.name;
 	    request.email = req.body.email;
@@ -63,12 +77,41 @@ app.namespace("/requests", function() {
 
   	    result.game.requests.push(request);
 	
+            console.log(result.game.requests);
         api.game.update(result.game, function(result) {
 		  res.end(JSON.stringify(result));
 	    });
       }
     });
   });
+
+  app.get("/get/:id/?", function(req, res) {
+    api.game.get(req.params.id, function(result) {
+      if (result.error) {
+      } else {
+        console.log(result);
+        result.requests = result.game.requests; 
+        var ctx = helpers.buildPageContext(req, result, {
+          
+          layout: false
+        });
+        res.render("partials/requests", ctx);
+      }
+    });
+  });
+
+  app.get("/clear/:id/?", function(req, res) {
+    api.game.get(req.params.id, function(result) {
+      if (result.error) {
+      } else {
+        result.game.requests = [];
+        api.game.update(result.game, function (result) {
+          res.end(JSON.stringify(result));
+        }); 
+      }
+    });
+  });
+
 });
 
 app.namespace("/admin", function() {
@@ -206,6 +249,19 @@ app.namespace("/admin", function() {
         res.end(JSON.stringify(result));
       } else {
         result.game.status = "approved";
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
+  });
+
+  app.get("/game/:gameId/open/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.closed = "N";
         api.game.update(result.game, function(result) {
           res.redirect(req.headers.referer || "/admin");
         });
@@ -356,6 +412,32 @@ app.namespace("/api", function() {
         res.end(JSON.stringify(result));
       } else {
         result.game.status = "approved";
+        api.game.update(result.game, function(result) {
+          res.end(JSON.stringify(result));
+        });
+      }
+    });
+  });
+
+  app.post("/game/:gameId/open/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.closed = "N";
+        api.game.update(result.game, function(result) {
+          res.end(JSON.stringify(result));
+        });
+      }
+    });
+  });
+
+  app.post("/game/:gameId/close/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.closed = "Y";
         api.game.update(result.game, function(result) {
           res.end(JSON.stringify(result));
         });

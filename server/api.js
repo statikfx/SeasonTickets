@@ -12,6 +12,20 @@ var api = module.exports = {
     
     return response;
   },
+
+  requests: {
+    get: function(id, callback) {
+      db.get(id, function(err, reqs) {
+        var response = api.createResponse(err, reqs);
+        if (reqs) {
+          response.requests = helpers.cleanUpCouchResults(reqs);
+        }
+
+        callback(response);
+      });
+    },
+  },
+  
   
   pricing: {
     list: function(callback) {

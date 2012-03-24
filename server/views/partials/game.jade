@@ -7,24 +7,27 @@ ul.game(id="#{game._id}", class="#{game.status}")
   li.time
     = game.time
   li.price
-    | $
-    = game.price
+    | $#{game.price}
   - if (game.seats.length < 1)
     li.seat
       | No Seats Available
   - var section = 0;
   - var row = 0;
-  - each seat in game.seats
+  - if (game.closed === "Y")
     li.seat
-      - if (section != seat.section)
-        | S.#{seat.section}R.#{seat.row}S.#{seat.seat} - $#{seat.price}
-      - if (section == seat.section)
-        - if (row == seat.row)
-          | S.#{seat.seat} - $#{seat.price}
-        - if (row != seat.row)
-          | R.#{seat.row}S.#{seat.seat} - $#{seat.price}
-    - section = seat.section;
-    - row = seat.row;
+      | Game is not available.
+  - if (game.closed !== "Y")
+    - each seat in game.seats
+      li.seat
+        - if (section != seat.section)
+          | S.#{seat.section}R.#{seat.row} [S.#{seat.seat}]
+        - if (section == seat.section)
+          - if (row == seat.row)
+            | [S.#{seat.seat}]
+          - if (row != seat.row)
+            | R.#{seat.row} [S.#{seat.seat}]
+      - section = seat.section;
+      - row = seat.row;
   - if (admin)
     li.seat
       a(href='#add-seat') Add Seat
@@ -48,4 +51,10 @@ ul.game(id="#{game._id}", class="#{game.status}")
     - if (admin)
       - rootURL = "admin/";
     a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") View
+    - if (admin)
+      |  - 
+      - if (game.closed !== "Y")
+        a.close(href="#{helpers.appendBaseURL(rootURL, 'game/close/' + game._id +'/')}") Close
+      - if (game.closed !== "N")
+        a.open(href="#{helpers.appendBaseURL(rootURL, 'game/' + game._id + '/open/')}") Open
   .clear
