@@ -16,6 +16,11 @@ module.exports = {
     }
     return day;
   },
+
+  formatDate: function(date) {
+    var forDate = new Date(date);
+    return forDate.toString('MM/dd/yyyy');
+  },
   
   getDayOfWeekOfDate: function(date, shortName) {
     if (shortName) return SHORTDAYS[date.getDay()];

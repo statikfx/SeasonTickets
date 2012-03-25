@@ -1,15 +1,11 @@
-div#requests
-  hr
-  h1
-    b
-      |  Requests:
-  table
-    - each req in requests
-      tr
-        td
-          b
-            | Name:
-        td
-          = req.name
-        td
-           = req.date
+- if (requests.length < 1)
+  | No requests.
+- if (requests.length > 0)
+  - var reqNum = 1;
+  - each req in requests
+    - var reqDate = helpers.formatDate(req.date);
+    tr
+      td
+      td
+        | #{reqNum} - #{req.name} [#{reqDate}]
+    - reqNum = reqNum + 1;
