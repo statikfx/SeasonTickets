@@ -1,0 +1,9 @@
+tr.game(id="#{game._id}", class="#{game.status}")
+  td.date(width="30px")
+    = helpers.getDayOfDate(new Date(game.date));
+  td.day(width="70px")
+    = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), true)
+  td.time(width="90px")
+    = game.time
+  td.price(width="50px")
+    | $#{game.price}

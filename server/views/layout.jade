@@ -3,21 +3,24 @@ html
   head
     meta(charset='utf-8')
     title #{site.title + ((admin && " | Admin") || "") + ((page.title && " | " + page.title) || "")}
-    link(rel='stylesheet', href="/cubs/css/style.css")
+    link(rel='stylesheet', href="/cubs/css/#{(mobile && 'mobile.css') || 'style.css'}")
+    link(href='http://fonts.googleapis.com/css?family=Lato:400,700|Voces',rel='stylesheet', type='text/css')
+
+    - if (mobile)
+      meta(name="viewport",content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;")     
     script(src='/cubs/js/jquery-1.6.2.min.js')
   body(class="#{(admin && 'admin') || ''}")
-    #header
-      #wrap
-        #nav
-          ul
-            li.title
-              - if (path === "/cubs/")
-                | 2012 Season Tickets
-              - else  
-                a(href='/cubs/') 2012 Season Tickets
-        .clear
-    #wrapper
+    #wrapper  
       #container
+        #header
+          - if (path === "/cubs/")
+            h1.title
+              | 2012 Season Tickets
+          - else 
+            h1.title 
+              a(href='/cubs/') 2012 Season Tickets
+        - if (!mobile && path !== "/cubs/")
+          img(src='/cubs/seat_location_small.png')
         != body
     #footer
       span
@@ -26,4 +29,4 @@ html
         |  and  
         a(href='http://twitter.com/chandlerkent/') Chandler Kent
     
-   script(src='/cubs/js/app.js')
+   script(src="/cubs/js/app.js")

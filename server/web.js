@@ -15,7 +15,7 @@ var cubs_app = express.createServer();
 
 cubs_app.use(CONFIG.BASEPATH, app);
 
-function is_mobile(req) {
+function isMobile(req) {
     var ua = req.header('user-agent');
     if (/mobile/i.test(ua)) return true;
     else return false;
@@ -28,9 +28,9 @@ app.configure(function() {
   app.set("views", PATH.join(CONFIG.WEBROOT, "views"));
   app.set("view engine", "jade");
   app.set("view options", {
-    layout: true
-  });
-  
+    layout: true,
+    pretty: true
+  });  
   app.use(express.logger({
     format: ":method :url"
   }));
@@ -50,12 +50,10 @@ app.get("/?", function(req, res) {
       var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
       return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
-  
-    var isMobile = is_mobile(req);
-   
+ 
     var ctx = helpers.buildPageContext(req, result,
     {
-      mobile: isMobile
+      mobile: isMobile(req)
     });
     res.render("index", ctx);
   });
@@ -77,7 +75,6 @@ app.namespace("/requests", function() {
 
   	    result.game.requests.push(request);
 	
-            console.log(result.game.requests);
         api.game.update(result.game, function(result) {
 		  res.end(JSON.stringify(result));
 	    });
@@ -92,7 +89,7 @@ app.namespace("/requests", function() {
         console.log(result);
         result.requests = result.game.requests; 
         var ctx = helpers.buildPageContext(req, result, {
-          
+          mobile: isMobile(req),  
           layout: false
         });
         res.render("partials/requests", ctx);
@@ -126,7 +123,8 @@ app.namespace("/admin", function() {
       api.pricing.list(function(re) {
         re.games = result.games;
         var ctx = helpers.buildPageContext(req, re, {
-          admin: true
+          admin: true,
+          mobile: isMobile(req)
         });
         res.render("index", ctx);
       });
@@ -140,7 +138,8 @@ app.namespace("/admin", function() {
         re.games = result.games;
         var ctx = helpers.buildPageContext(req, re, {
           admin: true,
-          layout: false
+          layout: false,
+          mobile: isMobile(req)
         });
         res.render("partials/gamelist", ctx);
       });
@@ -151,7 +150,8 @@ app.namespace("/admin", function() {
   app.get("/pricing/?", function(req, res) {
     api.pricing.list(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
-        admin: true
+        admin: true,
+        mobile: isMobile(req)
       });
       res.render("pricing", ctx);
     });
@@ -162,7 +162,8 @@ app.namespace("/admin", function() {
     api.pricing.list(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true,
-        layout: false
+        layout: false,
+        mobile: isMobile(req)
       });
       res.render("partials/pricinglist", ctx);
     });
@@ -182,14 +183,16 @@ app.namespace("/admin", function() {
     api.game.get(req.params.gameId, function(result) {
       var ctx = helpers.buildPageContext(req, result, {
         admin: true,
-        layout: false
+        layout: false,
+        mobile: isMobile(req)
       });
       
        api.pricing.list(function(re) { 
         re.game = result.game;
         var ctx = helpers.buildPageContext(req, re, {
           admin: true,
-          layout: false
+          layout: false,
+          mobile: isMobile(req)
         });
         res.render("partials/game", ctx);
       });
@@ -212,14 +215,16 @@ app.namespace("/admin", function() {
             return ((game.status === "approved"));
           });
 	   
-	      var ctx = helpers.buildPageContext(req, result, {
-            admin: true
+	  var ctx = helpers.buildPageContext(req, result, {
+            admin: true,
+            mobile: isMobile(req)
           });
           res.render("game", ctx);
 	    });
 	  } else {
-	    var ctx = helpers.buildPageContext(req, result,  {
-          admin: true
+	var ctx = helpers.buildPageContext(req, result,  {
+          admin: true,
+          mobile: isMobile(req)
         });
         res.render("game", ctx);
       }
@@ -299,13 +304,17 @@ app.get("/game/:year/:month/:day/?", function(req, res) {
           return ((game.status === "approved"));
         });
 	   
-	    var ctx = helpers.buildPageContext(req, result);
+	var ctx = helpers.buildPageContext(req, result, {
+          mobile: isMobile(req)
+        });
         res.render("game", ctx);
 	  });
-	} else {
-	  var ctx = helpers.buildPageContext(req, result);
-      res.render("game", ctx);
-	}
+     } else {
+       var ctx = helpers.buildPageContext(req, result, {
+         mobile: isMobile(req)
+       });
+       res.render("game", ctx);
+     }
   });
 });
 
@@ -319,7 +328,9 @@ app.get("/games/:opponent/?", function(req, res) {
       var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
       return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
-    var ctx = helpers.buildPageContext(req, result);
+    var ctx = helpers.buildPageContext(req, result, {
+      mobile: isMobile(req)
+    });
     res.render("index", ctx);
   });
 });
@@ -327,14 +338,18 @@ app.get("/games/:opponent/?", function(req, res) {
 // game by ids
 app.get("/game/:gameId/?", function(req, res) {
   api.game.get(req.params.gameId, function(result) {
-    var ctx = helpers.buildPageContext(req, result);
+    var ctx = helpers.buildPageContext(req, result, {
+      mobile: isMobile(req)
+    });
     res.render("game", ctx);
   });
 });
 
 // request for games
 app.get("/game/:gameId/request/?", function(req, res) {
-  var ctx = helpers.buildPageContext(req);
+  var ctx = helpers.buildPageContext(req, {
+    mobile: isMobile(req)
+  });
   res.render("request", ctx);
 });
 
@@ -343,7 +358,8 @@ app.get("/about/?", function(req, res) {
   var ctx = helpers.buildPageContext(req, {
     page: {
       title: "About"
-    }
+    },
+    mobile: isMobile(req)
   });
   res.render("about", ctx);
 });
