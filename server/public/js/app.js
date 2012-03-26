@@ -76,7 +76,7 @@ $(function() {
       $.ajax({
         url: "/cubs/requests/get/" + id + "/",
         success: function(result) {
-          $("#requests").html(result);
+          $("#requests").replaceWith(result);
         }
       });
     }
@@ -98,7 +98,7 @@ $(function() {
       $.ajax({
         url: "/cubs/admin/refresh/games/all/",
         success: function(result) {
-          $("#games").html(result);
+          $("#games").replaceWith(result);
         }
       });
     }

@@ -49,14 +49,7 @@ div.individual
             a.viewreject(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/reject/')}") reject
           td
             a.clearrequests(href="#{helpers.appendBaseURL('requests/', 'clear/' + game._id + '/')}") clear requests
-      tr
-        td.bold
-          | Requests:
-        td 
-          - if (game.closed === "Y")
-            | This game has already been sold.
-          - if (game.closed !== "Y")
-            != partial('partials/requests', { requests: game.requests })
+    != partial('partials/requests', { requests: game.requests })
   - if (game.closed === "Y")
     div.gameright
       | Not accepting anymore requests for this game.
