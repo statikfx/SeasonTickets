@@ -24,6 +24,17 @@ var api = module.exports = {
         callback(response);
       });
     },
+    
+    oneOrMore: function(callback) {
+      db.view("games", "games_with_1ormore_requests", function(err, result) {
+        var response = api.createResponse(err, result);
+        if (result) {
+          response.games = helpers.cleanUpCouchResults(result.rows);
+        }
+
+        callback(response);
+      });  
+    },
   },
   
   

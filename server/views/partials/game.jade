@@ -50,7 +50,7 @@ ul.game(id="#{game._id}", class="#{game.status}")
     - var rootURL = "";
     - if (admin)
       - rootURL = "admin/";
-    a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") View
+    a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") Request Game
     - if (admin)
       |  - 
       - if (game.closed !== "Y")

@@ -131,7 +131,17 @@ app.namespace("/admin", function() {
      
     });
   });
-  
+ 
+  app.get("/requests/?", function(req, res) {
+    api.requests.oneOrMore(function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+        admin: true,
+        mobile: isMobile(req)
+      });
+      res.render("view_requests", ctx);  
+    });
+  });
+ 
   app.get("/refresh/games/all/?", function(req, res) {
     api.game.list(function(result) {
       api.pricing.list(function(re) {
@@ -532,7 +542,7 @@ app.namespace("/api", function() {
 });
 
 app.use(function(req, res, next){
-  var ctx = helpers.buildPageContext(req, res);
+  var ctx = helpers.buildPageContext(req, res, {mobile: isMobile(req)});
   res.render('404', ctx);
 });
 

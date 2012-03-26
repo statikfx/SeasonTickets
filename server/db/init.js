@@ -5,17 +5,17 @@ var db = require("./db")();
 
 var main = exports.main = function() {
   var createDB = function() {
-    console.log("CREATING DB...");
+   // console.log("CREATING DB...");
     
-    db.create(function(err, result) {
-      if (err) {
-        console.log(err);
-        return;
-      }
+//    db.create(function(err, result) {
+ //     if (err) {
+ //       console.log(err);
+  //      return;
+  //    }
       
-      console.log("DB CREATED");
+ //     console.log("DB CREATED");
       createViews();
-    });
+ //   });
   };
   
   db.exists(createDB, createViews);
