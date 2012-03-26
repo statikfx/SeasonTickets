@@ -1,0 +1,30 @@
+// globals
+- var CURRENT_MONTH = (new Date()).getMonth();
+- var CURRENT_DATE = (new Date()).getDate();
+- var CURRENT_YEAR = (new Date()).getFullYear();
+
+- if (games.length < 1)
+  div#content
+    | No games are available.
+
+- var i = 0;
+- var game = games[i];
+- while (game)
+  - var date = new Date(game.date);
+  - var month = date.getMonth();
+  - var year = date.getFullYear();
+  - var month_name = helpers.getMonthOfDate(date);
+  - var shouldHideMonth = (year == CURRENT_YEAR) && (month < CURRENT_MONTH);
+  div.month(id='#{month_name}')
+    h1(class="#{(shouldHideMonth && 'hiding') || ''}") #{month_name} 2012
+    - while (game && month === (new Date(game.date)).getMonth())
+      - var opponent = game.opponent;
+      .series(class="#{(shouldHideMonth && 'hidden') || ''}")
+        h1= opponent
+        - while (game && opponent === game.opponent && month === (new Date(game.date)).getMonth())
+          - if (admin)
+            != partial('partials/view_request', { game: game })
+          - if (!admin)
+            != partial('partials/view_request', { game: game })
+          - game = games[++i];
+          div.clear

@@ -138,7 +138,7 @@ app.namespace("/admin", function() {
         admin: true,
         mobile: isMobile(req)
       });
-      res.render("view_requests", ctx);  
+      res.render("partials/requestlist", ctx);  
     });
   });
  

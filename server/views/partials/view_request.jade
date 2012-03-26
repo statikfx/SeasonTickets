@@ -1,0 +1,43 @@
+ul.game(id="#{game._id}", class="#{game.status}")
+  li.date
+    = helpers.getDayOfDate(new Date(game.date));
+  li.day
+    = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), true)
+    | .
+  li.time
+    = game.time
+  li.price
+    | $#{game.price}
+  - if (game.seats.length < 1)
+    li.seat
+      | No Seats Available
+  - var section = 0;
+  - var row = 0;
+  - if (game.closed === "Y")
+    li.seat
+      | Game is not available.
+  - if (game.closed !== "Y")
+    - each seat in game.seats
+      li.seat
+        - if (section != seat.section)
+          | S.#{seat.section}R.#{seat.row} [S.#{seat.seat}]
+        - if (section == seat.section)
+          - if (row == seat.row)
+            | [S.#{seat.seat}]
+          - if (row != seat.row)
+            | R.#{seat.row} [S.#{seat.seat}]
+      - section = seat.section;
+      - row = seat.row;
+  li
+    - var gameURL = helpers.getDateForURL(game.date);
+    - var rootURL = "";
+    - if (admin)
+      - rootURL = "admin/";
+    a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") View Game
+    - if (admin)
+      |  - 
+      - if (game.closed !== "Y")
+        a.close(href="#{helpers.appendBaseURL(rootURL, 'game/close/' + game._id +'/')}") Close Game
+      - if (game.closed !== "N")
+        a.open(href="#{helpers.appendBaseURL(rootURL, 'game/' + game._id + '/open/')}") Open Game
+  .clear
