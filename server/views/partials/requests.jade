@@ -12,7 +12,7 @@ div#requests
           - if (requests.length > 0)
             - var reqNum = 1;
             - each req in requests
-              - var reqDate = helpers.formatDate(req.date);
+              - var reqDate = new Date(req.date);
               tr
                 td
                 td

@@ -1,8 +1,6 @@
 ul.game(id="#{game._id}", class="#{game.status}")
-  li.day
-    | #{helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), false)}
   li.date
-    | #{helpers.getMonthOfDate(new Date(game.date))} #{helpers.getDayOfDate(new Date(game.date))}
+    | #{helpers.getFullDate(new Date(game.date))}
   li.time
     = game.time
   li.price
