@@ -67,10 +67,8 @@ div.individual
               td(colspan='2')
                 input(type='text', name='email', placeholder='Your Email')
             tr
-              td 
+              td(colspane='2', align='right') 
                 input(type='submit', class="submit", value='Request Game')
-              td
-                input(type='reset', class="reset", value='Reset', id='reset')
             input(type='hidden', name='price', value='#{game.price}')
             input(type='hidden', name='gameid', value='#{game._id}', id='gameid')
   div.clear

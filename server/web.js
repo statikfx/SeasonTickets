@@ -313,7 +313,12 @@ app.get("/game/:year/:month/:day/?", function(req, res) {
 	    result.related.games = result.related.games.filter(function(game) {
           return ((game.status === "approved"));
         });
-	   
+
+        var sorted = result.related.games;
+        sorted = sorted.sort(function(a,b) { return new Date(a.date).getTime() - new Date(b.date).getTime() } );
+
+        result.related.games = sorted;	
+ 
 	var ctx = helpers.buildPageContext(req, result, {
           mobile: isMobile(req)
         });
