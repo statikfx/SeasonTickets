@@ -48,7 +48,10 @@ ul.game(id="#{game._id}", class="#{game.status}")
     - if (admin)
       - rootURL = "admin/";
     span
-      a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") Request Game
+      - var reqLinkText = "Request Game";
+      - if (game.closed === "Y")
+        - reqLinkText = "View Game";
+      a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") #{reqLinkText}
     - if (admin)
       |  - 
       - if (game.closed !== "Y")
