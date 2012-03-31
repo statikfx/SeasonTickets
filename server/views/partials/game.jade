@@ -1,9 +1,8 @@
 ul.game(id="#{game._id}", class="#{game.status}")
-  li.date
-    = helpers.getDayOfDate(new Date(game.date));
   li.day
-    = helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), true)
-    | .
+    | #{helpers.getDayOfWeekOfDate(new Date(game.date + " " + game.time), false)}
+  li.date
+    | #{helpers.getMonthOfDate(new Date(game.date))} #{helpers.getDayOfDate(new Date(game.date))}
   li.time
     = game.time
   li.price
@@ -20,12 +19,12 @@ ul.game(id="#{game._id}", class="#{game.status}")
     - each seat in game.seats
       li.seat
         - if (section != seat.section)
-          | S.#{seat.section}R.#{seat.row} [S.#{seat.seat}]
+          | Section #{seat.section} - Row #{seat.row} [Seat #{seat.seat}]
         - if (section == seat.section)
           - if (row == seat.row)
-            | [S.#{seat.seat}]
+            | [Seat #{seat.seat}]
           - if (row != seat.row)
-            | R.#{seat.row} [S.#{seat.seat}]
+            | Row #{seat.row} [Seat #{seat.seat}]
       - section = seat.section;
       - row = seat.row;
   - if (admin)
@@ -45,12 +44,13 @@ ul.game(id="#{game._id}", class="#{game.status}")
           | #{tier.shortname} |
         - if (tier._id != game.priceid)
           a.setprice(href="#{helpers.appendBaseURL('api/', 'set/' + game._id + '/price/'+ tier._id +'/')}") #{tier.shortname} |
-  li
+  li.request
     - var gameURL = helpers.getDateForURL(game.date);
     - var rootURL = "";
     - if (admin)
       - rootURL = "admin/";
-    a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") Request Game
+    span
+      a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") Request Game
     - if (admin)
       |  - 
       - if (game.closed !== "Y")
