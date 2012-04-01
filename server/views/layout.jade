@@ -22,4 +22,6 @@ html
         - if (!mobile && path !== "/cubs/")
           img(width="948px",src='/cubs/seat_location_small.png')
         != body
-   script(src="/cubs/js/app.js")
+  script(src="/cubs/js/app.js")
+  - if (admin)
+    script(src="/cubs/js/admin.js")

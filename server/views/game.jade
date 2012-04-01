@@ -1,3 +1,5 @@
+input(type='hidden', name='gameid', value='#{game._id}', id='gameid')
+
 div.individual
   div.left
     table
@@ -70,7 +72,7 @@ div.individual
               td(colspane='2', align='right') 
                 input(type='submit', class="submit", value='Request Game')
             input(type='hidden', name='price', value='#{game.price}')
-            input(type='hidden', name='gameid', value='#{game._id}', id='gameid')
+            
   div.clear
 div.related
   br
