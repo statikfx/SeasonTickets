@@ -5,30 +5,18 @@ ul.game(id="#{game._id}", class="#{game.status}")
     = game.time
   li.price
     | $#{game.price}
-  - if (game.seats.length < 1)
-    li.seat
-      | No Seats Available
-  - var section = 0;
-  - var row = 0;
+  li.price
+    - if (game.stubhub)
+      | SH Y
+    - else
+      | SH N
   - if (game.closed === "Y")
     li.seat
       | Game is not available.
-  - if (game.closed !== "Y")
-    - each seat in game.seats
-      li.seat
-        - if (section != seat.section)
-          | Section #{seat.section} - Row #{seat.row} [Seat #{seat.seat}]
-        - if (section == seat.section)
-          - if (row == seat.row)
-            | [Seat #{seat.seat}]
-          - if (row != seat.row)
-            | Row #{seat.row} [Seat #{seat.seat}]
-      - section = seat.section;
-      - row = seat.row;
-  - if (admin)
+  - else
     li.seat
-      a(href='#add-seat') Add Seat
-      |  |
+      | #{game.seats.length} Seats
+  - if (admin)
     li.approve-reject
       - if (game.status !== "approved")
         a.approve(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/approve/')}") approve
@@ -49,7 +37,7 @@ ul.game(id="#{game._id}", class="#{game.status}")
       - rootURL = "admin/";
     span
       - var reqLinkText = "Request Game";
-      - if (game.closed === "Y")
+      - if (admin || game.closed === "Y")
         - reqLinkText = "View Game";
       a.view(href="#{helpers.appendBaseURL(rootURL, 'game/' + gameURL + '/')}") #{reqLinkText}
     - if (admin)

@@ -391,3 +391,40 @@ $("a#deltier").live("click", function (evt) {
 
   evt.preventDefault();
 });
+
+
+$("a.cancelstubhub").live("click", function (evt) {
+  var gameId = $("#gameid").val();
+
+  var url = "/cubs/admin/game/" + gameId + "/stubhub/cancel/";
+  $.ajax({
+    url: url,
+    type: "POST",
+    success: function () {
+      $(".stubhub").text("Not Posted");
+    },
+    error: function () {
+      alert("Whoops. There was a problem rejecting the game.");
+    }
+  });
+
+  evt.preventDefault();
+});
+
+$("a.poststubhub").live("click", function (evt) {
+  var gameId = $("#gameid").val();
+
+  var url = "/cubs/admin/game/" + gameId + "/stubhub/post/";
+  $.ajax({
+    url: url,
+    type: "POST",
+    success: function () {
+      $(".stubhub").text("Posted");
+    },
+    error: function () {
+      alert("Whoops. There was a problem rejecting the game.");
+    }
+  });
+
+  evt.preventDefault();
+});

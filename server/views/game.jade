@@ -28,6 +28,23 @@ div.individual
           | Price:
         td.price
           | $#{game.price}
+      - if (admin)
+        tr
+          td.bold
+            | Post StubHub:
+          td.stubhub
+            - if (game.stubhub && game.stubhub === 'Y')
+              | Posted
+            - else
+              | Not Posted
+        tr
+          td
+          td 
+            a.cancelstubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/cancel/')}") Cancel
+            |  |
+            a.poststubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/post/')}") Post
+          
+          
       tr
         td.bold
           | Seats:

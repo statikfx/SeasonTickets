@@ -296,6 +296,34 @@ app.namespace("/admin", function() {
       }
     });
   });
+  
+  // stubhub
+  app.post("/game/:gameId/stubhub/post/?", function(req, res) {
+    console.log('test');
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.stubhub = "Y";
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
+  });
+  
+  app.post("/game/:gameId/stubhub/cancel/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.stubhub = "N";
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
+  });
 });
 
 // game by date
