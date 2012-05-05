@@ -6,7 +6,7 @@ fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
 body
 {
   background-color: #fff;
-  font-family: Voces, sans-serif;  
+  font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;  
   font-size: 17px;
   color: #222;
 }
@@ -26,7 +26,7 @@ a, a:visited
 img { border: 1px solid #cecece; }
 
 h1.title {
-font-family: 'Lato', serif;
+font-family:"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 font-size: 48px;
 word-spacing: 0.18em;
 }
