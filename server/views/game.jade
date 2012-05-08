@@ -3,6 +3,12 @@ input(type='hidden', name='gameid', value='#{game._id}', id='gameid')
 div.individual
   div.left
     table
+      - if (admin)
+        tr  
+          td.bold
+            | ID:
+          td
+            = game._id;
       tr  
         td.bold
           | Opponent:
@@ -28,23 +34,12 @@ div.individual
           | Price:
         td.price
           | $#{game.price}
-      - if (admin)
+      - if (game.stubhub.posted === 'Y')
         tr
           td.bold
-            | Post StubHub:
+            | StubHub:
           td.stubhub
-            - if (game.stubhub && game.stubhub === 'Y')
-              | Posted
-            - else
-              | Not Posted
-        tr
-          td
-          td 
-            a.cancelstubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/cancel/')}") Cancel
-            |  |
-            a.poststubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/post/')}") Post
-          
-          
+            = game.stubhub.link  
       tr
         td.bold
           | Seats:
@@ -74,22 +69,25 @@ div.individual
       | Not accepting anymore requests for this game.
   - if (game.closed !== "Y")
     div.gameright
-      h1
-        | Request Seats:
-      div
-        form#requestform(method='POST', action='/requests/add/#{game._id}/')
-          table
-            tr
-              td(colspan='2')
-                input(type='text', name='name', placeholder='Your Name')
-            tr
-              td(colspan='2')
-                input(type='text', name='email', placeholder='Your Email')
-            tr
-              td(colspane='2', align='right') 
-                input(type='submit', class="submit", value='Request Game')
-            input(type='hidden', name='price', value='#{game.price}')
-            
+      div.requestgame
+        h1
+          | Request Seats:
+        div
+          form#requestform(method='POST', action='/requests/add/#{game._id}/')
+            table
+              tr
+                td
+                  input(type='text', name='name', placeholder='Your Name')
+              tr
+                td
+                  input(type='text', name='email', placeholder='Your Email')
+              tr
+                td(align='right') 
+                  input(type='submit', class="submit", value='Request Game')
+              input(type='hidden', name='price', value='#{game.price}')
+      - if (admin)
+        != partial('partials/stubhub', {game: game})
+                
   div.clear
 div.related
   br

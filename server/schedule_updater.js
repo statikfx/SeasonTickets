@@ -53,6 +53,13 @@ var parseCSV = exports.parse = function(data, callback) {
       pricing: "",
       seats: [],
       requests: [],
+      stubhub: {
+      	"posted": "n",
+    	"sold": "n",
+    	"link": "",
+    	"sellprice": 0,
+    	"postings": []
+	  },
       closed: "N"
     };
     

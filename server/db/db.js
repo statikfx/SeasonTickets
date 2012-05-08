@@ -33,6 +33,10 @@ var db = module.exports = function() {
     });
   };
   
+  that.uuid = function(callback)  {
+    this.request("GET", "/_uuids", null, callback);
+  };
+  
   that.create = function(callback) {
     this.request("PUT", database, null, function(err, doc) {
       callback(err, doc);

@@ -209,6 +209,165 @@ app.namespace("/admin", function() {
     
     });
   });
+  
+    
+  // stubhub
+  app.post("/game/:gameId/stubhub/post/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        
+        db.uuid(function(err,id)
+        {
+          result.game.stubhub = {};
+		  var postings = [];
+		  var posting = {};
+		  
+		  posting.date = req.body.date;
+		  posting.price = req.body.price;
+		  posting._id = id.uuids[0];
+		  postings.push(posting);
+
+		  result.game.stubhub.posted = "Y";
+		  result.game.stubhub.sold = "N";
+		  result.game.stubhub.link = req.body.link;
+		  result.game.stubhub.sellprice = 0.0;
+		  result.game.stubhub.postings = postings;
+		  
+		  api.game.update(result.game, function(result) {
+			res.redirect(req.headers.referer || "/admin");
+		  });
+        });
+      }
+    });
+  });
+  
+  app.get("/game/:gameId/stubhub/sold/:postId/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.stubhub.sold = "Y";
+        
+        // find post and set it correctly
+        for (var i=0; i < result.game.stubhub.postings.length; i++)
+        {
+          var post = result.game.stubhub.postings[i];
+          if (post._id === req.params.postId)
+          {
+            result.game.stubhub.sellpostId = post._id;
+            result.game.stubhub.sellprice = post.price;
+            result.game.stubhub.selldate = post.date;
+          }
+        }
+        
+		api.game.update(result.game, function(result) {
+		  res.redirect(req.headers.referer || "/admin");
+		});
+      }
+    });
+  });
+  
+  app.get("/game/:gameId/stubhub/delete/:postId/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        result.game.stubhub.sold = "Y";
+        
+        // find post and set it correctly
+        for (var i=0; i < result.game.stubhub.postings.length; i++)
+        {
+          var post = result.game.stubhub.postings[i];
+          if (post._id === req.params.postId)
+          {
+            if (req.params.postId == result.game.stubhub.sellpostId)
+            {
+			  result.game.stubhub.sellprice = 0.0;
+			  result.game.stubhub.selldate = "";
+			  result.game.stubhub.sold = "N";
+			  result.game.stubhub.sellpostId = "";
+            }
+          
+            result.game.stubhub.postings.splice(i, 1);
+            break;
+          }
+        }
+        
+        if (result.game.stubhub.postings.length == 0)
+        {
+		  result.game.stubhub.posted = "N";
+		  result.game.stubhub.sellprice = 0.0;
+		  result.game.stubhub.selldate = "";
+		  result.game.stubhub.link = "";
+		  result.game.stubhub.sold = "N";
+		  
+		  result.game.stubhub.postings = [];
+        }
+        
+		api.game.update(result.game, function(result) {
+		  res.redirect(req.headers.referer || "/admin");
+		});
+      }
+    });
+  });
+  
+  app.post("/game/:gameId/stubhub/add/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        db.uuid(function(err,id)
+        {
+		  var posting = {};
+		  posting._id = id.uuids[0];
+		  posting.date = req.body.date;
+		  posting.price = req.body.price;
+		  
+		  result.game.stubhub.postings.push(posting);
+		  
+		  api.game.update(result.game, function(result) {
+			res.redirect(req.headers.referer || "/admin");
+		  });
+        });
+      }
+    });
+  });
+  
+  app.get("/game/:gameId/stubhub/cancel/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+      
+        result.game.stubhub.posted = "N";
+        result.game.stubhub.sellprice = 0.0;
+        result.game.stubhub.selldate = "";
+        result.game.stubhub.link = "";
+        result.game.stubhub.sold = "N";
+        result.game.stubhub.sellpostId = "";
+        
+        result.game.stubhub.postings = [];
+      
+        api.game.update(result.game, function(result) {
+          res.redirect(req.headers.referer || "/admin");
+        });
+      }
+    });
+  });
+  
+  app.get("/game/:gameId/stubhub/listing/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      var ctx = helpers.buildPageContext(req, result, {
+          admin: true,
+          layout: false,
+          mobile: isMobile(req)
+        });
+
+        res.render("partials/stubhub", ctx);
+      });
+    });
 
   app.get("/game/:year/:month/:day/?", function(req, res) {
     api.game.getByDate([req.params.month, req.params.day, req.params.year].join("/"), function(result) {
@@ -290,34 +449,6 @@ app.namespace("/admin", function() {
         res.end(JSON.stringify(result));
       } else {
         result.game.status = "rejected";
-        api.game.update(result.game, function(result) {
-          res.redirect(req.headers.referer || "/admin");
-        });
-      }
-    });
-  });
-  
-  // stubhub
-  app.post("/game/:gameId/stubhub/post/?", function(req, res) {
-    console.log('test');
-    api.game.get(req.params.gameId, function(result) {
-      if (result.error) {
-        res.end(JSON.stringify(result));
-      } else {
-        result.game.stubhub = "Y";
-        api.game.update(result.game, function(result) {
-          res.redirect(req.headers.referer || "/admin");
-        });
-      }
-    });
-  });
-  
-  app.post("/game/:gameId/stubhub/cancel/?", function(req, res) {
-    api.game.get(req.params.gameId, function(result) {
-      if (result.error) {
-        res.end(JSON.stringify(result));
-      } else {
-        result.game.stubhub = "N";
         api.game.update(result.game, function(result) {
           res.redirect(req.headers.referer || "/admin");
         });

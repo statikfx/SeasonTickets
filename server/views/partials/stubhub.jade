@@ -1,0 +1,50 @@
+div#stubhub
+  h1
+    | Stubhub
+    
+  - if (game.stubhub && game.stubhub.sold === 'Y')
+    hr
+    | -- SOLD
+    table
+      tr
+        td
+          | Price: #{game.stubhub.sellprice}
+          | Date: #{game.stubhub.selldate}
+    hr
+  - if (game.stubhub && game.stubhub.posted === 'Y')
+    table
+      tr
+        td
+            - var num = 1;
+            - each post in game.stubhub.postings
+              | #{num++} - $#{post.price} [#{post.date}]
+              a.soldpost(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/sold/' + post._id + '/')}") [Sold]
+              | -
+              a.delpost(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/delete/' + post._id + '/')}") [Delete]
+              br
+  - else
+    | - Not Posted
+  hr
+  - var postBtnValue = "Post Game";
+  - var addOrPost = "post";
+  - if (game.stubhub.posted === 'Y')
+    - postBtnValue = "New Price";
+    - addOrPost = "add";
+  form#stubhubform(method='POST', action="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/' + addOrPost + '/')}")
+    table
+      tr
+        td
+          input(type='text', name='price', placeholder='Price')
+      tr  
+        td
+          input(type='text', name='date', placeholder='Date')
+      - if (game.stubhub.posted != 'Y')
+        tr  
+          td
+            input(type='text', name='link', placeholder='Link')
+      tr
+        td(align='right')
+          input(type='submit', class="submit", value='#{postBtnValue}')
+  - if (game.stubhub && game.stubhub.posted === 'Y')
+    hr
+    a.cancelstubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/cancel/')}") Cancel

@@ -399,9 +399,9 @@ $("a.cancelstubhub").live("click", function (evt) {
   var url = "/cubs/admin/game/" + gameId + "/stubhub/cancel/";
   $.ajax({
     url: url,
-    type: "POST",
+    type: "GET",
     success: function () {
-      $(".stubhub").text("Not Posted");
+      reloadStubhub($('#gameid').val());
     },
     error: function () {
       alert("Whoops. There was a problem rejecting the game.");
@@ -428,3 +428,74 @@ $("a.poststubhub").live("click", function (evt) {
 
   evt.preventDefault();
 });
+
+$("a.soldpost").live("click", function (evt) {
+  var url = $(this).attr("href");
+
+  $.ajax({
+    url: url,
+    type: "GET",
+    success: function () {
+      reloadStubhub($('#gameid').val());
+    },
+    error: function () {
+      alert("Whoops. ");
+    }
+  });
+
+  evt.preventDefault();
+});
+
+$("a.delpost").live("click", function (evt) {
+  var url = $(this).attr("href");
+
+  $.ajax({
+    url: url,
+    type: "GET",
+    success: function () {
+      reloadStubhub($('#gameid').val());
+    },
+    error: function () {
+      alert("Whoops.");
+    }
+  });
+
+  evt.preventDefault();
+});
+
+var reloadStubhub = function (id) {
+    $.ajax({
+      type: "GET",
+      url: '/cubs/admin/game/' + id + '/stubhub/listing/',
+      success: function (result) {
+        $("#stubhub").replaceWith(result);
+      }
+    });
+  }
+
+$("#stubhubform").live("submit", function (evt) {
+    var that = $(this);
+
+    //var url = "/cubs/admin/game/" + $('#gameid').val() + "/stubhub/post/";
+    var url = $(this).attr("action");
+    var type = $(this).attr("method");
+    var data = $(this).serialize();
+
+    $.ajax({
+      url: url,
+      type: type,
+      data: data,
+      success: function () {
+        reloadStubhub($('#gameid').val());
+        $(':input[type="text"]', '#stubhubform').each(function () {
+          $(this).val('');
+        });
+      },
+      error: function () {
+        alert("Whoops. There was a problem adding the posting.");
+      }
+    });
+
+    evt.preventDefault();
+});
+
