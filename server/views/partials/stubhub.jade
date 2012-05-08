@@ -27,7 +27,7 @@ div#stubhub
   hr
   - var postBtnValue = "Post Game";
   - var addOrPost = "post";
-  - if (game.stubhub.posted === 'Y')
+  - if (game.stubhub && game.stubhub.posted === 'Y')
     - postBtnValue = "New Price";
     - addOrPost = "add";
   form#stubhubform(method='POST', action="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/' + addOrPost + '/')}")
