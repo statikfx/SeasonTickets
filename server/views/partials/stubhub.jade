@@ -1,7 +1,11 @@
 div#stubhub
   h1
     | Stubhub
-    
+
+  - var posted = false;
+  - if (game.stubhub && game.stubhub.posted === 'Y')
+    - posted = true;
+
   - if (game.stubhub && game.stubhub.sold === 'Y')
     hr
     | -- SOLD
@@ -11,7 +15,7 @@ div#stubhub
           | Price: #{game.stubhub.sellprice}
           | Date: #{game.stubhub.selldate}
     hr
-  - if (game.stubhub && game.stubhub.posted === 'Y')
+  - if (posted)
     table
       tr
         td
@@ -27,7 +31,7 @@ div#stubhub
   hr
   - var postBtnValue = "Post Game";
   - var addOrPost = "post";
-  - if (game.stubhub && game.stubhub.posted === 'Y')
+  - if (posted)
     - postBtnValue = "New Price";
     - addOrPost = "add";
   form#stubhubform(method='POST', action="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/' + addOrPost + '/')}")
@@ -38,13 +42,13 @@ div#stubhub
       tr  
         td
           input(type='text', name='date', placeholder='Date')
-      - if (game.stubhub && game.stubhub.posted != 'Y')
+      - if (!posted)
         tr  
           td
             input(type='text', name='link', placeholder='Link')
       tr
         td(align='right')
           input(type='submit', class="submit", value='#{postBtnValue}')
-  - if (game.stubhub && game.stubhub.posted === 'Y')
+  - if (posted)
     hr
     a.cancelstubhub(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/stubhub/cancel/')}") Cancel
