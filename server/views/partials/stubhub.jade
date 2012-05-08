@@ -38,7 +38,7 @@ div#stubhub
       tr  
         td
           input(type='text', name='date', placeholder='Date')
-      - if (game.stubhub.posted != 'Y')
+      - if (game.stubhub && game.stubhub.posted != 'Y')
         tr  
           td
             input(type='text', name='link', placeholder='Link')
