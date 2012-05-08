@@ -34,7 +34,7 @@ div.individual
           | Price:
         td.price
           | $#{game.price}
-      - if (game.stubhub.posted === 'Y')
+      - if (game.stubhub && game.stubhub.posted === 'Y')
         tr
           td.bold
             | StubHub:
