@@ -24,11 +24,12 @@ div.individual
           | Time:
         td
           = game.time;        
-      tr
-        td.bold
-          | Status:
-        td.status
-          = game.status
+      - if (admin)
+        tr
+          td.bold
+            | Status:
+          td.status
+            = game.status
       tr
         td.bold
           | Price:
@@ -89,11 +90,8 @@ div.individual
         != partial('partials/stubhub', {game: game})
                 
   div.clear
+hr
 div.related
-  br
-  hr
-  br
-  br
   - if (related.games.length > 0)
     span
       | Related Games versus #{game.opponent}

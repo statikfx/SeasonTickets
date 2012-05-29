@@ -7,7 +7,7 @@ ul.game(id="#{game._id}", class="#{game.status}")
     | $#{game.price}
   - if (admin)
     li.price
-      - if (game.stubhub)
+      - if (game.stubhub && game.stubhub.posted === 'Y')
         | SH Y
       - else
         | SH N

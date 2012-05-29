@@ -16,16 +16,16 @@
   - var month_name = helpers.getMonthOfDate(date);
   - var shouldHideMonth = (year == CURRENT_YEAR) && (month < CURRENT_MONTH);
   div.month(id='#{month_name}')
-    h1(class="#{(shouldHideMonth && 'hiding') || ''}") #{month_name} 2012
+    h1(class="#{(shouldHideMonth && 'hiding') || ''}") #{month_name} #{year}
     - while (game && month === (new Date(game.date)).getMonth())
       - var opponent = game.opponent;
       .series(class="#{(shouldHideMonth && 'hidden') || ''}")
         h1
           | vs. #{opponent}
-        - while (game && opponent === game.opponent && month === (new Date(game.date)).getMonth())
+        - while (game && opponent === game.opponent)
           - if (admin)
             != partial('partials/game', { game: game, pricing: pricing })
-          - if (!admin)
+          - else
             != partial('partials/game', { game: game })
           - game = games[++i];
           div.clear

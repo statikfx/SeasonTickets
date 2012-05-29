@@ -45,9 +45,10 @@ app.get("/?", function(req, res) {
   api.game.list(function(result) {
     var month = (new Date()).getMonth();
     var year = (new Date()).getYear();
+    var day = (new Date()).getDay();
     
     result.games = result.games.filter(function(game) {
-      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
+      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month) && ((new Date(game.date).getDay()) >= day);
       return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
  
@@ -59,7 +60,7 @@ app.get("/?", function(req, res) {
   });
 });
 
-  // requests
+// requests
 app.namespace("/requests", function() {
   app.post("/add/:id/?", function(req, res) {
     api.game.get(req.params.id, function(result) {  
@@ -380,18 +381,18 @@ app.namespace("/admin", function() {
         api.game.listByOpponent(opponent, function(re) {
   	      result.related = re;
 
-	      result.related.games = result.related.games.filter(function(game) {
-            return ((game.status === "approved"));
-          });
+	      result.related.games = result.related.games
+	        .filter(function(game) { return game.status === "approved";  })
+	        .filter(function(game) { return game._id !== result.game._id });
 	   
-	  var ctx = helpers.buildPageContext(req, result, {
+	      var ctx = helpers.buildPageContext(req, result, {
             admin: true,
             mobile: isMobile(req)
           });
           res.render("game", ctx);
 	    });
 	  } else {
-	var ctx = helpers.buildPageContext(req, result,  {
+	    var ctx = helpers.buildPageContext(req, result,  {
           admin: true,
           mobile: isMobile(req)
         });
@@ -469,9 +470,9 @@ app.get("/game/:year/:month/:day/?", function(req, res) {
       api.game.listByOpponent(opponent, function(re) {
 	    result.related = re;
 
-	    result.related.games = result.related.games.filter(function(game) {
-          return ((game.status === "approved"));
-        });
+	    result.related.games = result.related.games
+	      .filter(function(game) { return game.status === "approved";  })
+	      .filter(function(game) { return game._id !== result.game._id });
 
         var sorted = result.related.games;
         sorted = sorted.sort(function(a,b) { return new Date(a.date).getTime() - new Date(b.date).getTime() } );
