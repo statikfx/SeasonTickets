@@ -22,7 +22,7 @@
       .series(class="#{(shouldHideMonth && 'hidden') || ''}")
         h1
           | vs. #{opponent}
-        - while (game && opponent === game.opponent)
+        - while (game && opponent === game.opponent && month === (new Date(game.date)).getMonth())
           - if (admin)
             != partial('partials/game', { game: game, pricing: pricing })
           - else

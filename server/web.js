@@ -48,7 +48,7 @@ app.get("/?", function(req, res) {
     var day = (new Date()).getDay();
     
     result.games = result.games.filter(function(game) {
-      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month) && ((new Date(game.date).getDay()) >= day);
+      var currYearPastMonth = ((new Date(game.date).getYear()) == year) && ((new Date(game.date).getMonth()) >= month);
       return ((game.status === "approved") && (currYearPastMonth || ((new Date(game.date).getYear()) > year)));
     });
  
