@@ -17,4 +17,9 @@ div#requests
                 td
                 td
                   | #{reqNum} - #{req.name} [#{reqDate}]
+                  - if (admin)
+                    a.delreq(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/requests/delete/' + req.rid + '/')}") [Delete]
               - reqNum = reqNum + 1;
+    tr
+      td(colspan=2)
+        a.clearrequests(href="#{helpers.appendBaseURL('requests/', 'clear/' + game._id + '/')}") clear requests

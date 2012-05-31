@@ -56,20 +56,18 @@ div.individual
                   td
                   td
                     | Section #{seat.section} - Row #{seat.row} - Seat #{seat.seat}
-      - if (admin)
-        tr
-          td
-            a.viewapprove(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/approve/')}") approve
-          td
-            a.viewreject(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/reject/')}") reject
-          td
-            a.clearrequests(href="#{helpers.appendBaseURL('requests/', 'clear/' + game._id + '/')}") clear requests
     != partial('partials/requests', { requests: game.requests })
   - if (game.closed === "Y")
     div.gameright
       | Not accepting anymore requests for this game.
   - if (game.closed !== "Y")
     div.gameright
+      - if (admin)
+        div.gamestatus
+          span
+            button.viewapprove.blue(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/approve/')}") Approve
+          span
+            button.viewreject.red(href="#{helpers.appendBaseURL('admin/', 'game/' + game._id + '/reject/')}") Reject
       div.requestgame
         h1
           | Request Seats:

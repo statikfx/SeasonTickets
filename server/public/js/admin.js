@@ -311,7 +311,7 @@ $("a.open").live("click", function (evt) {
 });
 
 
-$("a.viewapprove").live("click", function (evt) {
+$("button.viewapprove").live("click", function (evt) {
   var gameId = $("#gameid").val();
 
   var url = "/cubs/api/game/" + gameId + "/approve/";
@@ -337,7 +337,7 @@ $("#showhide").live("click", function (evt) {
   evt.preventDefault();
 });
 
-$("a.viewreject").live("click", function (evt) {
+$("button.viewreject").live("click", function (evt) {
   var gameId = $("#gameid").val();
 
   var url = "/cubs/api/game/" + gameId + "/reject/";
@@ -454,6 +454,23 @@ $("a.delpost").live("click", function (evt) {
     type: "GET",
     success: function () {
       reloadStubhub($('#gameid').val());
+    },
+    error: function () {
+      alert("Whoops.");
+    }
+  });
+
+  evt.preventDefault();
+});
+
+$("a.delreq").live("click", function (evt) {
+  var url = $(this).attr("href");
+
+  $.ajax({
+    url: url,
+    type: "GET",
+    success: function () {
+      reloadRequestList($('#gameid').val());
     },
     error: function () {
       alert("Whoops.");

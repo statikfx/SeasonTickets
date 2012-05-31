@@ -64,22 +64,27 @@ app.get("/?", function(req, res) {
 app.namespace("/requests", function() {
   app.post("/add/:id/?", function(req, res) {
     api.game.get(req.params.id, function(result) {  
-  	  if (result.error) {
-	    res.end(JSON.stringify(result));
-	    console.log("error");
-          } else {
-	    var request = {};
-	    request.name = req.body.name;
-	    request.email = req.body.email;
-	    request.price = req.body.price;
-	    request.date = new Date();
+  	  
+  	  db.uuid(function(err,id) {
+      
+  	    if (result.error) {
+	      res.end(JSON.stringify(result));
+	      console.log("error");
+        } else {
+	      var request = {};
+	      request.rid = id.uuids[0];
+	      request.name = req.body.name;
+	      request.email = req.body.email;
+	      request.price = req.body.price;
+	      request.date = new Date();
 
-  	    result.game.requests.push(request);
+  	      result.game.requests.push(request);
 	
-        api.game.update(result.game, function(result) {
-		  res.end(JSON.stringify(result));
-	    });
-      }
+          api.game.update(result.game, function(result) {
+		    res.end(JSON.stringify(result));
+	      });
+        }
+      });
     });
   });
 
@@ -87,12 +92,16 @@ app.namespace("/requests", function() {
     api.game.get(req.params.id, function(result) {
       if (result.error) {
       } else {
-        console.log(result);
-        result.requests = result.game.requests; 
+        result.requests = result.game.requests;
+        
+        var adminRefered = (req.headers.referer.indexOf("admin") != -1) ? true : false;
+        
         var ctx = helpers.buildPageContext(req, result, {
-          mobile: isMobile(req),  
+          mobile: isMobile(req),
+          admin: adminRefered, 
           layout: false
         });
+        console.log(req.headers.referer);
         res.render("partials/requests", ctx);
       }
     });
@@ -132,7 +141,35 @@ app.namespace("/admin", function() {
      
     });
   });
- 
+  
+  app.get("/game/:gameId/requests/delete/:reqID/?", function(req, res) {
+    api.game.get(req.params.gameId, function(result) {
+      if (result.error) {
+        res.end(JSON.stringify(result));
+      } else {
+        // find post and set it correctly
+        for (var i=0; i < result.game.requests.length; i++)
+        {
+          var gameReq = result.game.requests[i];
+          if (gameReq.rid === req.params.reqID)
+          {
+            result.game.requests.splice(i, 1);
+            break;
+          }
+        }
+        
+        if (result.game.requests.length == 0)
+        {
+		  result.game.requests = [];
+        }
+        
+		api.game.update(result.game, function(result) {
+		  res.redirect(req.headers.referer || "/admin");
+		});
+      }
+    });
+  });
+  
   app.get("/requests/?", function(req, res) {
     api.requests.oneOrMore(function(result) {
       var ctx = helpers.buildPageContext(req, result, {
